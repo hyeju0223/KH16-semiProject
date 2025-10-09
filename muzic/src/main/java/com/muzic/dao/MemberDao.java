@@ -157,4 +157,11 @@ public class MemberDao {
 		Object[] params = {point, memberId};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+	
+	//회원 프로필 찾기
+	public int findAttachment(String memberId) {
+		String sql = "select attachment_no from ATTACHMENT where attachment_category='profile' and attachment_parent=?";
+		Object[] params = {memberId};
+		return jdbcTemplate.queryForObject(sql,Integer.class, params);
+	}
 }

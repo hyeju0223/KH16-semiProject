@@ -142,6 +142,10 @@ public class AttachmentService {
 	    return attachmentDao.findAttachmentNoByParent(parentSeq, category);
 	}
 	
+	public int getAttachmentNoByParent(String parentSeq, String category) {
+	    return attachmentDao.findAttachmentNoByMemberId(parentSeq, category);
+	}
+	
 	public AttachmentDto getAttachment(int attachmentNo) {
 		return attachmentDao.findAttachment(attachmentNo);
 	}

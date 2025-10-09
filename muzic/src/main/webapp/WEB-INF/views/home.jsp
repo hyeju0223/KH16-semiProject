@@ -528,6 +528,13 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
       
       <c:choose>
        <c:when test="${sessionScope.loginMemberId != null}">
+        <c:if test="${sessionScope.loginMemberRole == '관리자'}">
+      <div class="cell w-120 profile-text">
+        <a href="<c:url value='/admin/member/list'/>" class="teg">
+          <i class="fa-solid fa-screwdriver-wrench"></i>관리자
+        </a>
+      </div>
+      </c:if>
       <div class="cell w-120 profile-text">
         <a href="#"  class="teg"><i class="fa-solid fa-headset"></i>고객센터</a>
       </div>
@@ -535,7 +542,7 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
         <a href="/mypage/profile"><i class="fa-solid fa-user"></i>마이페이지</a>
       </div>
       <div class="cell w-120 profile-text">
-        <a href="#" class="teg"><i class="fa-solid fa-cart-shopping"></i>장바구니</a>
+        <a href="/store/cart/list" class="teg"><i class="fa-solid fa-cart-shopping"></i>장바구니</a>
       </div>
       <!-- 회원상태 -->
       <div class="cell w-150 profile-area flex-box flex-center">

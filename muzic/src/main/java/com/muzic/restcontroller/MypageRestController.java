@@ -34,18 +34,30 @@ public class MypageRestController {
 	
 //	//프로필 변경
 //	@RequestMapping("/profile")
-//	public void profile(HttpSession Session, MultipartFile attach) throws IOException {
+//	public void profile(HttpSession Session,
+//									String memberId, MultipartFile attach) throws IOException {
+//		
 //		//로그인 아이디 구하기
 //		String loginId = (String) Session.getAttribute("loginMemberId");
 //		
+//		//기존 파일 삭제
+//		try {//사용자에게 예외 알려줘야해서 예외처리
+//			int attachmentNo = memberDao.findAttachment(loginId); //회원 아이디로 이미지 PK 찾기
+//			attachmentService.delete(attachmentNo);
+//		}catch(Exception e) { /*아무것도 안함*/} //다음 단계로 가야하니 try-catch 씀
+//	
 //		
-//		//신규 파일 등록
-//		if(attach.isEmpty() == false) { 
+////		return "redirect:/attachment/download?attachmentNo=" + attachmentNo;
+////	} catch (Exception e) {
+////		return "redirect:/images/error/no-image.png";
+////		
+//		
+//		//신규 파일 등록 
+//		if(attach.isEmpty() == false) {
 //			String categoty = attach.getOriginalFilename(); //카테고리는 파일 원본 이름으로 저장
 //			attachmentService.save(attach, categoty, loginId);
-//		}
 //	} 
-	
+//	
 	//회원 탈퇴를 위한 비밀번호 확인
 	@RequestMapping("/withDraw")
 	public String withDraw(HttpSession session,String memberId, String memberPw) {

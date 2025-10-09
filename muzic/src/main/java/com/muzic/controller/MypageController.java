@@ -15,10 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.muzic.condition.SearchCondition;
 import com.muzic.dao.GoodsDao;
 import com.muzic.dao.MemberDao;
+import com.muzic.dao.MemberPointLogDao;
 import com.muzic.dao.MusicViewDao;
+import com.muzic.domain.AttachmentCategory;
 import com.muzic.dto.MemberDto;
+import com.muzic.dto.MemberPointLogDto;
 import com.muzic.dto.MusicDto;
 import com.muzic.error.TargetNotFoundException;
+import com.muzic.service.AttachmentService;
 import com.muzic.vo.GoodsOrderViewVO;
 import com.muzic.vo.MusicUploaderVO;
 
@@ -36,6 +40,10 @@ public class MypageController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private GoodsDao goodsDao;
+    @Autowired
+    private MemberPointLogDao memberPointLogDao;
+    @Autowired
+    private AttachmentService attachmentService;
     
 	@GetMapping("/profile")
 	public String profile(Model model,HttpSession session) {
@@ -52,9 +60,14 @@ public class MypageController {
 				.keyword(loginNickname)
 				.build();
 		List<MusicUploaderVO> musicList = musicViewDao.selectUploaderPaging(searchCondition); 
-		//memberDto와 musicList를 jsp로 넘길 수 있도록 model 설정 
+		
+		//포인트 로그 리스트 조회
+		List<MemberPointLogDto> pointLogList = memberPointLogDao.selectByMemberId(loginId);
+
 		model.addAttribute("memberDto",memberDto);
 		model.addAttribute("musicList",musicList);
+		model.addAttribute("pointLogList",pointLogList);
+		
 		//주문내역
 		List<GoodsOrderViewVO> orderList = goodsDao.selectOrdersWithGoodsInfo(loginId);
         model.addAttribute("orderList", orderList);
@@ -71,7 +84,7 @@ public class MypageController {
 		if(findDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
 		
 		//회원 정보를 jsp에 넘김
-		model.addAttribute("findDto",findDto);
+		model.addAttribute("memberDto",findDto);
 		
 		return "/WEB-INF/views/mypage/withDraw.jsp";
 	}
@@ -87,19 +100,17 @@ public class MypageController {
 		
 		//회원 탈퇴 (비밀번호 확인 후 회원 탈퇴)
 
-		boolean  isValid  = bCryptPasswordEncoder.matches(memberPw, findDto.getMemberPw());
-		
-		if(!isValid) { //비밀번호가 틀리다면
-			return "redirect:withDraw?error"; //파라미터에 error을 추가해서 '비밀번호를 확인해주세요' 문구 추가 (프론트)
-		}
 		//동의 버튼을 체크하지 않으면 다시 동일한 페이지로 반환
-		if(!"on".equals(agree)) return "/mypage/withDraw.jsp";
+		if(!"on".equals(agree)) return "redirect:withDraw?error";
 		
-//		memberDao.delete(findDto.getMemberId()); //DB에서 회원 정보 삭제 - 회원가입 귀찮아서 우선 주석처리..
-//		session.removeAttribute("loginMemberId");
-//		session.removeAttribute("loginMemberMbti");
-//		session.removeAttribute("loginMemberRole");
-		
+		boolean  isValid  = bCryptPasswordEncoder.matches(memberPw, findDto.getMemberPw());
+		if(!isValid) return "redirect:withDraw?error=true";
+
+		memberDao.delete(findDto.getMemberId()); //DB에서 회원 정보 삭제
+		session.removeAttribute("loginMemberId");
+		session.removeAttribute("loginMemberMbti");
+		session.removeAttribute("loginMemberRole");
+//		
 		//회원 탈퇴 완료 후 굿바이 페이지로 리다이랙트
 		return "redirect:bye";
 	}
@@ -149,7 +160,7 @@ public class MypageController {
 		
 		//해시 비밀번호로 변환 후 신규 비밀번호로 교체
 		String hashed = bCryptPasswordEncoder.encode(memberChangePw1);		
-		findDto.setMemberPw(memberChangePw1);
+		findDto.setMemberPw(hashed);
 		//DB에 업데이트
 		memberDao.updateMemberPw(findDto);
 		
@@ -183,6 +194,8 @@ public class MypageController {
 		
 		return "redirect:profile";
 	}
+	
+
 	
 	
 }

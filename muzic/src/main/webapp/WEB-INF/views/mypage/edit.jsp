@@ -62,10 +62,15 @@
             position: relative;
             z-index: 0;
         }
+        
+         .profile-img-area:hover {
+         	filter : brightness(0.9);
+         }
 
-        .profile-img-area:hover {
-            filter: brightness(85%);
+        .profile-img-area:hover,
+        .profile-img-area > .change-text:hover {
             transition: filter 0.3s ease-out;
+            cursor: pointer;
         }
 
         .profile-change {
@@ -92,6 +97,9 @@
             left: 38px;
             top: 73px;
             opacity: 0;
+            user-select: none;  /* 텍스트 드래그 금지 */
+  			cursor: default;  
+  			z-index: 0;
         }
 
         .profile-img-area:hover .change-text {
@@ -156,7 +164,6 @@
             border: 1px solid #b2bec3;
             border-radius: 0.3em;
             margin: 5px;
-            /* background-color: #edeeff             */
         }
 
         .box.box-long {
@@ -257,17 +264,36 @@
             }
             $(".btn-address-search, [name=memberPost], [name=memberAddress1]").on("click", findAddress);
 
+            
+            
             //프로필 사진 변경
-            var memberId = "admin2";
-            $(".profile-img").on("click", function () {
-                $.ajax({
-                    url: "",
+            
+            $(".profile-img-area").on("click", function(){
+            	$("#profile-input").click();
+            	
+            });
+            	
+            
+//             이미지의 최초 주소 ==> 미리보기 사진이 바뀌는거고 수정 눌렀을때 진짜 사진이 바뀌는거 
+            var origin = $(".image-profile").attr("src");
+            var memberId = $(".")
+            $("#profile-input").on("click", function () {
+            	var list = $(this).prop("files"); //선택된 파일 구하기
+                if(list.length == 0) return;
+            	
+            	//파일 전송
+            	var form = new FormData(); //<form>역할
+            	form.append("attach", list[0]);
+            	
+            	$.ajax({
+            		processData : false,
+            		contentType : false,
+                    url: "/mypage/profile",
                     method: "post",
-                    data: { memberId },
+                    data:  form ,
                     success: function (response) {
-                        if (response == "success") {
-                            alter("사진 변경 성공!");
-                        }
+                    	var newOrigin = origin + "&t=" + new Date().getTime();
+                    	$(".image-profile").attr("src", newOrigin);
                     }
                 })
             });
@@ -287,11 +313,12 @@
                 <div class="cell  profile-area">
                     <!-- 프로필 이미지 영역-->
                     <div class="cell  profile-img-area mt-30">
-                        <img src="/image/home/profile-img.jpg" class="profile-img">
+                        <img src="/image/home/profile-img.jpg" class="profile-img" >
                         <span class="change-text">변경하기</span>
                         <div class="cell profile-change flex-box flex-center"><i class="fa-solid fa-camera-rotate"
                                 style="color: aliceblue;"></i></div>
                     </div>
+                        <input type="file" id="profile-input" style="display: none;">
                     <!-- 닉네임/메일주소-->
                     <div class="center mt-30">
                         <div class="text">${memberDto.memberNickname}</div>

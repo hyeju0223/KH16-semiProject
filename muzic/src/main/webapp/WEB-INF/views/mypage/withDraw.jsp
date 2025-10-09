@@ -1,32 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<!-- 회원 탈퇴 전 유의사항 안내 (멀티페이지 1)-->
-
-
-
-<form action="/mypage/withDraw" method="post">
-<input type="checkbox" name="agree" > 안내 사항을 모두 확인하였으며, 이에 동의합니다.
-<button type="button" id="#">확인</button>
-
-
-<!-- 비밀번호 확인 후 탈퇴하기 (멀티페이지 2) -->
-	<hr>
-	<h1>회원 비밀번호 확인</h1>
-
-	비밀번호를 한번 더 입력해주세요<br>
-	비밀번호를 입력하시면 회원탈퇴가 완료됩니다<br>
-	비밀번호를 모르시면 정보수정 페이지에서 새로 설정 후 진행하시면 됩니다<br>
-	<a href="password">수정하러 가기</a><br>
-	
-	<h3>회원 아이디 : ${memberDto.memberId}</h3>
-	<input type="password" name="memberPw">
-	<button type="submit">탈퇴하기</button>
-	</form>
-	
-	
-	<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -195,6 +169,18 @@
             font-weight: 500;
             
         }
+        
+        .ment {
+        display: none;
+        }
+        
+        .ment.show {
+        display: block;
+        }
+        
+        .hide {
+        display: none;
+        }
     </style>
 
     <!-- jquery cdn-->
@@ -209,6 +195,13 @@
     if (!$("#agree").is(":checked")) {
       e.preventDefault(); // 새로고침/전송 막기
       $(".agree-text").addClass("red");
+    }
+    if( $("[name=memberPw]").val().trim() == "" ){
+    	e.preventDefault(); // 새로고침/전송 막기
+    	$(".ment2").addClass("show");
+    	$(".ment").addClass("show");
+    }else {
+    	$(".ment").removeClass("show");
     }
   });
 
@@ -226,7 +219,7 @@
 <body>
     <div class="container ">
         <div class="mt-50 text" style="font-size: 30px;">비밀번호 변경</div>
-        <form>
+        <form action="/mypage/withDraw" method="post">
             <div class="area flex-box ">
 
                 <div class="w-800">
@@ -238,7 +231,7 @@
                             회원탈퇴를 신청하기 전에 안내사항을 꼭 확인해주세요.
                         </div>
                         <div class="title" style="font-size: 20px;">
-                             <span class="large">사용하고 계신 아이디()는 탈퇴할 경우 재사용 및 복구가 불가능합니다</span>
+                             <span class="large">사용하고 계신 아이디(${memberDto.memberId})는 탈퇴할 경우 재사용 및 복구가 불가능합니다</span>
                         </div>
                         <div class="title" style="font-size: 20px;">
                             <span class="large">탈퇴 후 회원정보 및 개인형 서비스 이용기록은 모두 삭제됩니다.</span>
@@ -256,7 +249,7 @@
 탈퇴 후에는 회원정보가 삭제되어 본인 여부를 확인할 수 있는 방법이 없어, 게시글을 임의로 삭제해드릴 수 없습니다.</pre>
                         </div>
                         <div class="title" style="font-size: 20px;">
-                            <input type="checkbox" id="agree" ><span class="agree-text">안내 사항을 모두 확인하였으며, 이에 동의합니다.</span>
+                            <input type="checkbox" name="agree"  id="agree" ><span class="agree-text">안내 사항을 모두 확인하였으며, 이에 동의합니다.</span>
                         </div>
                     </div>
         <hr>
@@ -269,19 +262,22 @@
 비밀번호를 입력하시면 회원탈퇴가 완료됩니다
 비밀번호를 모르시면 정보수정 페이지에서 새로 설정 후 진행하시면 됩니다</pre>
             </div>
-            <a class="btn btn-neutral">수정하러 가기</a>
+            <a href="password" class="btn btn-neutral">수정하러 가기</a>
             <div class="title" style="font-size: 20px;">
-                <span class="title large">회원 아이디 :</span>
+                <span class="title large">회원 아이디 : ${memberDto.memberId}</span>
             </div>
             <!-- 닉네임 영역-->
             <div class="cell">
                 <div class="title large mt-40">현재 비밀번호<i class="fa-solid fa-star-of-life red"></i></div>
-                <input type="text" name="memberNickname" class="box box-long">
+                <input type="text"  name="memberPw"  class="box box-long"  minlength="8">
+                <div class="ment" style="color:red;">비밀번호를 입력해주세요</div>
+                <c:if test="${not empty param.error}">
+                <div class="title ment2" style="color:red;">비밀번호를 다시 확인해주세요</div>
+                </c:if>
             </div>
             <div class="center right mt-20">
-                <button type="submit" class="btn btn-positive ">수정</button>
+                <button type="submit" class="btn btn-positive ">탈퇴하기</button>
             </div>
-
         </div>
         </form>
     </div>
