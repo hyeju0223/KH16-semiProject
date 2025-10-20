@@ -11,6 +11,7 @@ public class GoodsOrderDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+	//상품 구매 기록을 삽입 goods_order 테이블에 삽입
 	public void insert(GoodsOrderDto goodsOrderDto) {
 		String sql = "insert into goods_order(order_no, order_member, order_goods, order_quantity, order_point, order_time) "
 				+ "values(goods_order_seq.nextval, ?, ?, ?, ?, systimestamp)";
