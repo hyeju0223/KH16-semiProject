@@ -98,30 +98,15 @@
 		</dependency>
 		
 		<!-- BCryptPasswordEncoder(해쉬암호화)--> 
-<dependency>
-    <groupId>org.springframework.security</groupId>
-    <artifactId>spring-security-crypto</artifactId>
-    <version>6.5.5</version> <!-- 예시: 최신 6.5.x 버전으로 지정 -->
-</dependency>
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-crypto</artifactId>
+		    <version>6.5.5</version> <!-- 예시: 최신 6.5.x 버전으로 지정 -->
+		</dependency>
 
-
-<dependency>
-    <groupId>jakarta.servlet</groupId>
-    <artifactId>jakarta.servlet-api</artifactId>
-</dependency>
-<dependency>
-    <groupId>org.glassfish.web</groupId>
-    <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-</dependency>
-<dependency>
-    <groupId>jakarta.servlet.jsp.jstl</groupId>
-    <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-</dependency>
-
-
-
+		
 	</dependencies>
-
+	
 	<build>
 		<plugins>
 			<plugin>
