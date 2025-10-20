@@ -20,9 +20,9 @@ public class MemberDao {
     private MemberMapper memberMapper;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder; // 🔒 비밀번호 비교용
+    private BCryptPasswordEncoder passwordEncoder; //  비밀번호 비교용
 
-    // ✅ 회원가입 (비밀번호 암호화 저장)
+    //  회원가입 (비밀번호 암호화 저장)
     public void insert(MemberDto memberDto) {
         String sql = """
             INSERT INTO member(
@@ -46,21 +46,21 @@ public class MemberDao {
         jdbcTemplate.update(sql, params);
     }
 
-    // ✅ 단일 회원 조회 (로그인/검증용)
+    //   단일 회원 조회 (로그인/검증용)
     public MemberDto selectOne(String memberId) {
         String sql = "SELECT * FROM member WHERE member_id = ?";
         List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, memberId);
         return list.isEmpty() ? null : list.get(0);
     }
 
-    // ✅ 로그인 (BCrypt 비교)
+    // 로그인 (BCrypt 비교)
     public boolean login(String memberId, String inputPw) {
         MemberDto findDto = selectOne(memberId);
         if (findDto == null) return false;
         return passwordEncoder.matches(inputPw, findDto.getMemberPw());
     }
 
-    // ✅ 아이디 찾기 (닉네임 + 이메일)
+    //  아이디 찾기 (닉네임 + 이메일)
     public MemberDto findIdByNicknameAndEmail(String nickname, String email) {
         String sql = "SELECT * FROM member WHERE member_nickname = ? AND member_email = ?";
         Object[] params = { nickname, email };
@@ -68,11 +68,24 @@ public class MemberDao {
         return list.isEmpty() ? null : list.get(0);
     }
 
-    // ✅ 비밀번호 찾기 (아이디 + 닉네임 + 이메일)
+    //  비밀번호 찾기 (아이디 + 닉네임 + 이메일)
     public MemberDto findPwByIdNicknameEmail(String memberId, String nickname, String email) {
         String sql = "SELECT * FROM member WHERE member_id = ? AND member_nickname = ? AND member_email = ?";
         Object[] params = { memberId, nickname, email };
         List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
         return list.isEmpty() ? null : list.get(0);
+    }
+    // 아이디 중복 검사
+    public boolean existsById(String memberId) {
+        String sql = "SELECT COUNT(*) FROM member WHERE member_id = ?";
+        int count = jdbcTemplate.queryForObject(sql, int.class, memberId);
+        return count > 0;
+    }
+
+    //  닉네임 중복 검사
+    public boolean existsByNickname(String nickname) {
+        String sql = "SELECT COUNT(*) FROM member WHERE member_nickname = ?";
+        int count = jdbcTemplate.queryForObject(sql, int.class, nickname);
+        return count > 0;
     }
 }
