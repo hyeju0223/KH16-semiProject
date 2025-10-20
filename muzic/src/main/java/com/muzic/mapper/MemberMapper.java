@@ -32,7 +32,6 @@ public class MemberMapper implements RowMapper<MemberDto>{
 				.memberRecentLogin(rs.getTimestamp("member_recent_login"))
 				.build();
 	}
-	
-	
-	
 }
+	
+	

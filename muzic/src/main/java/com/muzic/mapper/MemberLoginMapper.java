@@ -2,7 +2,6 @@ package com.muzic.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -22,5 +21,4 @@ public class MemberLoginMapper implements RowMapper<MemberLoginDto>{
 				.loginTryTime(rs.getTimestamp("login_try_time"))
 				.build();
 	}
-
 }
