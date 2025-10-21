@@ -1,20 +1,22 @@
 package com.muzic.dto;
 
 import java.sql.Timestamp;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
+@Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class AttachmentDto {
-
-    private int attachmentNo;             // PK
-    private String attachmentType;        // img, mp4 등
-    private String attachmentCategory;    // 'music', 'profile', 'goods', 'post' 등
-    private int attachmentParent;         // 연결될 테이블의 PK (music_no, member_id 등)
-    private String attachmentOriginalName;// 실제 이름
-    private String attachmentStoredName;  // 저장된 이름
-    private long attachmentSize;          // 파일 크기
-    private Timestamp attachmentTime;     // 저장된 시간 (기본값 systimestamp)
+	
+		private int attachmentNo;           // attachment_no
+	    private String attachmentType;       // attachment_type (img, mp4 등)
+	    private String attachmentPath; 		// attachment_path(저장된 경로) 
+	    private String attachmentCategory;   // attachment_category ('music', 'profile', 'goods', 'post')
+	    private String attachmentParent;       // attachment_parent (연결된 테이블 PK)
+	    private String attachmentOriginalName; // attachment_original_name
+	    private String attachmentStoredName; // attachment_stored_name
+	    private long attachmentSize;         // attachment_size
+	    private Timestamp attachmentTime;    // attachment_time
+	    
 }

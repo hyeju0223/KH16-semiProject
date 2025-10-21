@@ -14,10 +14,12 @@ public class MusicDto {
     private String musicTitleChosung;   // music_title_chosung
     private String musicArtist;         // music_artist
     private String musicArtistChosung;  // music_artist_chosung
+    private String musicTitleSearch;	// music_title_search
+    private String musicArtistSearch;	// music_artist_search
     private String musicAlbum;          // music_album
     private String musicUploader;       // music_uploader
-    private Integer musicPlay;          // music_play
-    private Integer musicLike;          // music_like
+    private int musicPlay;          // music_play
+    private int musicLike;          // music_like
     private Timestamp musicUtime;       // music_utime
 }
 
