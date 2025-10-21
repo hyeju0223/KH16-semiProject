@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.muzic.dto.GoodsCartDto;
 
 @Component
-public class GoodsCartMapper implements RowMapper<GoodsCartDto> {
+public class GoodsCartWithNameMapper implements RowMapper<GoodsCartDto> {
 
 	@Override
 	public GoodsCartDto mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -20,6 +20,9 @@ public class GoodsCartMapper implements RowMapper<GoodsCartDto> {
 		goodsCartDto.setCartQuantity(rs.getInt("cart_quantity"));
 		goodsCartDto.setCartTotal(rs.getInt("cart_total"));
 		goodsCartDto.setCartTime(rs.getTimestamp("cart_time"));
+		// 조인한 컬럼 - 상품 이름, 상품 포인트
+		goodsCartDto.setGoodsName(rs.getString("goods_name"));
+		goodsCartDto.setGoodsPoint(rs.getInt("goods_point"));
 		return goodsCartDto;
 	}
 

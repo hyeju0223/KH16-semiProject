@@ -37,7 +37,7 @@ public class GoodsDao {
 		return jdbcTemplate.query(sql, goodsMapper);
 	}
 
-	//단일 상품 조회
+	// 단일 상품 조회
 	public GoodsDto selectOne(int goodsNo) {
 		String sql = "select * from goods where goods_no = ?";
 		Object[] params = { goodsNo };
@@ -45,18 +45,24 @@ public class GoodsDao {
 		return list.isEmpty() ? null : list.get(0);
 	}
 
-	//카테고리별 상품 조회
+	// 카테고리별 상품 조회
 	public List<GoodsDto> selectByCategory(String goodsCategory) {
 		String sql = "select * from goods where goods_category=? order by goods_no asc";
 		Object[] params = { goodsCategory };
 		return jdbcTemplate.query(sql, goodsMapper, params);
 	}
 
-	//상품 재고 수량 업데이트
+	// 상품 재고 수량 업데이트
 	public int updateQuantity(int goodsNo, int newQuantity) {
 		String sql = "UPDATE goods SET goods_quantity = ? WHERE goods_no = ?";
 		Object[] params = { newQuantity, goodsNo };
 		return jdbcTemplate.update(sql, params);
+	}
+
+	public int selectPrice(int goodsNo) {
+		String sql = "select goods_point from goods where goods_no=?";
+		Object[] params = { goodsNo };
+		return jdbcTemplate.queryForObject(sql, params, Integer.class);
 	}
 
 }

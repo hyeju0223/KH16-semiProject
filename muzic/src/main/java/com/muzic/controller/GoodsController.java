@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.muzic.dao.GoodsCartDao;
 import com.muzic.dao.GoodsDao;
 import com.muzic.dao.GoodsOrderDao;
 import com.muzic.dto.GoodsDto;
@@ -24,8 +23,6 @@ import jakarta.servlet.http.HttpSession;
 public class GoodsController {
 	@Autowired
 	private GoodsOrderDao goodsOrderDao;
-	@Autowired
-	private GoodsCartDao goodsCartDao;
 	@Autowired
 	private GoodsDao goodsDao;
 
@@ -67,18 +64,18 @@ public class GoodsController {
 			throw new RuntimeException("재고 감소 실패");
 		}
 
-
 		// 3.주문 기록 추가
-		String loginId = (String) session.getAttribute("loginId");
+//		String loginId = (String) session.getAttribute("loginId");//세션 추후 구현
 		GoodsOrderDto goodsOrderDto = new GoodsOrderDto();
 		goodsOrderDto.setOrderGoods(goodsNo);
-		goodsOrderDto.setOrderMember(loginId);
+		goodsOrderDto.setOrderMember("testuser2");
 		goodsOrderDto.setOrderQuantity(goodsQuantity);
 		goodsOrderDto.setOrderPoint(goodsDto.getGoodsPoint() * goodsQuantity);
 		goodsOrderDao.insert(goodsOrderDto);
 
 		return "redirect:buyFinish";
 	}
+
 	@GetMapping("/buyFinish")
 	public String buyFinish() {
 		return "/WEB-INF/views/store/buyFinish.jsp";
