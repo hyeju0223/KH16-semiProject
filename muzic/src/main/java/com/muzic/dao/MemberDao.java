@@ -88,12 +88,6 @@ public class MemberDao {
         return list.isEmpty() ? null : list.get(0);
     }
 
-    // 로그인 (BCrypt 비교)
-    public boolean login(String memberId, String inputPw) {
-        MemberDto findDto = selectOne(memberId);
-        if (findDto == null) return false;
-        return passwordEncoder.matches(inputPw, findDto.getMemberPw());
-    }
 
     //  아이디 찾기 (닉네임 + 이메일)
     public MemberDto findIdByNicknameAndEmail(String nickname, String email) {
@@ -102,6 +96,8 @@ public class MemberDao {
         List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
         return list.isEmpty() ? null : list.get(0);
     }
+ 
+
 
     //  비밀번호 찾기 (아이디 + 닉네임 + 이메일)
     public MemberDto findPwByIdNicknameEmail(String memberId, String nickname, String email) {
@@ -122,5 +118,16 @@ public class MemberDao {
         String sql = "SELECT COUNT(*) FROM member WHERE member_nickname = ?";
         int count = jdbcTemplate.queryForObject(sql, int.class, nickname);
         return count > 0;
+    }
+    //비번변경
+ // updateMemberPw 메서드 (수정된 코드)
+    public boolean updateMemberPw(MemberDto memberDto) {
+        String sql = "UPDATE member SET member_pw = ? WHERE member_id = ?";
+
+        // 비밀번호 암호화 로직 추가
+        String encPw = passwordEncoder.encode(memberDto.getMemberPw());
+
+        Object[] params = { encPw, memberDto.getMemberId() };
+        return jdbcTemplate.update(sql, params) > 0;
     }
 }
