@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.muzic.dao.PostDao;
 import com.muzic.dto.PostDto;
+import com.muzic.error.NeedPermissionException;
 import com.muzic.error.TargetNotFoundException;
 
 import jakarta.servlet.http.HttpSession;
@@ -24,18 +25,48 @@ public class PostController {
 	@Autowired
 	private PostDao postDao;
 	
-	@RequestMapping("/list")
-	public String list(Model model, @RequestParam(required = false) String column,
-			@RequestParam(required = false) String keyword) {
+	@RequestMapping("/mbti/list")
+	public String mbtilist(Model model, @RequestParam(required = false) String column,
+			@RequestParam(required = false) String keyword, HttpSession session) {
 		
+		//세션에서 로그인 아이디 및 회원 mbti 불러오기
+	    String memberMbti = (String) session.getAttribute("memberMbti");
+	    
+		//column, keyword가 null이 아닐시 true
+		boolean isSearch = column != null && keyword != null;
+		
+		if(!isSearch) { 
+			//!isSearch가 false일 시 파라미터 전달 X
+			List<PostDto> postList = postDao.selectMbtiList(memberMbti);
+			// DB에서 조회한 게시글 목록을 postList에 담아 View(JSP 등)에 전달
+			model.addAttribute("postList", postList);
+
+		}
+		else {
+			//!isSearch 가 true일시 파라미터 전달
+			List<PostDto> postList = postDao.selectMbtiList(memberMbti, column, keyword);
+			// DB에서 조회한 게시글 목록을 postList에 담아 View(JSP 등)에 전달
+			model.addAttribute("postList", postList);
+		}
+		
+		return "/WEB-INF/views/post/mbti/list.jsp";
+	}
+	@RequestMapping("/free/list")
+	public String freelist(Model model, @RequestParam(required = false) String column,
+			@RequestParam(required = false) String keyword, HttpSession session) {
+		
+		//세션에서 로그인 아이디 및 회원 mbti 불러오기
+		String loginId = (String) session.getAttribute("loginId");
+	    
 		//column, keyword가 null이 아닐시 true
 		boolean isSearch = column != null && keyword != null;
 		
 		if(!isSearch) { 
 			//!isSearch가 false일 시 파라미터 전달 X
 			List<PostDto> postList = postDao.selectList();
-			// DB에서 조회한 게시글 목록을 postList에 담아 View(JSP 등)에 전달
+			// DB에서 조회한 게시글 목록을 postList에 담아 selectListView(JSP 등)에 전달
 			model.addAttribute("postList", postList);
+
 		}
 		else {
 			//!isSearch 가 true일시 파라미터 전달
@@ -44,7 +75,7 @@ public class PostController {
 			model.addAttribute("postList", postList);
 		}
 		
-		return "/WEB-INF/views/post/list.jsp";
+		return "/WEB-INF/views/post/free/list.jsp";
 	}
 	
 	//GetMapping으로 작성하기 폼 요청
@@ -64,10 +95,14 @@ public class PostController {
 		if(notice == null) {notice = "no";}
 		notice = notice.toLowerCase();// 데이터를 소문자로 통일하여 저장
 		
-		//나중에 인터셉터 넣기
-		//String loginLevel = (String) session.getAttribute("loginLevel");
-		
 		//관리자가 아닐시 권한 부족
+		//session에 있는 로그인 등급 꺼내서
+		String memberRole = (String) session.getAttribute("memberRole");
+		//만약 관리자가 아니고, 공지사항으로 등록한다면
+		if(memberRole.equals("관리자") == false && postDto.getPostNotice().equals("Y")) {
+			//권한 부족 에러 메세지 출력
+			throw new NeedPermissionException("공지글 작성 권한이 없습니다");
+		}
 		
 		//session에서 값 꺼내기
 		String loginId = (String) session.getAttribute("loginId");
@@ -80,10 +115,13 @@ public class PostController {
 	        postDto.setPostMbti(memberMbti);
 	    }
 		
+		int postNo = postDao.sequence();
+		postDto.setPostNo(postNo);
+		
 		//postDto를 데이터베이스에 삽입
 		postDao.insert(postDto);
 		
-		return "/WEB-INF/views/post/detail.jsp";
+		return "redirect:datail?postNo=?"+postNo;
 	}
 	
 	//상세는 단일
@@ -101,13 +139,7 @@ public class PostController {
 		//model에 일시적으로 데이터를 담아두고,
 		//addAttribute로 데이터를 컨트롤러에서 뷰로 이동시키는 메서드
 		model.addAttribute("postDto", postDto);
-		
-		//만약 작성자가 존재한다면
-//		if(postDto.getPostWriter() != null) {
-//			MemberDto memberDto = memberDao.selectOne(postDto);
-//			//작성자 정보 첨부
-//			model.addAttribute("memberDto", memberDto);
-//		}
+
 		
 		 return "/WEB-INF/views/post/detail.jsp";
 //		return "redirect:detail?postNo=" + postNo;
@@ -153,6 +185,11 @@ public class PostController {
 		//postNo를 데이터베이스에 삽입
 		postDao.delete(postNo);
 		
-		return "redirect:list";
+		if(postDto.getPostMbti() != null) {
+			return "redirect:mbti/list";
+		}
+		else {
+			return "redirect:free/list";			
+		}
 	}
 }

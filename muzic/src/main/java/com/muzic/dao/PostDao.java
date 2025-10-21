@@ -18,19 +18,26 @@ public class PostDao {
 	@Autowired
 	private PostMapper postMapper;
 	
-	//목록
+	public int sequence() {
+		String sql = "select post_seq.nextval from dual";
+		
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	
+	//목록(자유게시판)
 	public List<PostDto> selectList() {
 		
 		//모든 게시글의 정보를 조회하는 SQL 구문
 		//post_no를 기준으로 내림차순(desc) 정렬하여 최신 글이 먼저 보이도록 정렬
 		String sql = "select post_no, post_title, post_writer, post_mbti, post_content, "
-				+ "post_music, post_wtime, post_etime, post_like, post_read "
-				+ "from post order by post_no desc";
+	               + "post_music, post_wtime, post_etime, post_like, post_read "
+	               + "from post where post_mbti is null or post_mbti = '' "
+	               + "order by post_no desc";
 		
 		return jdbcTemplate.query(sql, postMapper);
 	}
-
-	//검색
+	
+	//검색(전체 검색 쿼리)
 	public List<PostDto> selectList(String column, String keyword) {
 		
 		//검색 가능한 칼럼 이름을 Set으로 정의
@@ -44,7 +51,7 @@ public class PostDao {
 		}
 		
 		//instr로 칼럼 안 키워드 검색 조회 SQL 구문
-		String sql = "select post_no, post_title, post_writer, post_mbti, post_content, \"\r\n"
+		String sql = "select post_no, post_title, post_writer, post_mbti, post_content,"
 				+"post_music, post_wtime, post_etime, post_like, post_read "
 				+ "from post where instr(#1, ?) > 0 "
 				+ "order by post_no desc";
@@ -59,6 +66,41 @@ public class PostDao {
 		// 과를 PostDto 객체 리스트로 매핑하여 반환합니다.
 		return jdbcTemplate.query(sql, postMapper, params);
 	}
+	
+	//목록(mbti개시판)
+	public List<PostDto> selectMbtiList(String memberMbti) {
+		String sql = "select post_no, post_title, post_writer, post_mbti, post_content, "
+				+ "post_music, post_wtime, post_etime, post_like, post_read "
+				+ "from post where post_mbti = ? "
+				+ "order by post_no desc";
+		
+		Object[] params = {memberMbti};
+		
+		return jdbcTemplate.query(sql, postMapper, params);
+	}
+	
+	//검색(mbti 게시판에서 검색)
+	public List<PostDto> selectMbtiList(String mbti, String column, String keyword) {
+	    
+	    Set<String> allowedColumns = Set.of("post_title", "post_writer", "post_music");
+	    
+	    // 유효성 검사
+	    if (!allowedColumns.contains(column)) {
+	        return List.of();
+	    }
+	    
+	    // SQL에 mbti 조건과 검색 조건을 모두 포함
+	    String sql = "select post_no, post_title, post_writer, post_mbti, post_content, "
+	            + "post_music, post_wtime, post_etime, post_like, post_read "
+	            + "from post where post_mbti = ? and instr(#1, ?) > 0 "
+	            + "order by post_no desc";
+	    
+	    sql = sql.replace("#1", column);
+	    Object[] params = { mbti, keyword };
+	    
+	    return jdbcTemplate.query(sql, postMapper, params);
+	}
+
 	
 	//등록
 	public void insert(PostDto postDto) {
@@ -110,4 +152,5 @@ public class PostDao {
 		
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+
 }
