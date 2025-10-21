@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <h1>STORE</h1>
-<a href="#"><button type="button">장바구니 보기</button></a>
+<a href="cart/list"><button type="button">장바구니 보기</button></a>
 <form method="get" action="list">
 	<select name="goodsCategory" onchange="this.form.submit()">
 		<option value="">전체</option>
@@ -33,13 +33,28 @@
 				<td><a href="detail?goodsNo=${goods.goodsNo}">${goods.goodsName}</a><br>
 					포인트 : ${goods.goodsPoint}<br></td>
 				<td>
-					<form action="buy?goodsNo=${goods.goodsNo}" method="post">
-						<input type="hidden" name="goodsNo" value="${goodsDto.goodsNo}">
-						<label>수량</label><input type="number" name="goodsQuantity"
-							value="1" min="1" max="${goodsDto.goodsQuantity}">
-						<button type="submit" onclick="return confirm('구매하시겠습니까?');">바로구매</button>
+					<form id="purchaseForm">
+						<!-- 수량 입력창 -->
+						<label>수량</label> <input type="number" name="goodsQuantity"
+							value="1" min="1" max="${goods.goodsQuantity}"
+							${goods.goodsQuantity == 0 ? "disabled" : ""}>
+
+						<!-- 바로구매 -->
+						<c:if test="${goods.goodsQuantity > 0}">
+							<button type="submit" formaction="buy?goodsNo=${goods.goodsNo}"
+								formmethod="post" onclick="return confirm('구매하시겠습니까?');">
+								바로구매</button>
+						</c:if>
+
+						<!-- 장바구니 담기 -->
+						<button type="submit" formaction="/store/cart/add"
+							formmethod="post" ${goods.goodsQuantity == 0 ? "disabled" : ""}>
+							${goods.goodsQuantity == 0 ? "품절" : "장바구니 담기"}</button>
+
+						<!-- 장바구니 담기용 hidden -->
+						<input type="hidden" name="goodsNo" value="${goods.goodsNo}">
+						<input type="hidden" name="memberId" value="testuser2">
 					</form>
-					<button type="button">장바구니에 추가</button>
 				</td>
 			</tr>
 		</c:forEach>
