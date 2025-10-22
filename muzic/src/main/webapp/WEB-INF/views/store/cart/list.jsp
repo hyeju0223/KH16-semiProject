@@ -115,12 +115,12 @@
 			}
 
 			$.ajax({
-				url : "update",
+				url : "/rest/store/cart/update",
 				type : "post",
 				data : {
 					memberId : "testuser2",
-					goodsNo : goodsNo,
-					quantity : quantity
+					cartGoods : goodsNo,
+					cartQuantity : quantity
 				},
 				success : function() {
 					location.reload();
@@ -186,7 +186,7 @@
 				return;
 
 			$.ajax({
-				url : "buyMultiple",
+				url : "/rest/store/cart/buyMultiple",
 				type : "post",
 				data : {
 					goodsNos : selected,
@@ -215,7 +215,7 @@
 				return;
 
 			$.ajax({
-				url : "deleteMultiple",
+				url : "/rest/store/cart/deleteMultiple",
 				type : "POST",
 				data : {
 					goodsNos : selected,
