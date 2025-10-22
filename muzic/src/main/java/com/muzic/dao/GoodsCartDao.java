@@ -27,13 +27,14 @@ public class GoodsCartDao {
 //		return jdbcTemplate.query(sql, goodsCartMapper, params);
 //	}
 
-	public List<GoodsCartDto> selectByMember(String cartMember) {
-		String sql = "SELECT gc.cart_no, gc.cart_member, gc.cart_goods, gc.cart_quantity, gc.cart_total, gc.cart_time, "
-				+ "g.goods_name, g.goods_point " + "FROM goods_cart gc " + "JOIN goods g ON gc.cart_goods = g.goods_no "
-				+ "WHERE gc.cart_member = ?";
-		Object[] params = { cartMember };
-		return jdbcTemplate.query(sql, goodsCartWithNameMapper, params);
-	}
+		public List<GoodsCartDto> selectByMember(String cartMember) {
+			String sql = "SELECT gc.cart_no, gc.cart_member, gc.cart_goods, gc.cart_quantity, gc.cart_total, gc.cart_time, "
+					+ "g.goods_name, g.goods_point, g.goods_quantity " // [추가] g.goods_quantity
+					+ "FROM goods_cart gc " + "JOIN goods g ON gc.cart_goods = g.goods_no "
+					+ "WHERE gc.cart_member = ?";
+			Object[] params = { cartMember };
+			return jdbcTemplate.query(sql, goodsCartWithNameMapper, params);
+		}
 
 	// 이미 담긴 상품 조회
 	public GoodsCartDto selectOne(String loginId, int goodsNo) {
@@ -67,11 +68,21 @@ public class GoodsCartDao {
 			jdbcTemplate.update(sql, params);
 		}
 	}
-	//장바구니 상품 삭제
+
+	// 장바구니 상품 삭제
 	public boolean delete(String cartMember, int cartGoods) {
 		String sql = "delete from goods_cart where cart_member=? and cart_goods=?";
-		Object[] params = {cartMember, cartGoods};
-		return jdbcTemplate.update(sql, params)>0;
+		Object[] params = { cartMember, cartGoods };
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+
+	// 장바구니 수량변경 (+해당 상품 총액도 같이)
+	public boolean updateQuantity(GoodsCartDto goodsCartDto) {
+		String sql = "update goods_cart set cart_quantity = ?, cart_total = ? where cart_member = ? and cart_goods=?";
+		Object[] params = { goodsCartDto.getCartQuantity(), goodsCartDto.getCartTotal(), goodsCartDto.getCartMember(),
+				goodsCartDto.getCartGoods() };
+
+		return jdbcTemplate.update(sql, params) > 0;
 	}
 
 }

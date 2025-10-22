@@ -21,4 +21,5 @@ public class GoodsCartDto {
 //	조인
 	private String goodsName;
 	private int goodsPoint;
+	private int goodsQuantity;
 }

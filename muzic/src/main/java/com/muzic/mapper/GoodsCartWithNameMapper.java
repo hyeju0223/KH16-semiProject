@@ -23,6 +23,7 @@ public class GoodsCartWithNameMapper implements RowMapper<GoodsCartDto> {
 		// 조인한 컬럼 - 상품 이름, 상품 포인트
 		goodsCartDto.setGoodsName(rs.getString("goods_name"));
 		goodsCartDto.setGoodsPoint(rs.getInt("goods_point"));
+		goodsCartDto.setGoodsQuantity(rs.getInt("goods_quantity"));
 		return goodsCartDto;
 	}
 

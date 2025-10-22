@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <h1>STORE</h1>
-<a href="cart/list"><button type="button">장바구니 보기</button></a>
+<a href="cart/list?memberId=testuser2"><button type="button">장바구니 보기</button></a>
 <form method="get" action="list">
 	<select name="goodsCategory" onchange="this.form.submit()">
 		<option value="">전체</option>

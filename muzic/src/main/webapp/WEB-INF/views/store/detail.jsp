@@ -51,13 +51,23 @@
 					</c:choose></td>
 			</tr>
 		</table>
-		<form action="buy?goodsNo=${goodsDto.goodsNo}" method="post">
+		<form method="post">
+			<%-- 1. 공통 파라미터 --%>
 			<input type="hidden" name="goodsNo" value="${goodsDto.goodsNo}">
-			<label>수량</label><input type="number" name="goodsQuantity" value="1"
-				min="1" max="${goodsDto.goodsQuantity}">
-			<button type="submit" onclick="return confirm('구매하시겠습니까?');">바로구매</button>
+			<input type="hidden" name="memberId" value="testuser2"> <%-- [추가] 장바구니(add)에서 필요 (세션 구현 전 임시) --%>
+			
+			<%-- 2. 수량 --%>
+			<label>수량</label>
+            <input type="number" name="goodsQuantity" value="1" min="1" max="${goodsDto.goodsQuantity}" ${goodsDto.goodsQuantity == 0 ? 'disabled' : ''}>
+			
+			<%-- 3. 바로구매 버튼 --%>
+			<%-- 'buy'는 현재 /store/detail 기준 상대경로 "buy"로 보냅니다. --%>
+			<button type="submit" formaction="buy" onclick="return confirm('구매하시겠습니까?');" ${goodsDto.goodsQuantity == 0 ? 'disabled' : ''}>바로구매</button>
+            
+            <%-- 4. 장바구니 버튼 --%>
+			<%-- [수정] '장바구니'는 /store/cart/add로 보내야 하므로 상대경로 "../cart/add"를 사용합니다. --%>
+			<button type="submit" formaction="/store/cart/add" onclick="return confirm('장바구니에 추가하시겠습니까?');" ${goodsDto.goodsQuantity == 0 ? 'disabled' : ''}>장바구니에 추가</button>
 		</form>
-		<button type="button">장바구니에 추가</button>
 		<br>
 		<a href="list"><button type="button">목록</button></a>
 	</c:otherwise>
