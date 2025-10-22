@@ -24,13 +24,11 @@ public class AttachmentService {
 	private File home = new File(System.getProperty("user.home")); // 사용자의 기본폴더 // 실제 파일이 아니라 경로를 보관하고 있는 인스턴스(파일처리 가능 인스턴스)
 	
 	// member(profile)에서 이미지 저장할 때
-	@Transactional
 	public void save(MultipartFile attach, String memberId, String category) throws IOException {
 	    saveInternal(attach, memberId, category);
 	}
 	
 	//그 외 나머지에서 이미지 저장할 때(parentNo에 pk 넣어주시면 됩니다)
-	@Transactional
 	public void save(MultipartFile attach, int parentNo, String category) throws IOException {
 		saveInternal(attach, String.valueOf(parentNo), category);
 	}

@@ -29,12 +29,12 @@ public class MusicDao {
 	public boolean insert(MusicDto musicDto) {
 		String sql = "insert into music("
 				+ "music_no, music_title, music_title_chosung, music_artist, music_artist_chosung, "
-				+ "music_title_search, music_artist_search, music_album, music_uploader) "
+				+ "music_title_search, music_artist_search, music_album, music_uploader, music_status) "
 				+ "values("
-				+ "?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Object[] params = { musicDto.getMusicNo(), musicDto.getMusicTitle(), musicDto.getMusicTitleChosung(), 
 				musicDto.getMusicArtist(), musicDto.getMusicArtistChosung(), musicDto.getMusicTitleSearch(), 
-				musicDto.getMusicArtistSearch(), musicDto.getMusicAlbum(), musicDto.getMusicUploader()
+				musicDto.getMusicArtistSearch(), musicDto.getMusicAlbum(), musicDto.getMusicUploader(), musicDto.getMusicStatus()
 		};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
@@ -82,4 +82,10 @@ public class MusicDao {
         
         return totalUpdatedRows;
     }
+	
+	public boolean approveMusic(int musicNo) {
+		String sql = "update music set music_status = 'APPROVED' where music_no = ?";
+		Object[] params = { musicNo };
+		return jdbcTemplate.update(sql,params) > 0;
+	}
 }

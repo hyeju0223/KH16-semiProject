@@ -5,6 +5,16 @@
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
+<!-- loginMemberId라는 이름으로 세션에 저장된 값을 출력 -->
+<p>현재 로그인된 ID: ${sessionScope.loginMemberId}</p>
+
+<!-- (선택) sessionScope를 생략하고 바로 사용 가능 -->
+<p>현재 로그인된 ID: ${loginMemberId}</p>
+
+<!-- 예시: MusicController에서 세션에 저장했던 닉네임과 역할 출력 -->
+<p>회원 닉네임: ${loginMemberNickName}</p>
+<p>회원 역할: ${loginMemberRole}</p>
+
 <div class="container w-600">
 	<div class="cell center">
 		<h1>음원 등록 페이지</h1>

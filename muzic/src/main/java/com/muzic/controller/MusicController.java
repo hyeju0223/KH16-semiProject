@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.muzic.dao.MemberDao;
-import com.muzic.dto.MemberDto;
+import com.muzic.dao.MusicGenreDao;
 import com.muzic.dto.MusicDto;
-import com.muzic.mapper.AttachmentMapper;
 import com.muzic.service.MusicService;
 
 import jakarta.servlet.http.HttpSession;
@@ -22,18 +21,15 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/music")
 public class MusicController {
-
-    private final AttachmentMapper attachmentMapper;
 	
 	@Autowired
 	private MemberDao memberDao;
 	
 	@Autowired
 	private MusicService musicService;
-
-    MusicController(AttachmentMapper attachmentMapper) {
-        this.attachmentMapper = attachmentMapper;
-    }
+	
+	@Autowired
+	private MusicGenreDao musicGenreDao;
 	
 	@GetMapping("/add")
 	public String add() {
@@ -44,15 +40,17 @@ public class MusicController {
 	public String add(@ModelAttribute MusicDto musicDto, List<MultipartFile> attaches, List<String> musicGenres, HttpSession session) 
 			throws IOException {
 		// 정지회원 및 비회원은 인터셉터로 차단
-		String loginMemberId = (String) session.getAttribute("loginMemberId");
 		String loginMemberRole = (String) session.getAttribute("loginMemberRole");
+		String loginMemberNickname = (String) session.getAttribute("loginMemberNickname");
 		
-		MemberDto memberDto = memberDao.selectByMemberId(loginMemberId);
-		String memberNickname = memberDto.getMemberNickname();
+		List<String> genreList = musicGenreDao.selectAllGenres();
 		
-		musicService.registerMusic(musicDto, attaches, musicGenres, memberNickname);
+		
+		musicService.registerMusic(musicDto, attaches, musicGenres, loginMemberNickname, loginMemberRole);
 		
 		return "redirect:./list";
 	}
+	
+//	@PostMapping("/")
 	
 }
