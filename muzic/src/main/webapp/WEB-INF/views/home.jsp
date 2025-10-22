@@ -20,4 +20,4 @@
   <p style="color:green;">✅ 세션이 정상적으로 유지되고 있습니다.</p>
 </c:if>
 
-<a href="/mypage/profile?memberId=${session.loginMemberId}">마이페이지</a>
+<a href="/mypage/profile">마이페이지</a>

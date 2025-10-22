@@ -46,7 +46,31 @@ public class CalendarDao {
 		return jdbcTemplate.query(sql, calendarMapper, params);
 	}
 	
-	//수정
+	//단일조회
+	public CalendarDto selectOne(int calendarNo) {
+		String sql = "select * from calendar where calendar_no=?";
+		Object[] params = {calendarNo};
+		List<CalendarDto> list = jdbcTemplate.query(sql, calendarMapper, params);
+		return list.isEmpty() ? null : list.get(0);
+		
+	}
+
+	//일정 삭제
+	public boolean delete(int calendarNo) {
+		String sql = "delete from calendar where calendar_no=?";
+		Object[] params = {calendarNo};
+		return jdbcTemplate.update(sql,params) > 0;
+	}
 	
-	//삭제
+	//수정
+	public boolean update(int calendarNo, String calendarMember) {
+		String sql = "update calendar set where calendar_no=?";
+		Object[] params = {
+				
+		};
+		return jdbcTemplate.update(sql,params) > 0;
+		
+	}
+	
+
 }

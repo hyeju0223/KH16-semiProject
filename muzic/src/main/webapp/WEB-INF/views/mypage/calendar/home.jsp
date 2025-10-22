@@ -5,5 +5,5 @@
     
     <h1>달력</h1>
     
-    <a href="add?memberId=${calendarDto.calendarMember}">일정 등록하기</a>
+    <a href="add">일정 등록하기</a>
     

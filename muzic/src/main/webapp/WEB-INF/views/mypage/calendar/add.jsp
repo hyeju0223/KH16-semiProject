@@ -35,7 +35,7 @@
         </div>
         <form action="add" method="post">
             일정<input type="text" class="calendar" name="calendarDay" /><br>
-            <input type="hidden" name="calendarMember" value="${param.memberId}">
+            <input type="hidden" name="calendarMember" value="${sessionScope.loginMemberId}">
             제목<input type="text" name="calendarScheduleTitle"><br>
             내용<input type="text" name="calendarScheduleContent"> <br>
             <button type="submit">등록</button>

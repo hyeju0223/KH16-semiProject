@@ -11,5 +11,5 @@
     새 비밀번호<input type="password" name="changePassword1"><br><br>
     새 비밀번호 확인<input type="password" name="changePassword2"><br><br>
     <button type="submit">확인</button><br><br>
-    <a href="/mypage/profile?memberId=${memberDto.memberId}">취소</a>
+    <a href="/mypage/profile">취소</a>
     </form>

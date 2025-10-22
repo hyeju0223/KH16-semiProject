@@ -17,6 +17,8 @@ import com.muzic.dao.MemberDao;
 import com.muzic.dto.CalendarDto;
 import com.muzic.dto.MemberDto;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @CrossOrigin
 @RequestMapping("/mypage/calendar")
@@ -28,23 +30,23 @@ public class MypageCalendarController {
 	private CalendarDao calendarDao;
 	
 	@GetMapping("/")
-	public String home(@RequestParam String memberId, Model model) {
+	public String home(HttpSession session, Model model) {
 		
-		//memberId를 찾고
-		MemberDto findDto = memberDao.selectByMemberId(memberId);
+		//세션으로 회원 찾기
+		String loginId = (String) session.getAttribute("loginMemberId");
+		MemberDto findDto = memberDao.selectByMemberId(loginId);
 		
 		//해당 회원의 캘린더를 보여주기
 		List<CalendarDto> calendarList = calendarDao.selectByMemberId(findDto.getMemberId());
 		
 		//캘린더 정보 모델로 전송
 		model.addAttribute("calendarList",calendarList);
-
 		
 		return "/WEB-INF/views/mypage/calendar/home.jsp";
 	}
 	
 	@GetMapping("/add")
-	public String add(@RequestParam String memberId) {
+	public String add(HttpSession session) {
 		
 		//예외 처리 진행
 
@@ -65,4 +67,24 @@ public class MypageCalendarController {
 		
 		return "redirect:/";
 	}	
+	
+	@GetMapping("/detail")
+	public String detail(@RequestParam int calendarNo, Model model) {
+		
+		//CalendarDto정보 가져오기
+		CalendarDto calendarDto = calendarDao.selectOne(calendarNo);
+		System.out.println(calendarDto);
+		model.addAttribute("calendarDto",calendarDto);
+		
+		return "/WEB-INF/views/mypage/calendar/detail.jsp";
+		
+	}
+	
+	@GetMapping("/delete")
+	public String delete(@RequestParam int calendarNo) {
+		
+		calendarDao.delete(calendarNo);
+		
+		return "redirect:/";
+	}
 }

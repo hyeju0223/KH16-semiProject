@@ -19,8 +19,8 @@
 ${memberDto.memberAddress1} ${memberDto.memberAddress2}<br>
 <hr>
 <div>프로필 수정</div>
-<div><a href="password?memberId=${memberDto.memberId}">비밀번호 변경 ></a></div>
-<div><a href="calendar/?memberId=${memberDto.memberId}">나의 일정 ></a></div>
+<div><a href="password">비밀번호 변경 ></a></div>
+<div><a href="calendar/">나의 일정 ></a></div>
 <hr>
 <div>달력1 / 달력 2</div>
 <hr>
@@ -47,7 +47,7 @@ ${memberDto.memberAddress1} ${memberDto.memberAddress2}<br>
 </table>
 
 
-<a href="withDraw?memberId=${memberDto.memberId}">탈퇴하기 ></a>
+<a href="withDraw">탈퇴하기 ></a>
 
 </body>
 </html>
