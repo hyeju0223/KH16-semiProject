@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 //화면 표시 로직을 위한 분리
-public class CommentsVo {
+public class CommentsVO {
 
 	private int commentsNo; //번호
 	private int commentsPost; //어느 게시글 댓글인지
