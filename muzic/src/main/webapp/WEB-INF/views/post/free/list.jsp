@@ -44,14 +44,7 @@
 
 <div class="center w-1000">
 	<div class="cell center">
-		<c:choose>
-    		<c:when test="${boardType eq 'mbti'}">
-    	    	<!-- MBTI 게시판용 HTML -->
-    		</c:when>
-    		<c:otherwise>
-        		<!-- 자유 게시판용 HTML -->
-    		</c:otherwise>
-		</c:choose>
+		<h2>자유게시판</h2>
 	</div>
 	
 	<div class="cell center">

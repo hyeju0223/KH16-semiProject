@@ -30,7 +30,7 @@ public class PostController {
 			@RequestParam(required = false) String keyword, HttpSession session) {
 		
 		//세션에서 로그인 아이디 및 회원 mbti 불러오기
-	    String memberMbti = (String) session.getAttribute("memberMbti");
+	    String memberMbti = (String) session.getAttribute("loginMemberId");
 	    
 		//column, keyword가 null이 아닐시 true
 		boolean isSearch = column != null && keyword != null;
@@ -56,7 +56,7 @@ public class PostController {
 			@RequestParam(required = false) String keyword, HttpSession session) {
 		
 		//세션에서 로그인 아이디 및 회원 mbti 불러오기
-		String loginId = (String) session.getAttribute("loginId");
+		String loginId = (String) session.getAttribute("loginMemberId");
 	    
 		//column, keyword가 null이 아닐시 true
 		boolean isSearch = column != null && keyword != null;
@@ -105,7 +105,7 @@ public class PostController {
 		}
 		
 		//session에서 값 꺼내기
-		String loginId = (String) session.getAttribute("loginId");
+		String loginId = (String) session.getAttribute("loginMemberId");
 		String memberMbti = (String) session.getAttribute("memberMbti");
 		
 		//만약 로그인 session에 담긴 정보가 null이 아니라면
