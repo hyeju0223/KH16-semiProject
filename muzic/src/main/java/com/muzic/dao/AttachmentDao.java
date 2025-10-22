@@ -25,14 +25,15 @@ public class AttachmentDao {
 	
 	public boolean insert(AttachmentDto attachmentDto) {
 		String sql = "insert into attachment("
-		        + "attachment_no, attachment_type, attachment_category, attachment_parent, "
-		        + "attachment_original_name, attachment_stored_name, attachment_size"
+		        + "attachment_no, attachment_type, attachment_path, attachment_category, "
+		        + "attachment_parent, attachment_original_name, attachment_stored_name, attachment_size"
 		        + ") values ("
-		        + " ?, ?, ?, ?, ?, ?, ?)";
-		Object[] params = { attachmentDto.getAttachmentNo(), attachmentDto.getAttachmentType(), 
-				attachmentDto.getAttachmentCategory(), attachmentDto.getAttachmentParent(), 
-				attachmentDto.getAttachmentOriginalName(), attachmentDto.getAttachmentStoredName(), 
-				attachmentDto.getAttachmentSize()
+		        + " ?, ?, ?, ?, ?, ?, ?, ?)";
+		Object[] params = { 
+				attachmentDto.getAttachmentNo(), attachmentDto.getAttachmentType(),
+				attachmentDto.getAttachmentPath(), attachmentDto.getAttachmentCategory(), 
+				attachmentDto.getAttachmentParent(), attachmentDto.getAttachmentOriginalName(), 
+				attachmentDto.getAttachmentStoredName(), attachmentDto.getAttachmentSize()
 			};
 		return jdbcTemplate.update(sql, params) > 0;
 	}

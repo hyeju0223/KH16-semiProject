@@ -125,8 +125,8 @@ public class MemberController {
       
         session.setAttribute("loginMemberRole", findDto.getMemberRole());
         
-        session.setAttribute("loginMemberNickName", findDto.getMemberNickname());
-
+        session.setAttribute("loginMemberNickname", findDto.getMemberNickname());
+        
         return "redirect:/music/add";
     }
 

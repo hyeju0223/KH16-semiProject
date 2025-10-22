@@ -36,32 +36,31 @@
 		<div class="cell">
 			<label>장르<span class="red">*</span></label>
 		</div>
-		<div class="cell checkbox-group">
-			<label><input type="checkbox" name="musicGenre" value="신나는">신나는</label>
-			<label><input type="checkbox" name="musicGenre" value="슬픈">슬픈</label>
-			<label><input type="checkbox" name="musicGenre" value="감성적인">감성적인</label>
-			<label><input type="checkbox" name="musicGenre" value="힙한">힙한</label>
-			<label><input type="checkbox" name="musicGenre" value="잔잔한">잔잔한</label>
-			<label><input type="checkbox" name="musicGenre" value="여유로운">여유로운</label>
-			<label><input type="checkbox" name="musicGenre"
-				value="분위기 있는">분위기 있는</label> <label><input type="checkbox"
-				name="musicGenre" value="차분한">차분한</label> <label><input
-				type="checkbox" name="musicGenre" value="몽환적인">몽환적인</label> <label><input
-				type="checkbox" name="musicGenre" value="중독성 있는">중독성 있는</label> <label><input
-				type="checkbox" name="musicGenre" value="설레는">설레는</label> <label><input
-				type="checkbox" name="musicGenre" value="강렬한">강렬한</label> <label><input
-				type="checkbox" name="musicGenre" value="어두운">어두운</label> <label><input
-				type="checkbox" name="musicGenre" value="따뜻한">따뜻한</label> <label><input
-				type="checkbox" name="musicGenre" value="청량한">청량한</label> <label><input
-				type="checkbox" name="musicGenre" value="센치한">센치한</label>
+		<div class="cell checkbox-group" >
+			<label><input type="checkbox" name="musicGenreSet" value="신나는">신나는</label>
+			<label><input type="checkbox" name="musicGenreSet" value="슬픈">슬픈</label>
+			<label><input type="checkbox" name="musicGenreSet" value="감성적인">감성적인</label>
+			<label><input type="checkbox" name="musicGenreSet" value="힙한">힙한</label>
+			<label><input type="checkbox" name="musicGenreSet" value="잔잔한">잔잔한</label>
+			<label><input type="checkbox" name="musicGenreSet" value="여유로운">여유로운</label>
+			<label><input type="checkbox" name="musicGenreSet" value="분위기 있는">분위기 있는</label> 
+			<label><input type="checkbox" name="musicGenreSet" value="차분한">차분한</label> 
+			<label><input	type="checkbox" name="musicGenreSet" value="몽환적인">몽환적인</label> 
+			<label><input	type="checkbox" name="musicGenreSet" value="중독성 있는">중독성 있는</label> 
+			<label><input	type="checkbox" name="musicGenreSet" value="설레는">설레는</label> 
+			<label><input	type="checkbox" name="musicGenreSet" value="강렬한">강렬한</label>
+			<label><input	type="checkbox" name="musicGenreSet" value="어두운">어두운</label> 
+			<label><input	type="checkbox" name="musicGenreSet" value="따뜻한">따뜻한</label> 
+			<label><input	type="checkbox" name="musicGenreSet" value="청량한">청량한</label> 
+			<label><input	type="checkbox" name="musicGenreSet" value="센치한">센치한</label>
 		</div>
 		<div class="cell">
-		<label>프로필 이미지</label>
-			<input type="file" name="attach" class="field w-100" accept="image/*">
+			<label>프로필 이미지</label> <input type="file" name="coverImage"
+				class="field w-100" accept="image/*">
 		</div>
 		<div class="cell">
-		<label>음악 파일</label>
-			<input type="file" name="attach" class="field w-100" accept="audio/*">
+			<label>음악 파일</label> <input type="file" name="musicFile"
+				class="field w-100" accept="audio/*">
 		</div>
 		<button type="submit" class="btn btn-positive w-100">
 			<i class="fa-solid fa-music"></i><span>등록하기</span>

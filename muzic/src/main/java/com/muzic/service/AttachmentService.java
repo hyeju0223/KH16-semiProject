@@ -24,13 +24,13 @@ public class AttachmentService {
 	private File home = new File(System.getProperty("user.home")); // 사용자의 기본폴더 // 실제 파일이 아니라 경로를 보관하고 있는 인스턴스(파일처리 가능 인스턴스)
 	
 	// member(profile)에서 이미지 저장할 때
-	public void save(MultipartFile attach, String memberId, String category) throws IOException {
-	    saveInternal(attach, memberId, category);
+	public void save(MultipartFile attach, String category, String memberId) throws IOException {
+	    saveInternal(attach, category, memberId);
 	}
 	
 	//그 외 나머지에서 이미지 저장할 때(parentNo에 pk 넣어주시면 됩니다)
-	public void save(MultipartFile attach, int parentNo, String category) throws IOException {
-		saveInternal(attach, String.valueOf(parentNo), category);
+	public void save(MultipartFile attach, String category, int parentNo) throws IOException {
+		saveInternal(attach, category, String.valueOf(parentNo));
 	}
 	
 //	Transactional의 역할 (DB 작업만 롤백)
@@ -44,22 +44,25 @@ public class AttachmentService {
 	    if (!categoryDir.exists()) { // 업로드할 폴더가 존재하지 않는다면(경로가 존재하지 않는다면)
 	    	categoryDir.mkdirs(); // 폴더가 없으면 생성
 	    }
-
-	    // 저장할 파일 이름(중복 방지)
+	    
+	    String relativePath = "muzic_uploads/" + category; // 상대경로
+	   
 	    String originalName = attach.getOriginalFilename();
+	    // 저장할 파일 이름(중복 방지)
 	    String storedName = category + "_" + attachmentNo + "_" + FileUtils.getCleanFileName(originalName); // 카테고리_attachmentNo_원본이름
 
 	    File target = new File(categoryDir, storedName);
 	    
 	    try {
 	        // 1. 실제 파일 저장 시도
-	        attach.transferTo(target);
+	    	attach.transferTo(target);
 
 	        // 2. AttachmentDto 생성 후 DB 저장
-	        AttachmentDto attachmentDto = AttachmentDto.builder()
+	        AttachmentDto attachmentDto = 
+	        		AttachmentDto.builder()
 		            .attachmentNo(attachmentNo)
 		            .attachmentType(attach.getContentType())
-		            .attachmentPath(String.valueOf(categoryDir))
+		            .attachmentPath(relativePath)
 		            .attachmentCategory(category)
 		            .attachmentParent(attachmentParent)
 		            .attachmentOriginalName(originalName)
@@ -71,7 +74,7 @@ public class AttachmentService {
 	        
 	    } catch (Exception e) {
 	        //DB 오류 (런타임 예외) 또는 transferTo 오류 발생 시
-	        
+	 
 	        // 디스크에 저장된 파일만 수동으로 삭제하여 고아 파일을 방지
 	        if (target.exists()) {
 	            target.delete(); // 디스크에 남아있는 파일 삭제
