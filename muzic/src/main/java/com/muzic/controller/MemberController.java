@@ -117,13 +117,13 @@ public class MemberController {
         memberLoginDao.resetFailCount(memberDto.getMemberId());
 
         // 세션 저장
-        session.setAttribute("loginId", findDto.getMemberId());
-        session.setAttribute("loginName", findDto.getMemberName());
-        session.setAttribute("loginEmail", findDto.getMemberEmail());
-        session.setAttribute("loginMbti", findDto.getMemberMbti());
-        session.setAttribute("loginBirth", findDto.getMemberBirth());
-        session.setAttribute("loginPoint", findDto.getMemberPoint());
-        session.setAttribute("loginRole", findDto.getMemberRole());
+        session.setAttribute("loginMemberId", findDto.getMemberId());
+     
+      
+        session.setAttribute("loginMemberMbti", findDto.getMemberMbti());
+    
+      
+        session.setAttribute("loginMemberRole", findDto.getMemberRole());
 
         return "redirect:/";
     }

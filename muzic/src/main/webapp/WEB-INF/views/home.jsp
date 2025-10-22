@@ -6,20 +6,16 @@
 
 <table border="1" cellpadding="8" cellspacing="0">
   <tr><th>세션 속성명</th><th>값</th></tr>
-  <tr><td>loginId</td><td>${sessionScope.loginId}</td></tr>
-  <tr><td>loginName</td><td>${sessionScope.loginName}</td></tr>
-  <tr><td>loginEmail</td><td>${sessionScope.loginEmail}</td></tr>
-  <tr><td>loginMbti</td><td>${sessionScope.loginMbti}</td></tr>
-  <tr><td>loginBirth</td><td>${sessionScope.loginBirth}</td></tr>
-  <tr><td>loginPoint</td><td>${sessionScope.loginPoint}</td></tr>
-  <tr><td>loginRole</td><td>${sessionScope.loginRole}</td></tr>
+  <tr><td>loginMemberId</td><td>${sessionScope.loginMemberId}</td></tr>
+  <tr><td>loginMemberMbti</td><td>${sessionScope.loginMemberMbti}</td></tr>
+  <tr><td>loginMemberRole</td><td>${sessionScope.loginMemberRole}</td></tr>
 </table>
 
 <br>
 
-<c:if test="${empty sessionScope.loginId}">
+<c:if test="${empty sessionScope.loginMemberId}">
   <p style="color:red;">❌ 현재 로그인된 세션이 없습니다.</p>
 </c:if>
-<c:if test="${not empty sessionScope.loginId}">
+<c:if test="${not empty sessionScope.loginMemberId}">
   <p style="color:green;">✅ 세션이 정상적으로 유지되고 있습니다.</p>
 </c:if>
