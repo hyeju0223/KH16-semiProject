@@ -39,13 +39,11 @@ public class CalendarDao {
 	}
 
 	//조회
-	public CalendarDto selectByMemberId(String member) {
+	public List<CalendarDto> selectByMemberId(String member) {
 		String sql = "select * from calendar where calendar_member = ?";
 		Object[] params = {member};
-		
-		List<CalendarDto> list = jdbcTemplate.query(sql, calendarMapper, params); 
-		
-		return list.isEmpty() ? null : list.get(0);
+
+		return jdbcTemplate.query(sql, calendarMapper, params);
 	}
 	
 	//수정

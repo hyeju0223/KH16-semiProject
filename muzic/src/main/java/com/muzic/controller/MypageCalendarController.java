@@ -1,5 +1,7 @@
 package com.muzic.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,10 +34,10 @@ public class MypageCalendarController {
 		MemberDto findDto = memberDao.selectByMemberId(memberId);
 		
 		//해당 회원의 캘린더를 보여주기
-		CalendarDto calendarDto = calendarDao.selectByMemberId(findDto.getMemberId());
+		List<CalendarDto> calendarList = calendarDao.selectByMemberId(findDto.getMemberId());
 		
 		//캘린더 정보 모델로 전송
-		model.addAttribute("calendarDto",calendarDto);
+		model.addAttribute("calendarList",calendarList);
 
 		
 		return "/WEB-INF/views/mypage/calendar/home.jsp";
