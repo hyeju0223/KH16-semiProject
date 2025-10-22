@@ -21,5 +21,7 @@ public class MusicDto {
     private int musicPlay;          // music_play
     private int musicLike;          // music_like
     private Timestamp musicUtime;       // music_utime
+    private Timestamp musicEtime;		// music_etime
+    private String musicStatus;		//music_status
 }
 

@@ -23,9 +23,14 @@ public class MusicService {
     private AttachmentService attachmentService;
 
     @Transactional
-    public int registerMusic(MusicDto musicDto, List<MultipartFile> attaches, List<String> musicGenres, String memberNickname) 
+    public int registerMusic(MusicDto musicDto, List<MultipartFile> attaches, List<String> musicGenres, 
+    		String memberNickname, String memberRole) 
     		throws IOException { // int 반환 이유는 등록 후 혹시 방금 음원 등록한 글로 갈 수 있으니 등록한 음원 번호 반환
         
+    	String musicStatus;
+    	
+    	musicStatus = memberRole.equals("관리자") ? "APPROVED" : "PENDING"; 
+    		
         int musicNo = musicDao.sequence();
         
         String titleChosung = HangulChosungUtils.getChosung(musicDto.getMusicTitle());
@@ -39,6 +44,7 @@ public class MusicService {
         musicDto.setMusicArtistChosung(artistChosung);
         musicDto.setMusicArtistSearch(artistSearch);
         musicDto.setMusicUploader(memberNickname);
+        musicDto.setMusicStatus(musicStatus);
         musicDao.insert(musicDto); 
         
         // 프로필 이미지 저장 (첫 번째 파일)
