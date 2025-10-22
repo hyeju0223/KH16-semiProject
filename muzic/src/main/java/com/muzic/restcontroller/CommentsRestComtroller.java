@@ -17,7 +17,7 @@ import com.muzic.dto.CommentsDto;
 import com.muzic.dto.PostDto;
 import com.muzic.error.NeedPermissionException;
 import com.muzic.error.TargetNotFoundException;
-import com.muzic.vo.CommentsVo;
+import com.muzic.vo.CommentsVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -33,7 +33,7 @@ public class CommentsRestComtroller {
 	private PostDao postDao;
 	
 	@PostMapping("/list")
-	public List<CommentsVo> list(@RequestParam int commentsPost, HttpSession session) {
+	public List<CommentsVO> list(@RequestParam int commentsPost, HttpSession session) {
 		String loginId = (String)session.getAttribute("loginMemberId");
 		
 		PostDto postDto = postDao.selectOne(commentsPost);
@@ -41,7 +41,7 @@ public class CommentsRestComtroller {
 		if(postDto == null) throw new TargetNotFoundException("존재하지 않는 글 정보 입니다");
 		
 		List<CommentsDto> list = commentsDao.selectList(commentsPost);
-		List<CommentsVo> result = new ArrayList<>(); //빈 목록 생성
+		List<CommentsVO> result = new ArrayList<>(); //빈 목록 생성
 		
 		//boolean ownwe, writer;
 		
@@ -51,9 +51,9 @@ public class CommentsRestComtroller {
 					&& loginId.equals(commentsDto.getCommentsWriter());
 			boolean writer = postDto.getPostWriter() != null
 					&& commentsDto.getCommentsWriter() != null
-					&& postDto.getPostWriter().equals(postDto.getPostWriter());
+					&& postDto.getPostWriter().equals(commentsDto.getCommentsWriter());
 			
-			result.add(CommentsVo.builder()
+			result.add(CommentsVO.builder()
 					.commentsNo(commentsDto.getCommentsNo())
 					.commentsPost(commentsDto.getCommentsPost())
 					.commentsWriter(commentsDto.getCommentsWriter())

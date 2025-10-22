@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/post")
+//컨트롤러에 일 많이 시키지 말기..........
 public class PostController {
 
 	@Autowired
