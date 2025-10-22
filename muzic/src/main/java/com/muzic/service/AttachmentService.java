@@ -25,18 +25,20 @@ public class AttachmentService {
 	
 	// member(profile)에서 이미지 저장할 때
 	@Transactional
-	public int save(MultipartFile attach, String memberId, String category) throws IOException {
-	    return saveInternal(attach, memberId, category);
+	public void save(MultipartFile attach, String memberId, String category) throws IOException {
+	    saveInternal(attach, memberId, category);
 	}
 	
 	//그 외 나머지에서 이미지 저장할 때(parentNo에 pk 넣어주시면 됩니다)
 	@Transactional
-	public int save(MultipartFile attach, int parentNo, String category) throws IOException {
-		return saveInternal(attach, String.valueOf(parentNo), category);
+	public void save(MultipartFile attach, int parentNo, String category) throws IOException {
+		saveInternal(attach, String.valueOf(parentNo), category);
 	}
 	
+//	Transactional의 역할 (DB 작업만 롤백)
+//	try-catch 사용 이유는 파일 삭제 및 생성은 DB작업이 아니기에 따로 예외로 처리가 필요
 	@Transactional
-	public int saveInternal(MultipartFile attach, String category, String attachmentParent) throws IllegalStateException, IOException {
+	public void saveInternal(MultipartFile attach, String category, String attachmentParent) throws IllegalStateException, IOException {
 		
 	    int attachmentNo = attachmentDao.sequence(); // 등록될 pk 조회
 	    
@@ -68,13 +70,11 @@ public class AttachmentService {
 		            .build();
 
 	        attachmentDao.insert(attachmentDto);
-
-	        return attachmentNo; // 성공 시 PK 반환
-
+	        
 	    } catch (Exception e) {
 	        //DB 오류 (런타임 예외) 또는 transferTo 오류 발생 시
 	        
-	        // 디스크에 저장된 파일만 수동으로 삭제하여 고아 파일을 방지합니다.
+	        // 디스크에 저장된 파일만 수동으로 삭제하여 고아 파일을 방지
 	        if (target.exists()) {
 	            target.delete(); // 디스크에 남아있는 파일 삭제
 	        }
@@ -86,10 +86,11 @@ public class AttachmentService {
 	
 	public ByteArrayResource load(int attachmentNo) throws IOException {
 		
-		// 파일 찾기
+		// DB에서 파일 정보 찾기
 		AttachmentDto attachmentDto = attachmentDao.selectOne(attachmentNo);
 		if (attachmentDto == null) throw new TargetNotFoundException("존재하지 않는 파일");
 		
+		//DB정보에 있으나 실제 파일이 없는 경우
 		File target = new File(attachmentDto.getAttachmentPath(), attachmentDto.getAttachmentStoredName());
 		if(target.isFile() == false) throw new TargetNotFoundException("존재하지 않는 파일");
 		

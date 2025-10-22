@@ -1,8 +1,11 @@
 package com.muzic.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,15 +21,20 @@ public class MusicDao {
 	@Autowired
 	private MusicMapper musicMapper;
 	
+	public int sequence() {
+		String sql = "select music_seq.nextval from dual";
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	
 	public boolean insert(MusicDto musicDto) {
 		String sql = "insert into music("
 				+ "music_no, music_title, music_title_chosung, music_artist, music_artist_chosung, "
 				+ "music_title_search, music_artist_search, music_album, music_uploader) "
 				+ "values("
-				+ "music_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?)";
-		Object[] params = { musicDto.getMusicTitle(), musicDto.getMusicTitleChosung(), musicDto.getMusicArtist(), 
-				musicDto.getMusicArtistChosung(), musicDto.getMusicTitleSearch(), musicDto.getMusicArtistSearch(),
-				musicDto.getMusicAlbum(), musicDto.getMusicUploader()
+				+ "?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		Object[] params = { musicDto.getMusicNo(), musicDto.getMusicTitle(), musicDto.getMusicTitleChosung(), 
+				musicDto.getMusicArtist(), musicDto.getMusicArtistChosung(), musicDto.getMusicTitleSearch(), 
+				musicDto.getMusicArtistSearch(), musicDto.getMusicAlbum(), musicDto.getMusicUploader()
 		};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
@@ -43,6 +51,35 @@ public class MusicDao {
 		return jdbcTemplate.query(sql,musicMapper, params);
 	}
 	
-	
-	
+	public int insertGenreMap(int musicNo, List<String> musicGenres) { // 중간에 실행이 안될수 있으니 int로 몇번 업데이트가 작동했는지 확인
+        if (musicGenres == null || musicGenres.isEmpty()) {
+            return 0;
+        }
+        String sql = "insert into music_genre_map (music_no, genre_name) values (?, ?)";
+        // BatchPreparedStatementSetter를 사용하여 리스트의 크기만큼 반복적으로 INSERT 쿼리를 실행. 성능 최적화
+        int[] results = jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            
+            // 쿼리 실행 횟수 (리스트의 크기)
+            @Override
+            public int getBatchSize() {
+                return musicGenres.size();
+            }
+            // 매 실행마다 PreparedStatement에 값을 설정.
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                // 1. music_no 설정
+                ps.setInt(1, musicNo); 
+                // 2. i번째 장르 이름 설정
+                ps.setString(2, musicGenres.get(i));
+            }
+        });
+        
+        // 성공한 모든 행의 개수를 합산하여 반환
+        int totalUpdatedRows = 0;
+        for (int result : results) {
+            totalUpdatedRows += result;
+        }
+        
+        return totalUpdatedRows;
+    }
 }

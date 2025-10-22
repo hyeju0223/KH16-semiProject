@@ -10,7 +10,28 @@ public class HangulChosungUtils {
 	        'ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'
 	    };	// 상수 필드로 초성 저장
 
-	public static String getChosungOrKeep(String input) {
+	// 문자열에서 한글과 공백만 초성 처리하는 유틸
+    public static String getChosung(String input) {
+    	if (input == null || input.isEmpty()) {
+            return "";
+    	}
+    	
+    	StringBuilder sb = new StringBuilder();
+        for (char c : input.toCharArray()) {
+            
+           if (c >= '가' && c <= '힣') { // 한글일 경우 추가
+                int index = (c - 0xAC00) / (21 * 28);
+                sb.append(CHOSUNG[index]);
+            } else if (c == ' ') {
+                sb.append(c); // 공백은 그대로 추가
+            }
+        }
+        
+        return sb.toString();
+    }
+	
+    // 특수문자 및 영어 등 한글이 아니더라도 한글은 초성변환하고 나머지는 저장하는 유틸
+	public static String getSearch(String input) {
 	    if (input == null || input.isEmpty()) {
 	        return "";
 	    }
@@ -28,22 +49,4 @@ public class HangulChosungUtils {
 	    return sb.toString();
 	}
 	
-		// 한글'만' 초성 처리하는 유틸
-//	    public static String getChosung(String input) {
-//	    	if (input == null || input.isEmpty()) {
-//	            throw new NotKoreanException("입력값이 비어있습니다.");
-//	    	}	// 입력값이 없을 때의 예외처리
-//	    	
-//	    	StringBuilder sb = new StringBuilder();
-//	        for (char c : input.toCharArray()) { // 입력값을 
-//	            if (c < '가' || c > '힣') {
-//	                throw new NotKoreanException("한글만 입력 가능합니다: " + c);
-//	            }
-//	            int index = (c - 0xAC00) / (21 * 28);
-//	            sb.append(CHOSUNG[index]);
-//	        }
-//	        
-//	        return sb.toString();
-//	    }
-	    
 }
