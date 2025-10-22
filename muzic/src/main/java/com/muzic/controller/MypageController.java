@@ -16,8 +16,6 @@ import com.muzic.dao.MusicDao;
 import com.muzic.dto.MemberDto;
 import com.muzic.dto.MusicDto;
 
-import jakarta.servlet.http.HttpSession;
-
 @Controller
 @RequestMapping("/mypage")
 public class MypageController {
@@ -28,8 +26,9 @@ public class MypageController {
 	private MusicDao musicDao;
 	
 	@GetMapping("/profile")
-	public String profile(Model model,HttpSession session) {
-		//세션으로 회원 조회
+	public String profile(Model model,
+									@RequestParam String memberId) {
+		//아이디로 회원 조회
 		MemberDto memberDto = memberDao.selectByMemberId(memberId);
 		//아이디로 음원 리스트 조회
 		List<MusicDto> musicList = musicDao.selectBymemberId(memberId);
