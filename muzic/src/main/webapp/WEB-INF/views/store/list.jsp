@@ -18,7 +18,7 @@
 		<option value="기타" ${goodsCategory == '기타' ? 'selected' : ''}>기타</option>
 	</select>
 </form>
-<table>
+<table border="1">
 	<thead>
 		<tr>
 			<th>이미지</th>
@@ -33,7 +33,7 @@
 				<td><a href="detail?goodsNo=${goods.goodsNo}">${goods.goodsName}</a><br>
 					포인트 : ${goods.goodsPoint}<br></td>
 				<td>
-					<form id="purchaseForm">
+					<form>
 						<!-- 수량 입력창 -->
 						<label>수량</label> <input type="number" name="goodsQuantity"
 							value="1" min="1" max="${goods.goodsQuantity}"

@@ -1,6 +1,4 @@
-package com.muzic.dto;
-
-import java.sql.Timestamp;
+package com.muzic.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,11 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GoodsCartDto {
+public class GoodsCartViewVO {
 	private int cartNo;
 	private String cartMember;
 	private int cartGoods;
 	private int cartQuantity;
 	private int cartTotal;
-	private Timestamp cartTime;
+
+	private String goodsName;
+	private int goodsPoint;
+	private int goodsQuantity;
+
 }

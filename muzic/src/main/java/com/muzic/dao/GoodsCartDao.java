@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.muzic.dto.GoodsCartDto;
 import com.muzic.mapper.GoodsCartMapper;
-import com.muzic.mapper.GoodsCartWithNameMapper;
 
 @Repository
 public class GoodsCartDao {
@@ -16,25 +15,23 @@ public class GoodsCartDao {
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private GoodsCartMapper goodsCartMapper;
-	@Autowired
-	private GoodsCartWithNameMapper goodsCartWithNameMapper;
 
 	// 회원별 장바구니 조회
-//	public List<GoodsCartDto> selectByMember(String cartMember) {
-//		String sql = "select cart_no, cart_member, cart_goods, cart_quantity, cart_total, cart_time "
-//				+ "from goods_cart " + "where cart_member = ?";
-//		Object[] params = { cartMember };
-//		return jdbcTemplate.query(sql, goodsCartMapper, params);
-//	}
+	public List<GoodsCartDto> selectByMember(String cartMember) {
+		String sql = "select cart_no, cart_member, cart_goods, cart_quantity, cart_total, cart_time "
+				+ "from goods_cart " + "where cart_member = ?";
+		Object[] params = { cartMember };
+		return jdbcTemplate.query(sql, goodsCartMapper, params);
+	}
 
-		public List<GoodsCartDto> selectByMember(String cartMember) {
-			String sql = "SELECT gc.cart_no, gc.cart_member, gc.cart_goods, gc.cart_quantity, gc.cart_total, gc.cart_time, "
-					+ "g.goods_name, g.goods_point, g.goods_quantity " // [추가] g.goods_quantity
-					+ "FROM goods_cart gc " + "JOIN goods g ON gc.cart_goods = g.goods_no "
-					+ "WHERE gc.cart_member = ?";
-			Object[] params = { cartMember };
-			return jdbcTemplate.query(sql, goodsCartWithNameMapper, params);
-		}
+//		public List<GoodsCartDto> selectByMember(String cartMember) {
+//			String sql = "SELECT gc.cart_no, gc.cart_member, gc.cart_goods, gc.cart_quantity, gc.cart_total, gc.cart_time, "
+//					+ "g.goods_name, g.goods_point, g.goods_quantity " // [추가] g.goods_quantity
+//					+ "FROM goods_cart gc " + "JOIN goods g ON gc.cart_goods = g.goods_no "
+//					+ "WHERE gc.cart_member = ?";
+//			Object[] params = { cartMember };
+//			return jdbcTemplate.query(sql, goodsCartWithNameMapper, params);
+//		}
 
 	// 이미 담긴 상품 조회
 	public GoodsCartDto selectOne(String loginId, int goodsNo) {
