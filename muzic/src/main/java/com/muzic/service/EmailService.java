@@ -76,7 +76,7 @@ public class EmailService {
 		helper.setSubject("[muzic] 가입을 환영합니다!");
 		
 		//이메일 본문 생성
-		ClassPathResource resource = new ClassPathResource("templates/welcome2.html");
+		ClassPathResource resource = new ClassPathResource("templates/welcome.html");
 		File target = resource.getFile();
 		
 		StringBuffer buffer = new StringBuffer();
