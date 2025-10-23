@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.muzic.dao.MemberDao;
 import com.muzic.dao.PostDao;
+import com.muzic.dto.MemberDto;
 import com.muzic.dto.PostDto;
 import com.muzic.error.NeedPermissionException;
 import com.muzic.error.TargetNotFoundException;
@@ -25,39 +27,13 @@ public class PostController {
 
 	@Autowired
 	private PostDao postDao;
+	@Autowired
+	private MemberDao memberDao;
 	
-	@RequestMapping("/mbti/list")
-	public String mbtilist(Model model, @RequestParam(required = false) String column,
-			@RequestParam(required = false) String keyword, HttpSession session) {
-		
-		//세션에서 로그인 아이디 및 회원 mbti 불러오기
-	    String memberMbti = (String) session.getAttribute("loginMemberId");
-	    
-		//column, keyword가 null이 아닐시 true
-		boolean isSearch = column != null && keyword != null;
-		
-		if(!isSearch) { 
-			//!isSearch가 false일 시 파라미터 전달 X
-			List<PostDto> postList = postDao.selectMbtiList(memberMbti);
-			// DB에서 조회한 게시글 목록을 postList에 담아 View(JSP 등)에 전달
-			model.addAttribute("postList", postList);
-
-		}
-		else {
-			//!isSearch 가 true일시 파라미터 전달
-			List<PostDto> postList = postDao.selectMbtiList(memberMbti, column, keyword);
-			// DB에서 조회한 게시글 목록을 postList에 담아 View(JSP 등)에 전달
-			model.addAttribute("postList", postList);
-		}
-		
-		return "/WEB-INF/views/post/mbti/list.jsp";
-	}
+	
 	@RequestMapping("/free/list")
 	public String freelist(Model model, @RequestParam(required = false) String column,
-			@RequestParam(required = false) String keyword, HttpSession session) {
-		
-		//세션에서 로그인 아이디 및 회원 mbti 불러오기
-		String loginId = (String) session.getAttribute("loginMemberId");
+			@RequestParam(required = false) String keyword) {
 	    
 		//column, keyword가 null이 아닐시 true
 		boolean isSearch = column != null && keyword != null;
@@ -77,6 +53,37 @@ public class PostController {
 		}
 		
 		return "/WEB-INF/views/post/free/list.jsp";
+	}
+
+	@RequestMapping("/mbti/list")
+	public String mbtilist(Model model, @RequestParam(required = false) String column,
+			@RequestParam(required = false) String keyword, HttpSession session) {
+		
+		//세션에서 로그인 아이디 및 회원 mbti 불러오기
+	    String memberMbti = (String) session.getAttribute("loginMemberMbti");
+	    String loginId = (String) session.getAttribute("loginMemberId");
+	    
+	    MemberDto findDto = memberDao.selectByMemberId(loginId);
+	    model.addAttribute("memberDto",findDto);
+	    
+		//column, keyword가 null이 아닐시 true
+		boolean isSearch = column != null && keyword != null;
+		
+		if(!isSearch) { 
+			//!isSearch가 false일 시 파라미터 전달 X
+			List<PostDto> postList = postDao.selectMbtiList(memberMbti);
+			// DB에서 조회한 게시글 목록을 postList에 담아 View(JSP 등)에 전달
+			model.addAttribute("postList", postList);
+
+		}
+		else {
+			//!isSearch 가 true일시 파라미터 전달
+			List<PostDto> postList = postDao.selectMbtiList(memberMbti, column, keyword);
+			// DB에서 조회한 게시글 목록을 postList에 담아 View(JSP 등)에 전달
+			model.addAttribute("postList", postList);
+		}
+		
+		return "/WEB-INF/views/post/mbti/list.jsp";
 	}
 	
 	//GetMapping으로 작성하기 폼 요청
@@ -107,7 +114,7 @@ public class PostController {
 		
 		//session에서 값 꺼내기
 		String loginId = (String) session.getAttribute("loginMemberId");
-		String memberMbti = (String) session.getAttribute("memberMbti");
+		String memberMbti = (String) session.getAttribute("loginMemberMbti");
 		
 		//만약 로그인 session에 담긴 정보가 null이 아니라면
 		if (loginId != null) {
@@ -122,7 +129,7 @@ public class PostController {
 		//postDto를 데이터베이스에 삽입
 		postDao.insert(postDto);
 		
-		return "redirect:datail?postNo=?"+postNo;
+		return "redirect:detail?postNo="+postNo;
 	}
 	
 	//상세는 단일

@@ -44,22 +44,22 @@
 
 <div class="center w-1000">
 	<div class="cell center">
- 		<h2>${postDto.postMbti} 게시판</h2>
+ 		<h2>${memberDto.memberMbti} 게시판</h2>
 	</div>
 	
 	<div class="cell center">
 		<p>타인에 대한 우앵앵애</p>
 	</div>
-	<%-- <div class="cell right">
+	<div class="cell right">
 			<c:choose>
-				<c:when test="${sessionScope.loginId != null}">
-					<h3><a href="write">글쓰기</a></h3>
-				</c:when>
-				<c:otherwise>
-					<h3><a href="/member/login">로그인</a>을 해야 글을 작성할 수 있습니다</h3>
-				</c:otherwise>
+				<c:when test="${sessionScope.loginMemberId != null}">
+				<h3><a href="write" class="btn btn-neutral">글쓰기</a></h3>
+			</c:when>
+			<c:otherwise>
+				<h3><a href="/member/login">로그인</a>을 해야 글을 작성할 수 있습니다</h3>
+			</c:otherwise>
 			</c:choose>
-	</div> --%>
+	</div>
 	<div class="cell">
 	<table class="table table-border w-100">
 		<thead>
