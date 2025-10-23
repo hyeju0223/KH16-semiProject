@@ -4,7 +4,7 @@
 
     <h1>프로필 수정 페이지</h1>
     
-    <h3>프로필 이미지</h3> <!-- 이미지 변경은 프론트에서 진행 -->
+    <h3>프로필 이미지</h3> 
     <form action="edit" method="post">
     닉네임<input type="text" name="memberNickname" value="${memberDto.memberNickname}"> <br>
     이름<input type="text" name="memberName" value="${memberDto.memberName}"><br>
