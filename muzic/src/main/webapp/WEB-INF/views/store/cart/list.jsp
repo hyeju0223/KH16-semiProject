@@ -22,7 +22,7 @@
 }
 </style>
 
-<div class="container w-800">
+<div class="container w-1000">
 	<div class="cell">
 		<h1>장바구니</h1>
 	</div>
@@ -59,7 +59,8 @@
 								value="${goodsCart.cartGoods}"
 								data-price="${goodsCart.cartTotal }"></td>
 							<td>${goodsCart.cartGoods}</td>
-							<td class="left">${goodsCart.goodsName}</td>
+							<%-- <a href="detail?goodsNo=${goods.goodsNo}">${goods.goodsName}</a> --%>
+							<td class="left"><a href="/store/detail?goodsNo=${goodsCart.cartGoods}">${goodsCart.goodsName}</a></td>
 							<td>${goodsCart.goodsPoint}원</td>
 							<td><input type="number" class="input-quantity"
 								value="${goodsCart.cartQuantity}" min="1"

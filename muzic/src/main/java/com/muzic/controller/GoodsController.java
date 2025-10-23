@@ -15,6 +15,7 @@ import com.muzic.dao.GoodsDao;
 import com.muzic.dao.GoodsOrderDao;
 import com.muzic.dto.GoodsDto;
 import com.muzic.dto.GoodsOrderDto;
+import com.muzic.error.NeedPermissionException;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -62,7 +63,7 @@ public class GoodsController {
 		String loginMemberId = (String) session.getAttribute("loginMemberId");
 
 		if (loginMemberId == null) {
-			return "redirect:/member/login";
+			throw new NeedPermissionException("로그인이 필요합니다");
 		}
 
 		// 1.상품 정보 조회

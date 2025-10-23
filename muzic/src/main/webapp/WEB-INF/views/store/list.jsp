@@ -2,25 +2,27 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
+<link rel="stylesheet" type="text/css" href="/css/cart.css">
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-<div class="container w-800">
+<style>
+.table>tbody>tr>td {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	vertical-align: middle;
+}
+</style>
+<div class="container w-1000">
 	<div class="cell center">
 		<h1>STORE</h1>
 	</div>
 	<div class="cell right">
-		<c:if test="${loginMemberId != null}">
-			<a href="cart/list"> <i class="fa-solid fa-cart-shopping"></i>
-			</a>
-		</c:if>
-		<c:if test="${loginMemberId == null}">
-			<a href="/member/login"> <i class="fa-solid fa-cart-shopping"></i>
-			</a>
-		</c:if>
+		<a href="cart/list"> <i class="fa-solid fa-cart-shopping"></i>
+		</a>
 	</div>
-	<div class="cell">
+	<div class="cell right">
 		<form method="get" action="list">
-			<select name="goodsCategory" onchange="this.form.submit()">
+			<select name="goodsCategory" onchange="this.form.submit()" class="field">
 				<option value="">전체</option>
 				<option value="의류" ${goodsCategory == '의류' ? 'selected' : ''}>의류</option>
 				<option value="굿즈" ${goodsCategory == '굿즈' ? 'selected' : ''}>굿즈</option>
@@ -38,9 +40,9 @@
 		<table class="table w-100">
 			<thead>
 				<tr>
-					<th>이미지</th>
-					<th>제목 및 설명</th>
-					<th>구매</th>
+					<th></th>
+					<th></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -52,25 +54,36 @@
 							포인트 : ${goods.goodsPoint}<br></td>
 						<td class="left">
 							<form class="cartAddForm">
-								<!-- 수량 입력창 -->
-								<label>수량</label> <input type="number" name="goodsQuantity"
-									value="1" min="1" max="${goods.goodsQuantity}"
-									${goods.goodsQuantity == 0 ? "disabled" : ""}>
+								<div style="display: flex; align-items: center; gap: 10px;">
+									<!-- 수량 입력창 -->
+									<div class="quantity-selector">
 
-								<!-- 바로구매 -->
-								<c:if test="${goods.goodsQuantity > 0}">
-									<button type="submit" formaction="buy?goodsNo=${goods.goodsNo}"
-										formmethod="post" onclick="return confirm('구매하시겠습니까?');">
-										바로구매</button>
-								</c:if>
+										<button type="button" class="btn-qty btn-qty-down"
+											${goods.goodsQuantity == 0 ? "disabled" : ""}>-</button>
 
-								<!-- 장바구니 담기 -->
-								<button type="button" class="cartAddBtn"
-									${goods.goodsQuantity == 0 ? "disabled" : ""}>
-									${goods.goodsQuantity == 0 ? "품절" : "장바구니 담기"}</button>
+										<input type="number" name="goodsQuantity" class="input-qty"
+											value="1" min="1" max="${goods.goodsQuantity}"
+											${goods.goodsQuantity == 0 ? "disabled" : ""}>
 
-								<!-- 장바구니 담기용 hidden -->
-								<input type="hidden" name="goodsNo" value="${goods.goodsNo}">
+										<button type="button" class="btn-qty btn-qty-up"
+											${goods.goodsQuantity == 0 ? "disabled" : ""}>+</button>
+									</div>
+									<div>
+										<!-- 바로구매 -->
+										<c:if test="${goods.goodsQuantity > 0}">
+											<button type="submit" class="btn btn-positive"
+												formaction="buy?goodsNo=${goods.goodsNo}" formmethod="post"
+												onclick="return confirm('구매하시겠습니까?');">바로구매</button>
+										</c:if>
+
+										<!-- 장바구니 담기 -->
+										<button type="button" class="cartAddBtn btn btn-neutral"
+											${goods.goodsQuantity == 0 ? "disabled" : ""}>
+
+											${goods.goodsQuantity == 0 ? "품절" : "장바구니 담기"}</button>
+									</div>
+									<!-- 장바구니 담기용 hidden -->
+									<input type="hidden" name="goodsNo" value="${goods.goodsNo}">
 							</form>
 						</td>
 					</tr>
@@ -79,9 +92,9 @@
 		</table>
 	</div>
 </div>
-
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/js/cart-quantity.js"></script>
 
 <script>
 	$(function() {

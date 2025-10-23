@@ -1,0 +1,56 @@
+/* /css/commons.css 파일 맨 아래에 추가 */
+
+/* 수량 선택기 컨테이너 */
+.quantity-selector {
+    display: flex;
+    align-items: center;
+}
+
+/* + / - 버튼 공통 스타일 */
+.btn-qty {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #495057;
+}
+.btn-qty:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    color: #adb5bd;
+}
+
+/* 숫자 입력창 스타일 */
+.input-qty {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    border-left: none;
+    border-right: none;
+    height: 26px;
+    font-size: 1em;
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield;
+}
+/* 상품 구분하는 가로선 추가 */
+.table tbody tr {
+	border-bottom: 1px solid #eee; /* 연한 회색 구분선 */
+}
+
+/* 가장 마지막 줄은 선을 없앱니다. */
+.table tbody tr:last-child {
+	border-bottom: none;
+}
+
+/* 장바구니 아이콘 크기 및 스타일 */
+.cell.right .fa-cart-shopping {
+	font-size: 1.8em; /* 👈 크기 조절 (1.8배) */
+	color: #333; /* 기본 색상 */
+	transition: color 0.1s; /* 부드러운 색상 변경 */
+}
+.cell.right .fa-cart-shopping:hover {
+	color: #0984e3; /* 마우스 올렸을 때 색상 (commons.css의 'btn-positive' 색상) */
+}

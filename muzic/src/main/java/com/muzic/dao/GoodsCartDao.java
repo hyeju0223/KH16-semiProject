@@ -83,6 +83,11 @@ public class GoodsCartDao {
 
 		return jdbcTemplate.update(sql, params) > 0;
 	}
-	//장바구니 항목 개수 조회?
+	
+//	public int findAttachmentNoByParent(int goodsNo, String category) {
+//		String sql="select attachment_no from attachment where goods_no=? and attachment_category=?";
+//		Object[] params = {goodsNo, category};
+//		return jdbcTemplate.queryForObject(sql, int.class, params);
+//	}
 
 }

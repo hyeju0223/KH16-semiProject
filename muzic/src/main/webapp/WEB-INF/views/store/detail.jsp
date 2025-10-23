@@ -3,9 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
+<link rel="stylesheet" type="text/css" href="/css/cart.css">
+
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-<div class="container w-800">
+<div class="container w-1000">
 	<c:choose>
 		<c:when test="${goodsDto==null}">
 			<div class="cell center">
@@ -17,14 +19,8 @@
 				<h1>${goodsDto.goodsName}</h1>
 			</div>
 			<div class="cell right">
-				<c:if test="${loginMemberId != null}">
-					<a href="cart/list"> <i class="fa-solid fa-cart-shopping"></i>
-					</a>
-				</c:if>
-				<c:if test="${loginMemberId == null}">
-					<a href="/member/login"> <i class="fa-solid fa-cart-shopping"></i>
-					</a>
-				</c:if>
+				<a href="cart/list"> <i class="fa-solid fa-cart-shopping"></i>
+				</a>
 			</div>
 			<div class="cell right">
 				<table class="table table-border w-100">
@@ -65,30 +61,42 @@
 					</tr>
 				</table>
 			</div>
-			<div class="cell">
-			<form method="post">
-				<%-- 1. 공통 파라미터 --%>
-				<input type="hidden" name="goodsNo" value="${goodsDto.goodsNo}">
+			<div class="cell right">
+				<form method="post">
+					<div style="display: flex; align-items: center; gap: 10px;">
 
-				<%-- 2. 수량 --%>
-				<label>수량</label> <input type="number" name="goodsQuantity"
-					value="1" min="1" max="${goodsDto.goodsQuantity}"
-					${goodsDto.goodsQuantity == 0 ? 'disabled' : ''}>
+						<div class="quantity-selector">
+							<label>수량</label>
+							<%-- 상세페이지에는 수량 라벨 유지 --%>
 
-				<%-- 3. 바로구매 버튼 --%>
-				<%-- 'buy'는 현재 /store/detail 기준 상대경로 "buy"로 보냅니다. --%>
-				<button type="submit" formaction="buy"
-					onclick="return confirm('구매하시겠습니까?');"
-					${goodsDto.goodsQuantity == 0 ? 'disabled' : ''}>바로구매</button>
+							<button type="button" class="btn-qty btn-qty-down"
+								${goodsDto.goodsQuantity == 0 ? 'disabled' : ''}>-</button>
 
-				<%-- 4. 장바구니 버튼 --%>
-				<%-- [수정] '장바구니'는 /store/cart/add로 보내야 하므로 상대경로 "../cart/add"를 사용합니다. --%>
-				<button type="button" id="cartAddBtn"
-					${goodsDto.goodsQuantity == 0 ? 'disabled' : ''}>장바구니에 추가</button>
-			</form>
+							<input type="number" name="goodsQuantity" class="input-qty"
+								value="1" min="1" max="${goodsDto.goodsQuantity}"
+								${goodsDto.goodsQuantity == 0 ? 'disabled' : ''}>
+
+							<button type="button" class="btn-qty btn-qty-up"
+								${goodsDto.goodsQuantity == 0 ? 'disabled' : ''}>+</button>
+						</div>
+
+						<div>
+							<c:if test="${goodsDto.goodsQuantity > 0}">
+								<button type="submit" class="btn btn-positive" formaction="buy" onclick="return confirm('구매하시겠습니까?');">
+									바로구매</button>
+							</c:if>
+
+							<button type="button" id="cartAddBtn" class="btn btn-neutral"
+								${goodsDto.goodsQuantity == 0 ? 'disabled' : ''}>
+								${goodsDto.goodsQuantity == 0 ? "품절" : "장바구니에 추가"}</button>
+						</div>
+					</div>
+
+					<input type="hidden" name="goodsNo" value="${goodsDto.goodsNo}">
+				</form>
 			</div>
 			<div class="cell">
-			<a href="list"><button type="button">목록</button></a>
+				<a href="list"><button type="button">목록</button></a>
 			</div>
 		</c:otherwise>
 	</c:choose>
@@ -96,12 +104,12 @@
 
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/js/cart-quantity.js"></script>
 
 <script>
 	$(function() {
 		$("#cartAddBtn").click(function() {
-			
-			
+
 			var goodsNo = $("[name=goodsNo]").val();
 			var goodsQuantity = $("[name=goodsQuantity]").val();
 

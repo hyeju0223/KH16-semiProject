@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.muzic.dao.AttachmentDao;
+import com.muzic.error.NeedPermissionException;
 import com.muzic.service.GoodsCartService;
 import com.muzic.vo.GoodsCartViewVO;
 
@@ -20,20 +22,32 @@ import jakarta.servlet.http.HttpSession;
 public class GoodsCartController {
 	@Autowired
 	private GoodsCartService goodsCartService;
+	@Autowired
+	private AttachmentDao attachmentDao;
 
 	// 장바구니 목록
 	@GetMapping("/list")
-	public String list(Model model, HttpSession session){
+	public String list(Model model, HttpSession session) {
 		String loginMemberId = (String) session.getAttribute("loginMemberId");
-	    if (loginMemberId == null) {
-	        return "redirect:/member/login";
-	    }
-		
+		if (loginMemberId == null) {
+			throw new NeedPermissionException("로그인이 필요합니다");
+		}
 
 		List<GoodsCartViewVO> cartList = goodsCartService.getCartListWithDetails(loginMemberId);
 		model.addAttribute("cartList", cartList);
 
 		return "/WEB-INF/views/store/cart/list.jsp";
+	}
+
+	@GetMapping("/image")
+	public String image(@RequestParam int goodsNo) {
+		try {
+			String category = "goods";
+			int attachmentNo = attachmentDao .findAttachmentNoByParent(goodsNo, category);
+			return "redirect:/attachment/download?attachmentNo=" + attachmentNo;
+		} catch (Exception e) {
+			return "redirect:/images/error/no-image.png";
+		}
 	}
 
 	// 장바구니 담기 -->ajax로 바꿈
@@ -50,13 +64,13 @@ public class GoodsCartController {
 
 	@PostMapping("/delete")
 	public String delete(HttpSession session, @RequestParam int goodsNo) {
-		
+
 		String loginMemberId = (String) session.getAttribute("loginMemberId");
-	    if (loginMemberId == null) {
-	        return "redirect:/member/login";
-	    }
-		
-		//서비스로 삭제
+		if (loginMemberId == null) {
+			return "redirect:/member/login";
+		}
+
+		// 서비스로 삭제
 		boolean success = goodsCartService.delete(loginMemberId, goodsNo);
 
 		if (success == false) {
