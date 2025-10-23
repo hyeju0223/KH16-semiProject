@@ -14,12 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.muzic.dao.AttachmentDao;
 import com.muzic.dao.MemberDao;
+import com.muzic.dao.MusicDao;
 import com.muzic.dao.MusicGenreDao;
+import com.muzic.domain.AttachmentCategory;
 import com.muzic.dto.MusicDto;
 import com.muzic.dto.MusicFormDto;
+import com.muzic.error.TargetNotFoundException;
 import com.muzic.service.MusicService;
 
+import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -34,6 +39,12 @@ public class MusicController {
 	
 	@Autowired
 	private MusicGenreDao musicGenreDao;
+	
+	@Autowired
+	private AttachmentDao attachmentDao;
+	
+	@Autowired
+	private MusicDao musicDao;
 	
 	@GetMapping("/add")
 	public String add() {
@@ -70,9 +81,33 @@ public class MusicController {
 		return "/WEB-INF/views/music/list.jsp";
 	}
 	
-//	@GetMapping("/image")
-//	public String image(@RequestParam int musicNo, String category) {
+	@GetMapping("/image")
+	public String image(@RequestParam int musicNo) {
+		try {
+			AttachmentCategory category = AttachmentCategory.MUSIC; // 해당하는 카테고리
+			String categoryValue = category.getValue(); // "goods"
+			int attachmentNo = attachmentDao.findAttachmentNoByParent(musicNo, categoryValue);
+			
+			 	if (attachmentNo == -1) {
+		            return "redirect:/images/error/no-image.png";
+		        }
+			 	
+			return "redirect:/attachment/download?attachmentNo="+attachmentNo;
+		} catch (Exception e) {
+			return "redirect:/images/error/no-image.png";
+		}
+	}
+	
+//	@GetMapping("list")
+//	public String list(Model model, @RequestParam(required = false)) {
 //		
+//	}
+	
+//	@GetMapping("/detail")
+//	public String detail String(Model model, @RequestParam int musicNo) {
+//		MusicDto musicDto = musicDao.selectOne(musicNo);
+//		if(musicDto == null) throw new TargetNotFoundException("존재하지 않는 음원 입니다");
+//		model.
 //	}
 	
 }

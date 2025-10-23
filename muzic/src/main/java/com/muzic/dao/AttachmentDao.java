@@ -52,11 +52,15 @@ public class AttachmentDao {
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	
-	public int findAttachmentNoByParent(int parentSeq, String category) {
+	// 메소드에 매개변수 주실때 
+	// AttachmentCategory category = AttachmentCategory.GOODS; // 해당하는 카테고리
+	// String categoryValue = category.getValue(); // "goods"
+	// 이렇게하고 findAttachmentNoByParent(goodsNo, categoryValue) 이렇게 메소드 호출해주세요
+	public int findAttachmentNoByParent(int parentSeq, String category) {	
 	    String sql = "select attachment_no from attachment where attachment_parent = ? and attachment_category = ?";
 	    Object[] params = { String.valueOf(parentSeq), category };
 	    try {
-	        return jdbcTemplate.queryForObject(sql, Integer.class, params);
+	        return jdbcTemplate.queryForObject(sql, Integer.class, params);	// queryForObject는 조회 컬럼의 데이터가 0건이거나 1건 이상일 시 에러가 생김.
 	    } catch (EmptyResultDataAccessException e) {
 	        return -1;	// 조회결과 없음 의미없는값(시퀀스는 음수일수 없으니)
 	    }
