@@ -23,3 +23,5 @@
 <a href="/mypage/profile">마이페이지</a>
 <br>
 <a href="/store/list">STORE</a>
+<a href="/post/free/list">자유게시판</a>
+<a href="/post/mbti/list">mbti게시판</a>

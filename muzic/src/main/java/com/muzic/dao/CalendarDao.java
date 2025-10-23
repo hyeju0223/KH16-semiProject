@@ -63,10 +63,16 @@ public class CalendarDao {
 	}
 	
 	//수정
-	public boolean update(int calendarNo, String calendarMember) {
-		String sql = "update calendar set where calendar_no=?";
+	public boolean update(CalendarDto calendarDto) {
+		String sql = "update calendar set "
+				+ "calendar_day=?, calendar_schedule_title=?,"
+				+ "calendar_schedule_content=?,"
+				+ "calendar_etime=systimestamp "
+				+ "where calendar_no=?";
 		Object[] params = {
-				
+				calendarDto.getCalendarDay(), calendarDto.getCalendarScheduleTitle(),
+				calendarDto.getCalendarScheduleContent(), 
+				calendarDto.getCalendarNo()
 		};
 		return jdbcTemplate.update(sql,params) > 0;
 		

@@ -65,19 +65,40 @@ public class MypageCalendarController {
 		//작성된 캘린더 정보를 DB에 저장
 		calendarDao.insert(calendarDto);
 		
-		return "redirect:/";
+		return "redirect:/mypage/calendar/";
 	}	
 	
 	@GetMapping("/detail")
-	public String detail(@RequestParam int calendarNo, Model model) {
-		
+	public String detail(@RequestParam int calendarNo,
+									HttpSession session, Model model) {
+
 		//CalendarDto정보 가져오기
 		CalendarDto calendarDto = calendarDao.selectOne(calendarNo);
-		System.out.println(calendarDto);
 		model.addAttribute("calendarDto",calendarDto);
 		
 		return "/WEB-INF/views/mypage/calendar/detail.jsp";
 		
+	}
+	
+	
+	@GetMapping("/edit")
+	public String edit(@RequestParam int calendarNo,
+									Model model) {
+
+		//CalendarDto정보 가져오기
+		CalendarDto calendarDto = calendarDao.selectOne(calendarNo);
+		model.addAttribute("calendarDto",calendarDto);
+		
+		return "/WEB-INF/views/mypage/calendar/edit.jsp";
+		
+	}
+	
+	@PostMapping("/edit")
+	public String edit(@ModelAttribute CalendarDto calendarDto) {
+		
+		calendarDao.update(calendarDto);
+		
+		return "redirect:/mypage/calendar/";
 	}
 	
 	@GetMapping("/delete")
@@ -85,6 +106,6 @@ public class MypageCalendarController {
 		
 		calendarDao.delete(calendarNo);
 		
-		return "redirect:/";
+		return "redirect:/mypage/calendar/";
 	}
 }

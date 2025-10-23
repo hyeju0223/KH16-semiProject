@@ -51,6 +51,7 @@ public class MypageController {
 		String loginId = (String) session.getAttribute("loginMemberId");
 		MemberDto findDto = memberDao.selectByMemberId(loginId);
 //		if(findDto == null) throw new 
+		
 		//회원 정보를 jsp에 넘김
 		model.addAttribute("findDto",findDto);
 		
@@ -67,9 +68,9 @@ public class MypageController {
 		
 		//회원 탈퇴 (비밀번호 확인 후 회원 탈퇴)
 
-		boolean match = bCryptPasswordEncoder.matches(memberPw, findDto.getMemberPw());
+		boolean  isVaild  = bCryptPasswordEncoder.matches(memberPw, findDto.getMemberPw());
 		
-		if(!match) { //비밀번호가 틀리다면
+		if(!isVaild) { //비밀번호가 틀리다면
 			return "redirect:withDraw?error"; //파라미터에 error을 추가해서 '비밀번호를 확인해주세요' 문구 추가 (프론트)
 		}
 		//동의 버튼을 체크하지 않으면 다시 동일한 페이지로 반환
@@ -94,11 +95,67 @@ public class MypageController {
 	@GetMapping("/password")
 	public String password() {
 		
+		//예외처리
+
 		return "/WEB-INF/views/mypage/password.jsp";
 	}
 	
 	@PostMapping("/password")
-	public String password(@ModelAttribute MemberDto memberDto) {
+	public String password(HttpSession session,
+			@RequestParam String loginPw,
+			@RequestParam String changePw,
+			@RequestParam String changePw2) {
+		
+		//세션으로 회원 찾기
+		String loginId = (String) session.getAttribute("loginMemberId");
+		MemberDto findDto = memberDao.selectByMemberId(loginId);
+		
+		//현재 비밀번호와 입력한 현재 비밀번호가 일치하지 않는다면
+		if(! bCryptPasswordEncoder.matches(loginPw, findDto.getMemberPw())) { 
+			return "redirect:password?loginPwError";
+		}
+		
+		//현재 비밀번호와 입력한 변경 비밀번호가 같다면
+		if(loginPw.equals(changePw)||loginPw.equals(changePw2)) {
+			return "redirect:password?samePwError";
+		}
+		
+		//입력한 두 변경 비밀번호가 일치하지 않는다면
+		if(! changePw.equals(changePw2)) {
+			return "redirect:password?changePwError";
+		}
+		
+		//해시 비밀번호로 변환 후 신규 비밀번호로 교체
+		String hashed = bCryptPasswordEncoder.encode(changePw);		
+		findDto.setMemberPw(hashed);
+		//DB에 업데이트
+		memberDao.updateMemberPw(findDto);
+		
+		return "redirect:profile";
+	}
+	
+	@GetMapping("/edit")
+	public String edit(HttpSession session, Model model) {
+		
+		//세션으로 회원 찾기
+		String loginId = (String) session.getAttribute("loginMemberId");
+		MemberDto findDto = memberDao.selectByMemberId(loginId);
+		
+		model.addAttribute("memberDto",findDto);
+
+		return "/WEB-INF/views/mypage/edit.jsp";
+	}
+	
+	@PostMapping("/edit")
+	public String edit(HttpSession session,
+								@ModelAttribute MemberDto memberDto) {
+		
+		//세션으로 회원 찾기
+		String loginId = (String) session.getAttribute("loginMemberId");
+		MemberDto findDto = memberDao.selectByMemberId(loginId);
+		
+		memberDto.setMemberId(loginId);
+		memberDao.update(memberDto);
 		
 		return "redirect:profile";
 	}

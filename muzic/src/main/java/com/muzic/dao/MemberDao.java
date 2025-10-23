@@ -130,4 +130,22 @@ public class MemberDao {
         Object[] params = { encPw, memberDto.getMemberId() };
         return jdbcTemplate.update(sql, params) > 0;
     }
+    
+    //회원 정보 수정
+	public boolean update(MemberDto memberDto) {
+		String sql = "update member set "
+				+ "member_nickname=?, member_name=?,"
+				+ "member_email=?, member_mbti=?,"
+				+ "member_birth=?, member_contact=?, "
+				+ "member_postcode=?, member_address1=?,"
+				+ "member_address2=?, member_etime=systimestamp "
+				+ "where member_id=?";
+		Object[] params = {
+				memberDto.getMemberNickname(), memberDto.getMemberName(),
+				memberDto.getMemberEmail(), memberDto.getMemberMbti(),
+				memberDto.getMemberBirth(), memberDto.getMemberContact(),
+				memberDto.getMemberPostcode(), memberDto.getMemberAddress1(),
+				memberDto.getMemberAddress2(), memberDto.getMemberId()};
+		return jdbcTemplate.update(sql,params) > 0;
+	}
 }

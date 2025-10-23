@@ -30,7 +30,7 @@ public class PostDao {
 		//모든 게시글의 정보를 조회하는 SQL 구문
 		//post_no를 기준으로 내림차순(desc) 정렬하여 최신 글이 먼저 보이도록 정렬
 		String sql = "select post_no, post_title, post_writer, post_mbti, post_content, "
-	               + "post_music, post_wtime, post_etime, post_like, post_read "
+	               + "post_music, post_wtime, post_etime, post_like, post_read, post_notice "
 	               + "from post where post_mbti is null or post_mbti = '' "
 	               + "order by post_no desc";
 		
@@ -52,7 +52,7 @@ public class PostDao {
 		
 		//instr로 칼럼 안 키워드 검색 조회 SQL 구문
 		String sql = "select post_no, post_title, post_writer, post_mbti, post_content,"
-				+"post_music, post_wtime, post_etime, post_like, post_read "
+				+"post_music, post_wtime, post_etime, post_like, post_read, post_notice "
 				+ "from post where instr(#1, ?) > 0 "
 				+ "order by post_no desc";
 		
@@ -70,7 +70,7 @@ public class PostDao {
 	//목록(mbti개시판)
 	public List<PostDto> selectMbtiList(String memberMbti) {
 		String sql = "select post_no, post_title, post_writer, post_mbti, post_content, "
-				+ "post_music, post_wtime, post_etime, post_like, post_read "
+				+ "post_music, post_wtime, post_etime, post_like, post_read, post_notice "
 				+ "from post where post_mbti = ? "
 				+ "order by post_no desc";
 		
@@ -91,7 +91,7 @@ public class PostDao {
 	    
 	    // SQL에 mbti 조건과 검색 조건을 모두 포함
 	    String sql = "select post_no, post_title, post_writer, post_mbti, post_content, "
-	            + "post_music, post_wtime, post_etime, post_like, post_read "
+	            + "post_music, post_wtime, post_etime, post_like, post_read, post_notice "
 	            + "from post where post_mbti = ? and instr(#1, ?) > 0 "
 	            + "order by post_no desc";
 	    
@@ -105,7 +105,7 @@ public class PostDao {
 	//등록
 	public void insert(PostDto postDto) {
 		String sql = "insert into post(post_no, post_title, post_writer, "
-				+ "post_mbti, post_music, post_wtime, post_content, post_norice) "
+				+ "post_mbti, post_music, post_wtime, post_content, post_notice) "
 				+ "values (post_seq nocache, ?, ?, ?, ?, ?, ?, ?)";
 		
 		Object[] params = {postDto.getPostTitle(), postDto.getPostWriter(),

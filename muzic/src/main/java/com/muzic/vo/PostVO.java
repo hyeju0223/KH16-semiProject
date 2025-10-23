@@ -42,7 +42,7 @@ public class PostVO {
 //		}
 //	}
 	
-	private String postWriteTime() {
+	private String getPostWriteTime() {
 		LocalDateTime wtime = postWtime.toLocalDateTime();
 		LocalDateTime now = LocalDateTime.now();
 		//Duration = 시간의 길이를 나타내는 클래스

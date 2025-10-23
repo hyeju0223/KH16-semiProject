@@ -13,12 +13,13 @@
 
 <hr>
 
+이름 | ${memberDto.memberName} <br>
 이메일 | ${memberDto.memberEmail} <br>
 전화번호 | ${memberDto.memberContact} <br>
-주소 | ${memberDto.memberPostcode} <br>
+
 ${memberDto.memberAddress1} ${memberDto.memberAddress2}<br>
 <hr>
-<div>프로필 수정</div>
+<div><a href="edit">프로필 수정</a></div>
 <div><a href="password">비밀번호 변경 ></a></div>
 <div><a href="calendar/">나의 일정 ></a></div>
 <hr>

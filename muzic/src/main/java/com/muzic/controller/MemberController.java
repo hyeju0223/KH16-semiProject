@@ -62,7 +62,7 @@ public class MemberController {
     
         memberLoginDao.insert(memberDto.getMemberId());
 
-        return "redirect:/music/add";
+        return "redirect:/";
     }
 
     @RequestMapping("/joinFinish")
@@ -127,7 +127,7 @@ public class MemberController {
         
         session.setAttribute("loginMemberNickName", findDto.getMemberNickname());
 
-        return "redirect:/music/add";
+        return "redirect:/";
     }
 
     
