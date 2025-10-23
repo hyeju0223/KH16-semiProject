@@ -32,10 +32,11 @@ public class MusicDao {
 				+ "music_title_search, music_artist_search, music_album, music_uploader, music_status) "
 				+ "values("
 				+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		Object[] params = { musicDto.getMusicNo(), musicDto.getMusicTitle(), musicDto.getMusicTitleChosung(), 
+		Object[] params = { 
+				musicDto.getMusicNo(), musicDto.getMusicTitle(), musicDto.getMusicTitleChosung(), 
 				musicDto.getMusicArtist(), musicDto.getMusicArtistChosung(), musicDto.getMusicTitleSearch(), 
 				musicDto.getMusicArtistSearch(), musicDto.getMusicAlbum(), musicDto.getMusicUploader(), musicDto.getMusicStatus()
-		};
+				};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	
@@ -47,15 +48,15 @@ public class MusicDao {
 	
 	public List<MusicDto> selectBymemberId(String musicUploader) {
 		String sql = "select * from music where music_uploader=?";
-		Object[] params = {musicUploader};
+		Object[] params = { musicUploader };
 		return jdbcTemplate.query(sql,musicMapper, params);
 	}
 	
-	public int insertGenreMap(int musicNo, List<String> musicGenres) { // 중간에 실행이 안될수 있으니 int로 몇번 업데이트가 작동했는지 확인
+	public int insertMusicGenres(int musicNo, List<String> musicGenres) { // 중간에 실행이 안될수 있으니 int로 몇번 업데이트가 작동했는지 확인
         if (musicGenres == null || musicGenres.isEmpty()) {
             return 0;
         }
-        String sql = "insert into music_genre_map (music_no, genre_name) values (?, ?)";
+        String sql = "insert into map_music_genre(map_music_no, map_genre_name) values (?, ?)";
         // BatchPreparedStatementSetter를 사용하여 리스트의 크기만큼 반복적으로 INSERT 쿼리를 실행. 성능 최적화
         int[] results = jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
             
@@ -67,10 +68,10 @@ public class MusicDao {
             // 매 실행마다 PreparedStatement에 값을 설정.
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                // 1. music_no 설정
-                ps.setInt(1, musicNo); 
+                // 1. music_no 설정 
+                ps.setInt(1, musicNo); // 1은 첫번째 홀더
                 // 2. i번째 장르 이름 설정
-                ps.setString(2, musicGenres.get(i));
+                ps.setString(2, musicGenres.get(i)); // 2는 두번째 홀더
             }
         });
         
@@ -83,9 +84,24 @@ public class MusicDao {
         return totalUpdatedRows;
     }
 	
-	public boolean approveMusic(int musicNo) {
-		String sql = "update music set music_status = 'APPROVED' where music_no = ?";
-		Object[] params = { musicNo };
+	public boolean approveMusic(int musicNo, String musicStatus) {
+		String sql = "update music set music_status = ? where music_no = ?";
+		Object[] params = { musicStatus, musicNo };
 		return jdbcTemplate.update(sql,params) > 0;
 	}
+	
+	public List<MusicDto> selectByMemberId(String memberId) {
+		String sql = "select * from music where memberId = ?";
+		Object[] params = {memberId};
+		return jdbcTemplate.query(sql, musicMapper, params);
+	}
+	
+	public MusicDto selectOne(int musicNo) {
+		String sql = "select * from music where music_no = ?";
+		Object[] params = {musicNo};
+		List<MusicDto> list = jdbcTemplate.query(sql, musicMapper, params);
+		return list.isEmpty() ? null : list.get(0);
+	}
+	
+	
 }

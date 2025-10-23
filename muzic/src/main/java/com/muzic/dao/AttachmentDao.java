@@ -3,6 +3,7 @@ package com.muzic.dao;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -25,14 +26,15 @@ public class AttachmentDao {
 	
 	public boolean insert(AttachmentDto attachmentDto) {
 		String sql = "insert into attachment("
-		        + "attachment_no, attachment_type, attachment_category, attachment_parent, "
-		        + "attachment_original_name, attachment_stored_name, attachment_size"
+		        + "attachment_no, attachment_type, attachment_path, attachment_category, "
+		        + "attachment_parent, attachment_original_name, attachment_stored_name, attachment_size"
 		        + ") values ("
-		        + " ?, ?, ?, ?, ?, ?, ?)";
-		Object[] params = { attachmentDto.getAttachmentNo(), attachmentDto.getAttachmentType(), 
-				attachmentDto.getAttachmentCategory(), attachmentDto.getAttachmentParent(), 
-				attachmentDto.getAttachmentOriginalName(), attachmentDto.getAttachmentStoredName(), 
-				attachmentDto.getAttachmentSize()
+		        + " ?, ?, ?, ?, ?, ?, ?, ?)";
+		Object[] params = { 
+				attachmentDto.getAttachmentNo(), attachmentDto.getAttachmentType(),
+				attachmentDto.getAttachmentPath(), attachmentDto.getAttachmentCategory(), 
+				attachmentDto.getAttachmentParent(), attachmentDto.getAttachmentOriginalName(), 
+				attachmentDto.getAttachmentStoredName(), attachmentDto.getAttachmentSize()
 			};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
@@ -49,4 +51,32 @@ public class AttachmentDao {
 		Object[] params = { attachmentNo };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+	
+	public int findAttachmentNoByParent(int parentSeq, String category) {
+	    String sql = "select attachment_no from attachment where attachment_parent = ? and attachment_category = ?";
+	    Object[] params = { String.valueOf(parentSeq), category };
+	    try {
+	        return jdbcTemplate.queryForObject(sql, Integer.class, params);
+	    } catch (EmptyResultDataAccessException e) {
+	        return -1;	// 조회결과 없음 의미없는값(시퀀스는 음수일수 없으니)
+	    }
+	}
+	
+	public int findAttachmentNoByMemberId(String memberId, String category) {
+	    String sql = "select attachment_no from attachment where attachment_parent = ? and attachment_category = ?";
+	    Object[] params = { memberId, category};
+	    try {
+	        return jdbcTemplate.queryForObject(sql, Integer.class, params);
+	    } catch (EmptyResultDataAccessException e) {
+	        return -1;	
+	    }
+	}
+	
+	public AttachmentDto findAttachment(int attachmentNo) {
+	    String sql = "select * from attachment where attachment_no = ?";
+	    Object[] params = { attachmentNo };
+	    List<AttachmentDto> list = jdbcTemplate.query(sql, attachmentMapper, params);
+	    return list.isEmpty() ? null : list.get(0);
+	}
+	
 }
