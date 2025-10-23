@@ -48,16 +48,16 @@ public class MusicController {
 		String loginMemberId = (String) session.getAttribute("loginMemberId");
 		String loginMemberRole = (String) session.getAttribute("loginMemberRole");
 		
-		Set<String> selectedGenres = musicFormDto.getMusicGenreSet();
-		
 		// 장르 검증
+		Set<String> selectedGenres = musicFormDto.getMusicGenreSet();
 	    if( selectedGenres == null || selectedGenres.isEmpty()) 
 	    		throw new IllegalArgumentException("장르는 최소 1개 선택해야 합니다.");
 		if(!musicGenreDao.areAllGenresValid(selectedGenres)) 
 				throw new IllegalArgumentException("장르가 선택되지 않았거나 유효하지 않은 장르입니다.");
 		
 		// 음악파일 검증
-		if(musicFormDto.getMusicFile() == null || musicFormDto.getMusicFile().isEmpty()) 
+		MultipartFile inputMusicFile = musicFormDto.getMusicFile();
+		if(inputMusicFile == null || inputMusicFile.isEmpty()) 
 				throw new IllegalArgumentException("음악파일은 필수로 첨부되어야 합니다.");
 		
 		musicService.registerMusic(musicFormDto, loginMemberId, loginMemberRole);
@@ -65,6 +65,14 @@ public class MusicController {
 		return "redirect:./list";
 	}
 	
-//	@PostMapping("/")
+	@GetMapping("/list")
+	public String list() {
+		return "/WEB-INF/views/music/list.jsp";
+	}
+	
+//	@GetMapping("/image")
+//	public String image(@RequestParam int musicNo, String category) {
+//		
+//	}
 	
 }

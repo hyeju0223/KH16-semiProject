@@ -10,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.muzic.dao.MusicDao;
+import com.muzic.dao.MusicStatusHistoryDao;
 import com.muzic.dto.MusicDto;
 import com.muzic.dto.MusicFormDto;
+import com.muzic.dto.MusicStatusHistoryDto;
 import com.muzic.util.HangulChosungUtils;
 
 
@@ -23,6 +25,9 @@ public class MusicService {
 	
 	@Autowired
     private AttachmentService attachmentService;
+	
+	@Autowired
+	private MusicStatusHistoryDao musicStatusHistoryDao;
 
     @Transactional
     public int registerMusic(MusicFormDto musicFormDto, String memberId, String memberRole) 
@@ -30,9 +35,8 @@ public class MusicService {
         
 		List<String> musicGenres = new ArrayList<>(musicFormDto.getMusicGenreSet());
 		
-    	String musicStatus;
-    	
-    	musicStatus = memberRole.equals("관리자") ? "APPROVED" : "PENDING"; 
+		boolean isAdmin = memberRole.equals("관리자");
+		String musicStatus = isAdmin ? "APPROVED" : "PENDING";
     		
         int musicNo = musicDao.sequence();
         
@@ -74,7 +78,21 @@ public class MusicService {
         }
         
         // 장르 매핑 INSERT (music_genre_map 테이블)
-         musicDao.insertGenreMap(musicNo, musicGenres);
+        musicDao.insertMusicGenres(musicNo, musicGenres);
+         
+         // history INSERT
+        String adminId = isAdmin ? memberId : null;
+        String historyComment = isAdmin ? "승인완료" : "등록신청"; 
+        MusicStatusHistoryDto musicStatusHistoryDto = 
+        		MusicStatusHistoryDto
+        		.builder()
+        		.mshMusicNo(musicNo)
+        		.mshMusicStatus(musicStatus)
+        		.mshComment(historyComment)
+        		.mshAdminId(adminId)
+        		.build();
+        
+        musicStatusHistoryDao.insert(musicStatusHistoryDto);
         
         return musicNo;
     }
