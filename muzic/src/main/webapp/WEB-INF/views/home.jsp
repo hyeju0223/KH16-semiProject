@@ -9,6 +9,8 @@
   <tr><td>loginMemberId</td><td>${sessionScope.loginMemberId}</td></tr>
   <tr><td>loginMemberMbti</td><td>${sessionScope.loginMemberMbti}</td></tr>
   <tr><td>loginMemberRole</td><td>${sessionScope.loginMemberRole}</td></tr>
+    <tr><td>loginMemberNickname</td><td>${sessionScope.loginMemberNickname}</td></tr>
+  
 </table>
 
 <br>

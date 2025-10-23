@@ -39,34 +39,32 @@ public class EmailService {
 	}
 	
 	public void sendCertNumber(String email) {
-		//랜덤번호 생성
-		Random r=new Random();
-		int number=r.nextInt(1000000);
-		DecimalFormat df=new DecimalFormat("000000");
-		String certNumber=df.format(number);
-		
-		//메세지 생성 및 전송
-		SimpleMailMessage message=new SimpleMailMessage();
-		message.setTo(email);
-		message.setSubject("[muzic]인증번호를 확인해주세요.");
-		message.setText("인증번호는["+certNumber+"]입니다");
-		sender.send(message);
-		
-		CertDto certDto=certDao.selectOne(email);
-		if(certDto==null) {
-			certDao.insert(CertDto.builder()
-					.certEmail(email).certNumber(certNumber)
-					.build());
-			
-		}
-		
-		else {//인증메일을 보낸 기록이 있다면 ----> update
-			certDao.update(CertDto.builder()
-						.certEmail(email).certNumber(certNumber)
-					.build());
-		}
-		
+	    // 1️⃣ 인증번호 생성
+	    Random r = new Random();
+	    String certNumber = String.format("%06d", r.nextInt(1000000));
+
+	    // 2️⃣ 메일 전송
+	    SimpleMailMessage message = new SimpleMailMessage();
+	    message.setTo(email);
+	    message.setSubject("[muzic] 인증번호를 확인해주세요.");
+	    message.setText("인증번호는 [" + certNumber + "] 입니다.");
+	    sender.send(message);
+
+	    // 3️⃣ DB 처리 — insert 또는 update 통합
+	    CertDto existing = certDao.selectOne(email);
+
+	    CertDto newCert = CertDto.builder()
+	        .certEmail(email)
+	        .certNumber(certNumber)
+	        .build();
+
+	    if (existing == null) {
+	        certDao.insert(newCert);
+	    } else {
+	        certDao.update(newCert);
+	    }
 	}
+
 
 	public void sendWelcomeMail(MemberDto memberDto) throws MessagingException, IOException {
 		MimeMessage message = sender.createMimeMessage();
