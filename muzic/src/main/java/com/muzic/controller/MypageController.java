@@ -16,6 +16,7 @@ import com.muzic.dao.MemberDao;
 import com.muzic.dao.MusicDao;
 import com.muzic.dto.MemberDto;
 import com.muzic.dto.MusicDto;
+import com.muzic.error.TargetNotFoundException;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -35,8 +36,10 @@ public class MypageController {
 		//세션으로 회원 찾기
 		String loginId = (String) session.getAttribute("loginMemberId");
 		MemberDto memberDto = memberDao.selectByMemberId(loginId);
+		if(memberDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
+		
 		//아이디로 음원 리스트 조회
-		List<MusicDto> musicList = musicDao.selectBymemberId(memberDto.getMemberId());
+		List<MusicDto> musicList = musicDao.selectBymemberId(memberDto.getMemberId()); 
 		//memberDto와 musicList를 jsp로 넘길 수 있도록 model 설정 
 		model.addAttribute("memberDto",memberDto);
 		model.addAttribute("musicList",musicList);
@@ -50,7 +53,7 @@ public class MypageController {
 		//세션으로 회원 찾기
 		String loginId = (String) session.getAttribute("loginMemberId");
 		MemberDto findDto = memberDao.selectByMemberId(loginId);
-//		if(findDto == null) throw new 
+		if(findDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
 		
 		//회원 정보를 jsp에 넘김
 		model.addAttribute("findDto",findDto);
@@ -65,12 +68,13 @@ public class MypageController {
 		//세션으로 loginId 찾기
 		String loginId = (String) session.getAttribute("loginMemberId");
 		MemberDto findDto = memberDao.selectByMemberId(loginId);
+		if(findDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
 		
 		//회원 탈퇴 (비밀번호 확인 후 회원 탈퇴)
 
-		boolean  isVaild  = bCryptPasswordEncoder.matches(memberPw, findDto.getMemberPw());
+		boolean  isValid  = bCryptPasswordEncoder.matches(memberPw, findDto.getMemberPw());
 		
-		if(!isVaild) { //비밀번호가 틀리다면
+		if(!isValid) { //비밀번호가 틀리다면
 			return "redirect:withDraw?error"; //파라미터에 error을 추가해서 '비밀번호를 확인해주세요' 문구 추가 (프론트)
 		}
 		//동의 버튼을 체크하지 않으면 다시 동일한 페이지로 반환
@@ -86,16 +90,18 @@ public class MypageController {
 	}
 	
 	@GetMapping("/bye")
-	public String buy() {
+	public String bye() {
 		return "/WEB-INF/views/mypage/bye.jsp";
 	}
 	
 	//비밀번호 변경 페이지
 	
 	@GetMapping("/password")
-	public String password() {
+	public String password(HttpSession session) {
 		
-		//예외처리
+		String loginId = (String)session.getAttribute("loginMemberId");
+		MemberDto findDto = memberDao.selectByMemberId(loginId);
+		if(findDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
 
 		return "/WEB-INF/views/mypage/password.jsp";
 	}
@@ -109,6 +115,7 @@ public class MypageController {
 		//세션으로 회원 찾기
 		String loginId = (String) session.getAttribute("loginMemberId");
 		MemberDto findDto = memberDao.selectByMemberId(loginId);
+		if(findDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
 		
 		//현재 비밀번호와 입력한 현재 비밀번호가 일치하지 않는다면
 		if(! bCryptPasswordEncoder.matches(loginPw, findDto.getMemberPw())) { 
@@ -140,6 +147,7 @@ public class MypageController {
 		//세션으로 회원 찾기
 		String loginId = (String) session.getAttribute("loginMemberId");
 		MemberDto findDto = memberDao.selectByMemberId(loginId);
+		if(findDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
 		
 		model.addAttribute("memberDto",findDto);
 
@@ -153,6 +161,7 @@ public class MypageController {
 		//세션으로 회원 찾기
 		String loginId = (String) session.getAttribute("loginMemberId");
 		MemberDto findDto = memberDao.selectByMemberId(loginId);
+		if(findDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
 		
 		memberDto.setMemberId(loginId);
 		memberDao.update(memberDto);

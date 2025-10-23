@@ -31,7 +31,7 @@
 	비밀번호를 한번 더 입력해주세요<br>
 	비밀번호를 입력하시면 회원탈퇴가 완료됩니다<br>
 	비밀번호를 모르시면 정보수정 페이지에서 새로 설정 후 진행하시면 됩니다<br>
-	<a href="#">수정하러 가기</a><br>
+	<a href="password">수정하러 가기</a><br>
 	
 	<h3>회원 아이디 : ${memberDto.memberId}</h3>
 	<input type="password" name="memberPw">
