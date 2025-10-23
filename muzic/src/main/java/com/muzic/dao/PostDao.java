@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.muzic.dto.PostDto;
 import com.muzic.mapper.PostMapper;
+import com.muzic.vo.PostVO;
 
 @Repository
 public class PostDao {
@@ -24,48 +25,56 @@ public class PostDao {
 		return jdbcTemplate.queryForObject(sql, int.class);
 	}
 	
-	//목록(자유게시판)
-	public List<PostDto> selectList() {
-		
-		//모든 게시글의 정보를 조회하는 SQL 구문
-		//post_no를 기준으로 내림차순(desc) 정렬하여 최신 글이 먼저 보이도록 정렬
-		String sql = "select post_no, post_title, post_writer, post_mbti, post_content, "
-	               + "post_music, post_wtime, post_etime, post_like, post_read, post_notice "
-	               + "from post where post_mbti is null or post_mbti = '' "
-	               + "order by post_no desc";
-		
-		return jdbcTemplate.query(sql, postMapper);
-	}
+//	public List<PostVO> selectListNotice() {
+//		String sql = "select * from post_list where post_notice = 'Y "
+//				+ "order by post_no desc";
+//		
+//		return jdbcTemplate.query(sql, postMapper);
+//	}
+//	
+//	
+//	//목록(자유게시판)
+//	public List<PostVO> selectList() {
+//		
+//		//모든 게시글의 정보를 조회하는 SQL 구문
+//		//post_no를 기준으로 내림차순(desc) 정렬하여 최신 글이 먼저 보이도록 정렬
+//		String sql = "select post_no, post_title, post_writer, post_mbti, post_content, "
+//	               + "post_music, post_wtime, post_etime, post_like, post_read, post_notice "
+//	               + "from post where post_mbti is null or post_mbti = '' "
+//	               + "order by post_no desc";
+//		
+//		return jdbcTemplate.query(sql, postMapper);
+//	}
 	
 	//검색(전체 검색 쿼리)
-	public List<PostDto> selectList(String column, String keyword) {
-		
-		//검색 가능한 칼럼 이름을 Set으로 정의
-		Set<String> list = Set.of("post_title", "post_writer", "post_music");
-		
-		//유효성 검사
-		//만약 사용자가 보낸 cloumn이 set에 포함되어있지 않다면
-		if(!list.contains(column)) {
-			//빈 리스트를 반환
-			return List.of();
-		}
-		
-		//instr로 칼럼 안 키워드 검색 조회 SQL 구문
-		String sql = "select post_no, post_title, post_writer, post_mbti, post_content,"
-				+"post_music, post_wtime, post_etime, post_like, post_read, post_notice "
-				+ "from post where instr(#1, ?) > 0 "
-				+ "order by post_no desc";
-		
-		//사용자가 입력한 칼럼 이름 삽입
-		sql = sql.replace("#1", column);
-		
-		//파라미터 키워드 삽입
-		Object[] params = {keyword};
-		
-		//SQl구문 실행, 키워드를 파라미터로 넘기기
-		// 과를 PostDto 객체 리스트로 매핑하여 반환합니다.
-		return jdbcTemplate.query(sql, postMapper, params);
-	}
+//	public List<PostVO> selectList(String column, String keyword) {
+//		
+//		//검색 가능한 칼럼 이름을 Set으로 정의
+//		Set<String> list = Set.of("post_title", "post_writer", "post_music");
+//		
+//		//유효성 검사
+//		//만약 사용자가 보낸 cloumn이 set에 포함되어있지 않다면
+//		if(!list.contains(column)) {
+//			//빈 리스트를 반환
+//			return List.of();
+//		}
+//		
+//		//instr로 칼럼 안 키워드 검색 조회 SQL 구문
+//		String sql = "select post_no, post_title, post_writer, post_mbti, post_content,"
+//				+"post_music, post_wtime, post_etime, post_like, post_read, post_notice "
+//				+ "from post where instr(#1, ?) > 0 "
+//				+ "order by post_no desc";
+//		
+//		//사용자가 입력한 칼럼 이름 삽입
+//		sql = sql.replace("#1", column);
+//		
+//		//파라미터 키워드 삽입
+//		Object[] params = {keyword};
+//		
+//		//SQl구문 실행, 키워드를 파라미터로 넘기기
+//		// 과를 PostDto 객체 리스트로 매핑하여 반환합니다.
+//		return jdbcTemplate.query(sql, postMapper, params);
+//	}
 	
 	//목록(mbti개시판)
 	public List<PostDto> selectMbtiList(String memberMbti) {
