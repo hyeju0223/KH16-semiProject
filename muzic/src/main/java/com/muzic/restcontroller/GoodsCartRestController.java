@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.muzic.dto.GoodsCartDto;
 import com.muzic.dto.GoodsDto;
+import com.muzic.error.NeedPermissionException;
 import com.muzic.service.GoodsCartService;
+
+import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin
 @RestController
@@ -23,26 +26,42 @@ public class GoodsCartRestController {
 
 	// 체크된 상품 삭제
 	@PostMapping("/deleteMultiple")
-	public void deleteMultiple(@RequestParam List<String> goodsNos, @RequestParam String memberId) {
-		goodsCartService.deleteSelectedGoods(memberId, goodsNos);
+	public void deleteMultiple(@RequestParam List<String> goodsNos, HttpSession session) {
+		String loginMemberId = (String) session.getAttribute("loginMemberId");
+		if (loginMemberId == null) {
+			throw new NeedPermissionException("로그인이 필요합니다.");
+		}
+		goodsCartService.deleteSelectedGoods(loginMemberId, goodsNos);
 	}
 
 	// 체크된 상품 구매
 	@PostMapping("/buyMultiple")
-	public void buyMultiple(@RequestParam List<String> goodsNos, @RequestParam String memberId) {
-		goodsCartService.buySelectedGoods(memberId, goodsNos);
+	public void buyMultiple(@RequestParam List<String> goodsNos, HttpSession session) {
+		String loginMemberId = (String) session.getAttribute("loginMemberId");
+		if (loginMemberId == null) {
+			throw new NeedPermissionException("로그인이 필요합니다.");
+		}
+		goodsCartService.buySelectedGoods(loginMemberId, goodsNos);
 	}
 
 	// 장바구니 수량 변경
 	@PostMapping("/update")
-	public void update(@RequestParam String memberId, @ModelAttribute GoodsCartDto goodsCartDto) {
-		goodsCartService.updateQuantity(memberId, goodsCartDto);
+	public void update(HttpSession session, @ModelAttribute GoodsCartDto goodsCartDto) {
+		String loginMemberId = (String) session.getAttribute("loginMemberId");
+		if (loginMemberId == null) {
+			throw new NeedPermissionException("로그인이 필요합니다.");
+		}
+		goodsCartService.updateQuantity(loginMemberId, goodsCartDto);
 	}
 
 	// 장바구니 담기
 	@PostMapping("/add")
-	public void add(@RequestParam String memberId, @ModelAttribute GoodsDto goodsDto) {
-		goodsCartService.addGoodsToCart(memberId, goodsDto);
+	public void add(HttpSession session, @ModelAttribute GoodsDto goodsDto) {
+		String loginMemberId = (String) session.getAttribute("loginMemberId");
+		if (loginMemberId == null) {
+	        throw new NeedPermissionException("로그인이 필요합니다.");
+	    }
+		goodsCartService.addGoodsToCart(loginMemberId, goodsDto);
 	}
 
 }

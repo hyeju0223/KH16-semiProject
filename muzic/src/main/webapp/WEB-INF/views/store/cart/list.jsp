@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/commons.css">
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
 <style>
 
 /* [중요] 아이콘 버튼 스타일 */
@@ -19,68 +21,82 @@
 	color: #d9534f; /* 붉은색 */
 }
 </style>
-<h1>장바구니</h1>
-<c:choose>
-	<c:when test="${cartList == null || cartList.size() == 0}">
-		<h2>장바구니에 담긴 상품이 없습니다.</h2>
-	</c:when>
-	<c:otherwise>
-		<div>
-			선택 상품 총액: <span id="totalPrice">0</span>원
-		</div>
 
-		<label> <input type="checkbox" class="check-all"> 전체
-			선택
-		</label>
-		<table border="1">
-			<thead>
-				<tr>
-					<th></th>
-					<th>상품번호</th>
-					<th>상품이름</th>
-					<th>상품포인트</th>
-					<th>수량</th>
-					<th>총액</th>
-					<th>삭제</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="goodsCart" items="${cartList}">
+<div class="container w-800">
+	<div class="cell">
+		<h1>장바구니</h1>
+	</div>
+	<c:choose>
+		<c:when test="${cartList == null || cartList.size() == 0}">
+			<h2>장바구니에 담긴 상품이 없습니다.</h2>
+		</c:when>
+		<c:otherwise>
+			<div class="cell flex-box align-items-center">
+			<div class="flex-fill">
+				<label> 
+					<input type="checkbox" class="check-all"> 전체 선택
+				</label>
+				</div>
+				<button id="deleteSelected">선택 삭제</button>
+			</div>
+			<div class="cell">
+			<table class="table table-border w-100">
+				<thead>
 					<tr>
-						<td><input type="checkbox" class="check-item"
-							value="${goodsCart.cartGoods}"
-							data-price="${goodsCart.cartTotal }"></td>
-						<td>${goodsCart.cartGoods}</td>
-						<td>${goodsCart.goodsName}</td>
-						<td>${goodsCart.goodsPoint}</td>
-						<td><input type="number" class="input-quantity"
-							value="${goodsCart.cartQuantity}" min="1"
-							max="${goodsCart.goodsQuantity}"
-							style="width: 60px; text-align: center;"
-							data-goods-no="${goodsCart.cartGoods}"></td>
-						<td>${goodsCart.cartTotal}</td>
-						<td>
-							<form action="delete" method="post">
-								<input type="hidden" name="goodsNo"
-									value="${goodsCart.cartGoods}"> <input type="hidden"
-									name="memberId" value="${memberId}">
-								<button type="submit" class="btn-delete-icon" title="삭제"
-									onclick="return confirm('이 상품을 삭제하시겠습니까?');">
-									<i class="fa-solid fa-xmark"></i>
-								</button>
-							</form>
-						</td>
+						<th></th>
+						<th>상품번호</th>
+						<th>상품이름</th>
+						<th>상품포인트</th>
+						<th>수량</th>
+						<th>총액</th>
+						<th>삭제</th>
 					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-		<button id="buySelected">선택 구매</button>
-		<button id="deleteSelected">선택 삭제</button>
-	</c:otherwise>
-</c:choose>
-<br>
-
-<a href="../list"><button type="button">계속 쇼핑</button></a>
+				</thead>
+				<tbody>
+					<c:forEach var="goodsCart" items="${cartList}">
+						<tr>
+							<td><input type="checkbox" class="check-item"
+								value="${goodsCart.cartGoods}"
+								data-price="${goodsCart.cartTotal }"></td>
+							<td>${goodsCart.cartGoods}</td>
+							<td class="left">${goodsCart.goodsName}</td>
+							<td>${goodsCart.goodsPoint}원</td>
+							<td><input type="number" class="input-quantity"
+								value="${goodsCart.cartQuantity}" min="1"
+								max="${goodsCart.goodsQuantity}"
+								style="width: 60px; text-align: center;"
+								data-goods-no="${goodsCart.cartGoods}"></td>
+							<td>${goodsCart.cartTotal}</td>
+							<td>
+								<form action="delete" method="post">
+									<input type="hidden" name="goodsNo"
+										value="${goodsCart.cartGoods}"> <input type="hidden"
+										name="memberId" value="${memberId}">
+									<button type="submit" class="btn-delete-icon" title="삭제"
+										onclick="return confirm('이 상품을 삭제하시겠습니까?');">
+										<i class="fa-solid fa-xmark"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			<div class="cell">
+			<div>
+				총 상품금액: <span id="totalPrice">0</span>원
+				</div>
+			</div>
+			</div>
+			<div class="cell">
+				<button id="buySelected">구매</button>
+			</div>
+		</c:otherwise>
+	</c:choose>
+	<div class="cell">
+		<a href="../list"><button type="button">계속 쇼핑</button></a>
+	</div>
+</div>
 
 <!-- jQuery-->
 <script
@@ -118,7 +134,6 @@
 				url : "/rest/store/cart/update",
 				type : "post",
 				data : {
-					memberId : "testuser2",
 					cartGoods : goodsNo,
 					cartQuantity : quantity
 				},
@@ -190,12 +205,10 @@
 				type : "post",
 				data : {
 					goodsNos : selected,
-					memberId : "testuser2"
 				},
 				traditional : true,//배열 전송 시 필요
 				success : function() {
-					alert("구매 완료!");
-					location.reload();
+					location.href = "/store/buyFinish"
 				}
 			});
 		});
@@ -219,8 +232,7 @@
 				type : "POST",
 				data : {
 					goodsNos : selected,
-					memberId : "testuser2"
-				}, // 일반 POST 파라미터 전송, 세션 추후 구현
+				}, 
 				traditional : true,
 				success : function() {
 					alert("삭제 완료!");

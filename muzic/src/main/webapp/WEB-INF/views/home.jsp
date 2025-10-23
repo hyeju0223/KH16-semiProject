@@ -21,3 +21,5 @@
 </c:if>
 
 <a href="/mypage/profile">마이페이지</a>
+<br>
+<a href="/store/list">STORE</a>
