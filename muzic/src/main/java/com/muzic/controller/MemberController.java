@@ -23,6 +23,7 @@ import com.muzic.dto.MemberDto;
 import com.muzic.dto.MemberLoginDto;
 import com.muzic.error.NeedPermissionException;
 import com.muzic.error.TargetNotFoundException;
+import com.muzic.service.AttachmentService;
 import com.muzic.service.EmailService;
 
 import jakarta.mail.MessagingException;
@@ -42,6 +43,8 @@ public class MemberController {
     private EmailService emailService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private AttachmentService attachmentService;
 
     
     // 회원가입 (멀티페이지)
@@ -57,12 +60,16 @@ public class MemberController {
             throws IOException, MessagingException {
 
         memberDao.insert(memberDto);
+        if (attach != null && !attach.isEmpty()) {
+           
+            attachmentService.save(attach, memberDto.getMemberId(), "member");
+        }
         emailService.sendWelcomeMail(memberDto);
 
     
         memberLoginDao.insert(memberDto.getMemberId());
 
-        return "redirect:/music/add";
+        return "redirect:/member/joinFinish";
     }
 
     @RequestMapping("/joinFinish")
@@ -125,9 +132,9 @@ public class MemberController {
       
         session.setAttribute("loginMemberRole", findDto.getMemberRole());
         
-        session.setAttribute("loginMemberNickName", findDto.getMemberNickname());
+        session.setAttribute("loginMemberNickname", findDto.getMemberNickname());
 
-        return "redirect:/music/add";
+        return "redirect:/";
     }
 
     
