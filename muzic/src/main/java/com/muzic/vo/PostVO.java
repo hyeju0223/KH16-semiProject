@@ -16,11 +16,12 @@ public class PostVO {
 	private int postNo;
 	private String postTitle;
 	private String postWriter;
-	private String posrMbti;
+	private String postMbti;
+	private String postContent;
+	private int postMusic;
 	private Timestamp postWtime;
 	private Timestamp postEtime;
 	private int postLike;
-	private int postRead;
 	private String postNotice = "N";
 	
 	private String memberId;
@@ -42,7 +43,7 @@ public class PostVO {
 //		}
 //	}
 	
-	private String getPostWriteTime() {
+	public String getPostWriteTime() {
 		LocalDateTime wtime = postWtime.toLocalDateTime();
 		LocalDateTime now = LocalDateTime.now();
 		//Duration = 시간의 길이를 나타내는 클래스
@@ -65,4 +66,5 @@ public class PostVO {
 	        return wtime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); 
 	    }
 	}
+	
 }

@@ -123,7 +123,7 @@
 					<td>${postVO.postLike}</td>
 <%-- 					<td>${postVO.post }</td> --%>
 					<td>조회수</td>
-				</tr>
+				</tr> 
 			</c:forEach>
 		</tbody>
 	</table>
