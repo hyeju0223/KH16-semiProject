@@ -1,12 +1,18 @@
 package com.muzic.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data
+@Data @AllArgsConstructor @NoArgsConstructor @Builder
 public class PageVO {
+	@Builder.Default // 빌더를 사용할 때  사용 시 초기값(리터럴)을 기본값으로 유지하기 위한 설정
     private int page = 1; //현재 페이지 번호
+	@Builder.Default
     private int size = 10; //한 페이지에 표시되는 게시글 수
     private int allData; //총 데이터 수
+    @Builder.Default
     private int blockNum = 10; //표시될 블럭 개수
     private String column;
     private String keyword;
