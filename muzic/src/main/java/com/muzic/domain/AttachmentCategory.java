@@ -7,13 +7,13 @@ public enum AttachmentCategory {
     POST("post"),
     COVER("cover");
 
-    private final String value;
+    private final String category;
 
-    AttachmentCategory(String value) {
-        this.value = value;
+    AttachmentCategory(String category) {
+        this.category = category;
     }
 
-    public String getValue() {
-        return value;
+    public String getCategoryName() {
+        return category;
     }
 }

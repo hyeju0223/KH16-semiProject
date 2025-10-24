@@ -54,7 +54,7 @@ public class AttachmentDao {
 	
 	// 메소드에 매개변수 주실때 
 	// AttachmentCategory category = AttachmentCategory.GOODS; // 해당하는 카테고리
-	// String categoryValue = category.getValue(); // "goods"
+	// String categoryValue = category.getCategoryName(); // "goods"
 	// 이렇게하고 findAttachmentNoByParent(goodsNo, categoryValue) 이렇게 메소드 호출해주세요
 	public int findAttachmentNoByParent(int parentSeq, String category) {	
 	    String sql = "select attachment_no from attachment where attachment_parent = ? and attachment_category = ?";

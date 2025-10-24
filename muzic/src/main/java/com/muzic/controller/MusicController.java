@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,17 +24,15 @@ import com.muzic.dto.MusicDto;
 import com.muzic.dto.MusicFormDto;
 import com.muzic.error.TargetNotFoundException;
 import com.muzic.service.MusicService;
+import com.muzic.vo.MusicUserVO;
+import com.muzic.vo.PageVO;
 
-import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/music")
 public class MusicController {
-	
-	@Autowired
-	private MemberDao memberDao;
-	
+
 	@Autowired
 	private MusicService musicService;
 	
@@ -85,7 +84,7 @@ public class MusicController {
 	public String image(@RequestParam int musicNo) {
 		try {
 			AttachmentCategory category = AttachmentCategory.MUSIC; // 해당하는 카테고리
-			String categoryValue = category.getValue(); // "goods"
+			String categoryValue = category.getCategoryName(); // "music"
 			int attachmentNo = attachmentDao.findAttachmentNoByParent(musicNo, categoryValue);
 			
 			 	if (attachmentNo == -1) {
@@ -98,16 +97,19 @@ public class MusicController {
 		}
 	}
 	
-//	@GetMapping("list")
-//	public String list(Model model, @RequestParam(required = false)) {
-//		
+	
+//	@GetMapping("/list")
+//	public String list(Model model, @ModelAttribute PageVO pageVO) {
+//		List<MusicUserVO> musicUserVOList = board  
 //	}
 	
-//	@GetMapping("/detail")
-//	public String detail String(Model model, @RequestParam int musicNo) {
-//		MusicDto musicDto = musicDao.selectOne(musicNo);
-//		if(musicDto == null) throw new TargetNotFoundException("존재하지 않는 음원 입니다");
-//		model.
-//	}
+	@GetMapping("/detail")
+	public String detail (Model model, @RequestParam int musicNo) {
+		MusicDto musicDto = musicDao.selectOne(musicNo);
+		if(musicDto == null) throw new TargetNotFoundException("존재하지 않는 음원 입니다");
+		model.addAttribute("musicDto", musicDto);
+		
+			return "/WEB-INF/views/music/detail.jsp";
+		}
 	
 }
