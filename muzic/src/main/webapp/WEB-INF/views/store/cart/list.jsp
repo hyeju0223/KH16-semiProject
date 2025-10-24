@@ -34,10 +34,10 @@
 				<h1>장바구니</h1>
 			</div>
 			<div class="cell flex-box align-items-center">
-			<div class="flex-fill">
-				<label> 
-					<input type="checkbox" class="check-all"> 전체 선택
-				</label>
+				<div class="flex-fill">
+					<label> 
+						<input type="checkbox" class="check-all"> 전체 선택
+					</label>
 				</div>
 				<button id="deleteSelected">선택 삭제</button>
 			</div>

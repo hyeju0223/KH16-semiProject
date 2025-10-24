@@ -69,9 +69,9 @@
 					<tr>
 						<td><img src="image?goodsNo=${goods.goodsNo}"
 							style="width: 100px; height: 100px; object-fit: cover;"></td>
-						<td class="left"><a href="detail?goodsNo=${goods.goodsNo}"
+						<td class="left" style="width: 70%"><a href="detail?goodsNo=${goods.goodsNo}"
 							style="font-size: 1.25em">${goods.goodsName}</a><br>${goods.goodsPoint} point<br></td>
-						<td class="right">
+						<td class>
 							<form class="cartAddForm" style="display: flex; justify-content: flex-end;">
 								<div style="display: flex; align-items: center; gap: 10px;">
 									<!-- 수량 입력창 -->
