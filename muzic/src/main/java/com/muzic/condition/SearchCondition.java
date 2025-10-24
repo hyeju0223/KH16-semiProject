@@ -14,7 +14,7 @@ public class SearchCondition {
     private int allData; //총 데이터 수
     @Builder.Default
     private int blockNum = 10; // 표시될 블럭 개수
-    private String sort;
+    private String sortType;
     private String column;
     private String keyword;
     private boolean chosung;
@@ -48,9 +48,6 @@ public class SearchCondition {
 	  public boolean list() {
 	      return column == null || keyword == null; //둘 중 하나라도 null이면
 	  }
-	  public boolean searchByKoreanSort() {
-	      return "가나다순".equals(sort);
-	  }
 	  public boolean searchChosung() {
 		  return search() && chosung;
 	  }
@@ -67,8 +64,6 @@ public class SearchCondition {
 	        	}
 	        		
 	        }
-	        
 	          return param.toString();
-	
 	    }
 }
