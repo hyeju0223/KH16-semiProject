@@ -133,7 +133,7 @@ public class MusicDao {
 	// 인기순 조회
 	public List<MusicUserVO> selectPagingByLike(SearchCondition searchCondition) {
 		String sql = "select * from ("
-				+ "select rownum rn, TMP.* from ("
+				+ "	select rownum rn, TMP.* from ("
 				+ "select * from music_user_vo "
 				+ "order by music_like desc, music_no desc"
 				+ ") TMP "
@@ -168,21 +168,19 @@ public class MusicDao {
 	
 	public List<MusicUserVO> searchByAccuracy(SearchCondition searchCondition) {
 	    String sql = "select * from ("
-	               + " select rownum rn, tmp.* from ("
-	               + "  select *, "
-	               + "   case "
-	               + "    when lower(!@) = lower(?) then 100 "
-	               + "    when instr(lower(!@), lower(?)) = 1 then 80 "
-	               + "    when instr(lower(!@), lower(?)) > 0 then 50 "
-	               + "    else 0 end as score "
-	               + "  from music_user_vo "
-	               + "  where instr(lower(!@), lower(?)) > 0 "
-	               + "  order by score desc, music_like desc "
-	               + " ) tmp"
+	               + "select rownum rn, tmp.* from ("
+	               + "select *, "
+	               + "case "
+	               + "when lower(!@) = lower(?) then 100 "
+	               + "when instr(lower(!@), lower(?)) = 1 then 80 "
+	               + "when instr(lower(!@), lower(?)) > 0 then 50 "
+	               + "else 0 end as score "
+	               + "from music_user_vo "
+	               + "where instr(lower(!@), lower(?)) > 0 "
+	               + "order by score desc, music_like desc "
+	               + ") tmp"
 	               + ") where rn between ? and ?";
-
 	    sql = sql.replace("!@", searchCondition.getColumn());
-
 	    Object[] params = {
 	    	searchCondition.getKeyword(),searchCondition.getKeyword(), searchCondition.getKeyword(),
 	    	searchCondition.getStart(), searchCondition.getEnd()
