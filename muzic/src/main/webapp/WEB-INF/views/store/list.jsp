@@ -6,10 +6,22 @@
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 <style>
+
+/* 크롬에서 수량버튼의 스피너 안보이게 */
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
 .table>tbody>tr>td {
 	padding-top: 20px;
 	padding-bottom: 20px;
 	vertical-align: middle;
+}
+
+.table {
+	table-layout: fixed;
+	width: 100%;
 }
 </style>
 <div class="container w-1000">
@@ -20,27 +32,34 @@
 		<a href="cart/list"> <i class="fa-solid fa-cart-shopping"></i>
 		</a>
 	</div>
-	<div class="cell right">
-		<form method="get" action="list">
-			<select name="goodsCategory" onchange="this.form.submit()" class="field">
-				<option value="">전체</option>
-				<option value="의류" ${goodsCategory == '의류' ? 'selected' : ''}>의류</option>
-				<option value="굿즈" ${goodsCategory == '굿즈' ? 'selected' : ''}>굿즈</option>
-				<option value="음반" ${goodsCategory == '음반' ? 'selected' : ''}>음반</option>
-				<option value="포토카드" ${goodsCategory == '포토카드' ? 'selected' : ''}>포토카드</option>
-				<option value="문구류" ${goodsCategory == '문구류' ? 'selected' : ''}>문구류</option>
-				<option value="전자기기" ${goodsCategory == '전자기기' ? 'selected' : ''}>전자기기</option>
-				<option value="액세서리" ${goodsCategory == '액세서리' ? 'selected' : ''}>액세서리</option>
-				<option value="생활용품" ${goodsCategory == '생활용품' ? 'selected' : ''}>생활용품</option>
-				<option value="기타" ${goodsCategory == '기타' ? 'selected' : ''}>기타</option>
-			</select>
-		</form>
+	<div class="cell category-filter">
+		<a href="list"
+			class="btn-category ${empty param.goodsCategory ? 'active' : ''}">전체</a>
+
+		<a href="list?goodsCategory=의류"
+			class="btn-category ${param.goodsCategory == '의류' ? 'active' : ''}">의류</a>
+		<a href="list?goodsCategory=굿즈"
+			class="btn-category ${param.goodsCategory == '굿즈' ? 'active' : ''}">굿즈</a>
+		<a href="list?goodsCategory=음반"
+			class="btn-category ${param.goodsCategory == '음반' ? 'active' : ''}">음반</a>
+		<a href="list?goodsCategory=포토카드"
+			class="btn-category ${param.goodsCategory == '포토카드' ? 'active' : ''}">포토카드</a>
+		<a href="list?goodsCategory=문구류"
+			class="btn-category ${param.goodsCategory == '문구류' ? 'active' : ''}">문구류</a>
+		<a href="list?goodsCategory=전자기기"
+			class="btn-category ${param.goodsCategory == '전자기기' ? 'active' : ''}">전자기기</a>
+		<a href="list?goodsCategory=액세서리"
+			class="btn-category ${param.goodsCategory == '액세서리' ? 'active' : ''}">액세서리</a>
+		<a href="list?goodsCategory=생활용품"
+			class="btn-category ${param.goodsCategory == '생활용품' ? 'active' : ''}">생활용품</a>
+		<a href="list?goodsCategory=기타"
+			class="btn-category ${param.goodsCategory == '기타' ? 'active' : ''}">기타</a>
 	</div>
 	<div class="cell">
 		<table class="table w-100">
 			<thead>
 				<tr>
-					<th></th>
+					<th style="width: 200px;"></th>
 					<th></th>
 					<th></th>
 				</tr>
@@ -48,12 +67,12 @@
 			<tbody>
 				<c:forEach var="goods" items="${goodsList}">
 					<tr>
-						<td><img
-							src="https://dummyimage.com/100x100/cccccc/000000.png"></td>
-						<td class="left"><a href="detail?goodsNo=${goods.goodsNo}">${goods.goodsName}</a><br>
-							포인트 : ${goods.goodsPoint}<br></td>
-						<td class="left">
-							<form class="cartAddForm">
+						<td><img src="image?goodsNo=${goods.goodsNo}"
+							style="width: 100px; height: 100px; object-fit: cover;"></td>
+						<td class="left"><a href="detail?goodsNo=${goods.goodsNo}"
+							style="font-size: 1.25em">${goods.goodsName}</a><br>${goods.goodsPoint} point<br></td>
+						<td class="right">
+							<form class="cartAddForm" style="display: flex; justify-content: flex-end;">
 								<div style="display: flex; align-items: center; gap: 10px;">
 									<!-- 수량 입력창 -->
 									<div class="quantity-selector">

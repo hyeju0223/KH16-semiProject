@@ -22,6 +22,10 @@
 				<a href="cart/list"> <i class="fa-solid fa-cart-shopping"></i>
 				</a>
 			</div>
+			<div class="cell">
+			<img src="image?goodsNo=${goodsDto.goodsNo}"
+							style="width: 100px; height: 100px; object-fit: cover;">
+			</div>
 			<div class="cell right">
 				<table class="table table-border w-100">
 					<tr>

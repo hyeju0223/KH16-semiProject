@@ -25,15 +25,16 @@ public class GoodsDao {
 	// 상품 등록
 	public void insert(GoodsDto goodsDto) {
 		String sql = "insert into goods (goods_no, goods_name, goods_description, goods_point, goods_quantity, goods_category, goods_expiration, goods_registration_time) "
-				+ "values (goods_seq.nextval, ?, ?, ?, ?, ?, ?, systimestamp)";
-		Object[] params = { goodsDto.getGoodsName(), goodsDto.getGoodsDescription(), goodsDto.getGoodsPoint(),
-				goodsDto.getGoodsQuantity(), goodsDto.getGoodsCategory(), goodsDto.getGoodsExpiration() };
+				+ "values (?, ?, ?, ?, ?, ?, ?, systimestamp)";
+		Object[] params = { goodsDto.getGoodsNo(), goodsDto.getGoodsName(), goodsDto.getGoodsDescription(),
+				goodsDto.getGoodsPoint(), goodsDto.getGoodsQuantity(), goodsDto.getGoodsCategory(),
+				goodsDto.getGoodsExpiration() };
 		jdbcTemplate.update(sql, params);
 	}
 
 	// 전체 상품 조회
 	public List<GoodsDto> selectList() {
-		String sql = "select * from goods order by goods_point asc, goods_no asc";
+		String sql = "select * from goods order by goods_no desc";
 		return jdbcTemplate.query(sql, goodsMapper);
 	}
 

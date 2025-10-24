@@ -7,6 +7,7 @@
 
 <style>
 
+
 /* [중요] 아이콘 버튼 스타일 */
 .btn-delete-icon {
 	background: none; /* 1. 배경을 없앰 */
@@ -20,17 +21,18 @@
 .btn-delete-icon:hover {
 	color: #d9534f; /* 붉은색 */
 }
+
 </style>
 
 <div class="container w-1000">
-	<div class="cell">
-		<h1>장바구니</h1>
-	</div>
 	<c:choose>
 		<c:when test="${cartList == null || cartList.size() == 0}">
 			<h2>장바구니에 담긴 상품이 없습니다.</h2>
 		</c:when>
 		<c:otherwise>
+			<div class="cell">
+				<h1>장바구니</h1>
+			</div>
 			<div class="cell flex-box align-items-center">
 			<div class="flex-fill">
 				<label> 
@@ -39,35 +41,37 @@
 				</div>
 				<button id="deleteSelected">선택 삭제</button>
 			</div>
-			<div class="cell">
-			<table class="table table-border w-100">
+			<div class="cell" style="display: flex; gap: 30px; align-items: flex-start;">
+			<div style="width: 80%">
+			<table class="table w-100">
 				<thead>
-					<tr>
+					<!-- <tr>
 						<th></th>
-						<th>상품번호</th>
-						<th>상품이름</th>
-						<th>상품포인트</th>
-						<th>수량</th>
-						<th>총액</th>
-						<th>삭제</th>
-					</tr>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr> -->
 				</thead>
 				<tbody>
 					<c:forEach var="goodsCart" items="${cartList}">
 						<tr>
-							<td><input type="checkbox" class="check-item"
+							<td width="5%"><input type="checkbox" class="check-item"
 								value="${goodsCart.cartGoods}"
 								data-price="${goodsCart.cartTotal }"></td>
-							<td>${goodsCart.cartGoods}</td>
+							<td><img src="image?goodsNo=${goodsCart.cartGoods}"
+							style="width: 100px; height: 100px; object-fit: cover;"></td>
 							<%-- <a href="detail?goodsNo=${goods.goodsNo}">${goods.goodsName}</a> --%>
 							<td class="left"><a href="/store/detail?goodsNo=${goodsCart.cartGoods}">${goodsCart.goodsName}</a></td>
 							<td>${goodsCart.goodsPoint}원</td>
-							<td><input type="number" class="input-quantity"
-								value="${goodsCart.cartQuantity}" min="1"
+							<td>
+							<input type="number" class="input-quantity" value="${goodsCart.cartQuantity}" min="1"
 								max="${goodsCart.goodsQuantity}"
-								style="width: 60px; text-align: center;"
-								data-goods-no="${goodsCart.cartGoods}"></td>
-							<td>${goodsCart.cartTotal}</td>
+								data-goods-no="${goodsCart.cartGoods}">
+								</td>
+							<td>${goodsCart.cartTotal}원</td>
 							<td>
 								<form action="delete" method="post">
 									<input type="hidden" name="goodsNo"
@@ -83,14 +87,18 @@
 					</c:forEach>
 				</tbody>
 			</table>
-			<div class="cell">
-			<div>
-				총 상품금액: <span id="totalPrice">0</span>원
+			</div>
+			<div style="width: 20%;">
+					<div class="order-summary-box">
+						<div class="total-price-section">
+							<span class="label">총 상품금액</span>
+							<span class="price">
+								<span id="totalPrice">0</span><span>원</span>
+							</span>
+						</div>
+						<button id="buySelected">구매하기</button>
+					</div>
 				</div>
-			</div>
-			</div>
-			<div class="cell">
-				<button id="buySelected">구매</button>
 			</div>
 		</c:otherwise>
 	</c:choose>

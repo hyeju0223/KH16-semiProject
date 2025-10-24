@@ -90,9 +90,11 @@ public class AttachmentService {
 		// DB에서 파일 정보 찾기
 		AttachmentDto attachmentDto = attachmentDao.selectOne(attachmentNo);
 		if (attachmentDto == null) throw new TargetNotFoundException("존재하지 않는 파일");
-		
-		//DB정보에 있으나 실제 파일이 없는 경우
-		File target = new File(attachmentDto.getAttachmentPath(), attachmentDto.getAttachmentStoredName());
+		// 🟢 [수정 1] 'home'을 기준으로 부모 폴더 경로를 만듭니다.
+	    File parentDir = new File(home, attachmentDto.getAttachmentPath());
+	    
+	    // 🟢 [수정 2] 부모 폴더와 파일 이름을 조합하여 최종 경로를 만듭니다.
+	    File target = new File(parentDir, attachmentDto.getAttachmentStoredName());
 		if(target.isFile() == false) throw new TargetNotFoundException("존재하지 않는 파일");
 		
 		// 파일 내용 읽기
@@ -126,6 +128,12 @@ public class AttachmentService {
 	    
 	    // 3. 파일 삭제에 성공했을 경우에만 DB 정보 삭제
 	    return attachmentDao.delete(attachmentNo); 
+	}
+	
+	
+	//추가
+	public int getAttachmentNoByParent(int parentSeq, String category) {
+	    return attachmentDao.findAttachmentNoByParent(parentSeq, category);
 	}
 	
 }

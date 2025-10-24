@@ -26,14 +26,14 @@
 .input-qty {
     width: 40px;
     text-align: center;
-    border: 1px solid #dee2e6;
+    border: 1px solid transparent;
     border-left: none;
     border-right: none;
     height: 26px;
     font-size: 1em;
-    -webkit-appearance: none;
+   /* 🟢 [수정] 스피너 숨김 - Chrome, Safari */
+    -webkit-appearance: none; 
     margin: 0;
-    -moz-appearance: textfield;
 }
 /* 상품 구분하는 가로선 추가 */
 .table tbody tr {
@@ -52,5 +52,39 @@
 	transition: color 0.1s; /* 부드러운 색상 변경 */
 }
 .cell.right .fa-cart-shopping:hover {
-	color: #0984e3; /* 마우스 올렸을 때 색상 (commons.css의 'btn-positive' 색상) */
+	color: #9396D5; /* 마우스 올렸을 때 색상 (commons.css의 'btn-positive' 색상) */
+}
+
+/* 🟢 [추가] 카테고리 필터 스타일 🟢 */
+.category-filter {
+    display: flex; /* 가로 정렬 */
+    flex-wrap: wrap; /* 좁은 화면에서 줄바꿈 */
+    gap: 10px; /* 버튼 사이 간격 */
+    margin-bottom: 20px; /* 상품 목록(테이블)과의 간격 */
+    padding-bottom: 15px; /* 아래쪽 여백 */
+    border-bottom: 1px solid #eee; /* 구분선 */
+}
+
+.btn-category {
+    padding: 8px 18px; /* 버튼 크기 */
+    border-radius: 20px; /* 타원형 버튼 */
+    background-color: #f1f1f1; /* 기본 배경 (밝은 회색) */
+    color: #333; /* 기본 글자색 */
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+    border: 1px solid #f1f1f1;
+}
+
+/* 마우스 올렸을 때 */
+.btn-category:hover {
+    background-color: #e0e0e0;
+}
+
+/* 'active' 클래스가 붙었을 때 (선택된 항목) */
+.btn-category.active {
+    background-color: #333; /* 진한 배경 (이미지 참고) */
+    color: white; /* 흰색 글자 */
+    border-color: #333;
 }

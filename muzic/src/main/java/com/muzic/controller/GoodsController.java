@@ -16,6 +16,7 @@ import com.muzic.dao.GoodsOrderDao;
 import com.muzic.dto.GoodsDto;
 import com.muzic.dto.GoodsOrderDto;
 import com.muzic.error.NeedPermissionException;
+import com.muzic.service.AttachmentService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -26,6 +27,8 @@ public class GoodsController {
 	private GoodsOrderDao goodsOrderDao;
 	@Autowired
 	private GoodsDao goodsDao;
+	@Autowired
+	private AttachmentService attachmentService;
 
 	// 목록
 	@RequestMapping("/list")
@@ -44,6 +47,17 @@ public class GoodsController {
 		model.addAttribute("goodsList", goodsList);
 		model.addAttribute("goodsCategory", goodsCategory);
 		return "/WEB-INF/views/store/list.jsp";
+	}
+	
+	//이미지
+	@GetMapping("/image")
+	public String image(@RequestParam int goodsNo) {
+		int attachmentNo = attachmentService.getAttachmentNoByParent(goodsNo, "goods");
+		if(attachmentNo != -1) {
+			return "redirect:/attachment/download?attachmentNo=" + attachmentNo;
+		}else {
+			return "redirect:/images/error/no-image.png";
+		}
 	}
 
 	// 상세 정보
