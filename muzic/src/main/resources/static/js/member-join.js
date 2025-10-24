@@ -1,7 +1,6 @@
 $(function(){
-  //------------------------------------------------------
-  // 🔹 상태 객체 정의
-  //------------------------------------------------------
+  const ctx = window.contextPath || "";
+
   const state = {
     memberIdValid: false,
     memberPwValid: false,
@@ -21,7 +20,7 @@ $(function(){
   };
 
   //------------------------------------------------------
-  // [1] 아이디 중복검사 (DB: ^[a-z][a-z0-9]{4,19}$)
+  // [1] 아이디 중복검사
   //------------------------------------------------------
   $("[name=memberId]").on("blur", function(){
     const val = $(this).val().trim();
@@ -32,7 +31,7 @@ $(function(){
       return;
     }
     $.ajax({
-      url: "/rest/member/checkMemberId",
+      url: `${ctx}/rest/member/checkMemberId`,
       data: {memberId: val},
       success: function(resp){
         if(resp){
@@ -47,10 +46,10 @@ $(function(){
   });
 
   //------------------------------------------------------
-  // [2] 비밀번호 검사 (보안강화, DB에는 제약 없음)
+  // [2] 비밀번호 검사
   //------------------------------------------------------
   const pwRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{8,16}$/;
-  $("[name=memberPw], #password-check").on("blur input", function(){
+  $("[name=memberPw], #password-check").on("blur", function(){
     const pw = $("[name=memberPw]").val();
     const pw2 = $("#password-check").val();
     const valid = pwRegex.test(pw);
@@ -61,54 +60,46 @@ $(function(){
     state.memberPwCheckValid = match;
   });
 
-  $("#password-show").on("click", function(){
-    const inputs = $("[name=memberPw], #password-check");
-    const isHidden = inputs.attr("type") === "password";
-    inputs.attr("type", isHidden ? "text" : "password");
-    $(this).toggleClass("fa-eye fa-eye-slash");
-  });
-
   //------------------------------------------------------
-  // [3] 닉네임 유효성 검사 + 중복검사 (빈값 처리 포함)
+  // [3] 닉네임 중복검사
   //------------------------------------------------------
-  $("[name=memberNickname]").on("input", function () {
-    const regex = /^[가-힣0-9]{2,10}$/; // 2~10자 한글+숫자
-    const value = $(this).val().trim();
-
-    // 입력이 비어 있으면 => 초기 상태로 리셋
-    if (value.length === 0) {
-      $(this).removeClass("success fail fail2");
-      state.memberNicknameValid = false;
-      return;
-    }
-
-    // 정규식 불일치 → 형식 오류
-    if (!regex.test(value)) {
-      $(this).removeClass("success fail2").addClass("fail");
-      state.memberNicknameValid = false;
-      return;
-    }
-
-    // 정규식 통과 → AJAX 중복 확인
+  
+  $("[name=memberNickname]").on("blur", function(){
     const input = $(this);
+    const value = input.val().trim();
+    const regex = /^[가-힣0-9]{2,10}$/;
+
+    // ✅ 아무것도 안 쳤을 때: 상태/클래스 모두 초기화
+    if (value.length === 0) {
+      input.removeClass("success fail fail2");
+      input.next(".feedback").text(""); // 피드백 문구도 초기화
+      state.memberNicknameValid = false;
+      return;
+    }
+
+    if (!regex.test(value)) {
+      input.removeClass("success fail2").addClass("fail");
+      state.memberNicknameValid = false;
+      return;
+    }
+
     $.ajax({
-      url: "/rest/member/checkMemberNickname",
+      url: `${ctx}/rest/member/checkMemberNickname`,
       data: { memberNickname: value },
-      success: function (resp) {
+      success(resp) {
         if (resp) {
-          input.removeClass("success fail").addClass("fail2"); // 이미 존재하는 닉네임
+          input.removeClass("success fail").addClass("fail2");
           state.memberNicknameValid = false;
         } else {
-          input.removeClass("fail fail2").addClass("success"); // 사용 가능
+          input.removeClass("fail fail2").addClass("success");
           state.memberNicknameValid = true;
         }
-      }
+      },
     });
   });
 
-
   //------------------------------------------------------
-  // [4] 이름 검사 (DB: ^[가-힣]{2,6}$)
+  // [4] 이름 검사
   //------------------------------------------------------
   $("[name=memberName]").on("blur", function(){
     const val = $(this).val().trim();
@@ -118,11 +109,10 @@ $(function(){
   });
 
   //------------------------------------------------------
-  // [5] 이메일 인증 (DB: [A-Za-z0-9_-]+@[A-Za-z0-9_-]+)
+  // [5] 이메일 인증
   //------------------------------------------------------
   let certTimer = null;
-  let remain = 300; // 5분
-
+  let remain = 300;
   $(".btn-cert-send").on("click", function(){
     const email = $("[name=memberEmail]").val().trim();
     const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+$/;
@@ -132,20 +122,12 @@ $(function(){
       return;
     }
     $.ajax({
-      url: "/rest/member/certSend",
+      url: `${ctx}/rest/member/certSend`,
       method: "post",
       data: {certEmail: email},
       success: function(){
         $(".cell-cert-input").show();
-        startTimer(); // 타이머 시작
-      },
-      beforeSend: function(){
-        $(".btn-cert-send").prop("disabled", true)
-          .find("i").removeClass("fa-paper-plane").addClass("fa-spinner fa-spin");
-      },
-      complete: function(){
-        $(".btn-cert-send").prop("disabled", false)
-          .find("i").removeClass("fa-spinner fa-spin").addClass("fa-paper-plane");
+        startTimer();
       }
     });
   });
@@ -158,14 +140,13 @@ $(function(){
     }
     const email = $("[name=memberEmail]").val();
     $.ajax({
-      url: "/rest/member/certCheck",
+      url: `${ctx}/rest/member/certCheck`,
       method: "post",
       data: {certEmail: email, certNumber: code},
       success: function(resp){
         if(resp){
           clearInterval(certTimer);
           $(".cert-timer").text("인증 완료 ✅");
-          $(".cert-input").val("").removeClass("fail fail2");
           $(".cell-cert-input").hide();
           $("[name=memberEmail]").addClass("success").prop("readonly", true);
           state.memberEmailValid = true;
@@ -177,27 +158,10 @@ $(function(){
     });
   });
 
-  function startTimer(){
-    remain = 300;
-    clearInterval(certTimer);
-    $(".cert-timer").show().text("남은 시간: 05:00");
-    certTimer = setInterval(function(){
-      remain--;
-      const m = String(Math.floor(remain/60)).padStart(2,"0");
-      const s = String(remain%60).padStart(2,"0");
-      $(".cert-timer").text(`남은 시간: ${m}:${s}`);
-      if(remain <= 0){
-        clearInterval(certTimer);
-        $(".cert-timer").text("⏰ 인증시간이 만료되었습니다");
-        state.memberEmailValid = false;
-      }
-    },1000);
-  }
-
   //------------------------------------------------------
-  // [6] MBTI 검사 (DB: ^[IE][SN][FT][PJ]$)
+  // [6] MBTI 검사
   //------------------------------------------------------
-  $("[name=memberMbti]").on("change blur", function(){
+  $("[name=memberMbti]").on("blur", function(){
     const val = $(this).val().trim().toUpperCase();
     const regex = /^[IE][SN][FT][PJ]$/;
     $(this).removeClass("success fail").addClass(regex.test(val) ? "success" : "fail");
@@ -205,7 +169,7 @@ $(function(){
   });
 
   //------------------------------------------------------
-  // [7] 연락처 검사 (DB: ^010-[1-9][0-9]{3}-[0-9]{4}$)
+  // [7] 연락처 검사
   //------------------------------------------------------
   $("[name=memberContact]").on("blur", function(){
     const val = $(this).val().trim();
@@ -215,7 +179,7 @@ $(function(){
   });
 
   //------------------------------------------------------
-  // [8] 주소 검사 (3개 모두 null 또는 모두 존재)
+  // [8] 주소 검색
   //------------------------------------------------------
   $(".btn-address-search, [name=memberPost], [name=memberAddress1]").on("click", function(){
     new daum.Postcode({
@@ -227,73 +191,8 @@ $(function(){
     }).open();
   });
 
-  $("[name=memberAddress2]").on("blur", function(){
-    const filled = $("[name=memberPost]").val() && $("[name=memberAddress1]").val() && $("[name=memberAddress2]").val();
-    const empty = !$("[name=memberPost]").val() && !$("[name=memberAddress1]").val() && !$("[name=memberAddress2]").val();
-    const valid = filled || empty;
-    $("[name=memberPost],[name=memberAddress1],[name=memberAddress2]")
-      .removeClass("success fail").addClass(valid ? "success" : "fail");
-    state.memberAddressValid = valid;
-  });
-
   //------------------------------------------------------
-  // [9] 프로필 이미지 미리보기
-  //------------------------------------------------------
-  $("[name=attach]").on("input", function(){
-    const url = $(".img-preview").prop("src");
-    if(url && url.startsWith("blob:")) URL.revokeObjectURL(url);
-    if(this.files.length === 0){
-      $(".img-preview").prop("src", "/images/error/no-image.png");
-    } else {
-      const blob = URL.createObjectURL(this.files[0]);
-      $(".img-preview").prop("src", blob);
-    }
-  });
-
-  //------------------------------------------------------
-  // [10] 멀티페이지 제어 + 유효성 검사
-  //------------------------------------------------------
-  $(".btn-next").on("click", function(){
-    const page = $(this).closest(".page");
-    const step = $(".page").index(page)+1;
-
-    let valid = true;
-    page.find("input[required], select[required]").each(function(){
-      if($(this).val().trim() === ""){
-        $(this).addClass("fail");
-        valid = false;
-      }
-    });
-
-    if(step===1 && (!state.memberIdValid || !state.memberPwValid || !state.memberPwCheckValid || !state.memberNicknameValid)){
-      alert("⚠️ 기본정보를 정확히 입력하세요.");
-      return;
-    }
-    if(step===2 && (!state.memberNameValid || !state.memberMbtiValid || !state.memberContactValid)){
-      alert("⚠️ 개인정보 항목을 모두 입력하세요.");
-      return;
-    }
-    if(step===3 && !state.memberEmailValid){
-      alert("⚠️ 이메일 인증을 완료하세요.");
-      return;
-    }
-
-    if(!valid){
-      alert("⚠️ 필수 항목을 모두 입력해야 합니다.");
-      return;
-    }
-
-    page.hide().next(".page").fadeIn(200);
-    refreshPage();
-  });
-
-  $(".btn-prev").on("click", function(){
-    $(this).closest(".page").hide().prev(".page").fadeIn(200);
-    refreshPage();
-  });
-
-  //------------------------------------------------------
-  // [11] 최종 제출
+  // [9] 최종 제출
   //------------------------------------------------------
   $(".check-form").on("submit", function(){
     if(!state.ok()){

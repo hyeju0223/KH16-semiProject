@@ -11,7 +11,7 @@ public class MemberLoginDto {
 
 	private int loginNo;
 	private String loginMember;
-	private Integer loginFailCount;
+	private int loginFailCount;
 	private String loginLocked;
 	private Timestamp loginLockTime;
 	private Timestamp loginTryTime;
