@@ -53,7 +53,7 @@ public class PostDao {
 	//목록보기, 검색하기 , 페이징 기능 통합
 	public List<PostVO> selectFreeList(SearchCondition searchCondition) {
 
-		if(searchCondition.list()) { // 목록 모드
+		if(searchCondition.isList()) { // 목록 모드
 			String sql = 
 				    "select * from ("
 				    	+ "select rownum rn, TMP.* from ("
