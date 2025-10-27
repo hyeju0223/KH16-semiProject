@@ -1,5 +1,6 @@
 package com.muzic.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import com.muzic.dto.MemberDto;
 import com.muzic.dto.PostDto;
 import com.muzic.error.NeedPermissionException;
 import com.muzic.error.TargetNotFoundException;
-//import com.muzic.vo.PageVO;
+import com.muzic.vo.PageVO;
 import com.muzic.vo.PostVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -32,45 +33,65 @@ public class PostController {
 	@Autowired
 	private MemberDao memberDao;
 	
-	
-//	@RequestMapping("/free/list")
-//	public String freelist(Model model, @ModelAttribute PageVO pageVO) {
-//		
-//		List<PostVO> postNotice = postDao.selectListNotice();
-//		
-//		return "/WEB-INF/views/post/free/list.jsp";
-//	}
-//
-//	@RequestMapping("/mbti/list")
-//	public String mbtilist(Model model, @RequestParam(required = false) String column,
-//			@RequestParam(required = false) String keyword, HttpSession session) {
-//		
-//		//세션에서 로그인 아이디 및 회원 mbti 불러오기
-//	    String memberMbti = (String) session.getAttribute("loginMemberMbti");
-//	    String loginId = (String) session.getAttribute("loginMemberId");
-//	    
-//	    MemberDto findDto = memberDao.selectByMemberId(loginId);
-//	    model.addAttribute("memberDto",findDto);
-//	    
-//		//column, keyword가 null이 아닐시 true
-//		boolean isSearch = column != null && keyword != null;
-//		
-//		if(!isSearch) { 
-//			//!isSearch가 false일 시 파라미터 전달 X
-//			List<PostDto> postList = postDao.selectMbtiList(memberMbti);
-//			// DB에서 조회한 게시글 목록을 postList에 담아 View(JSP 등)에 전달
-//			model.addAttribute("postList", postList);
-//
-//		}
-//		else {
-//			//!isSearch 가 true일시 파라미터 전달
-//			List<PostDto> postList = postDao.selectMbtiList(memberMbti, column, keyword);
-//			// DB에서 조회한 게시글 목록을 postList에 담아 View(JSP 등)에 전달
-//			model.addAttribute("postList", postList);
-//		}
-//		
-//		return "/WEB-INF/views/post/mbti/list.jsp";
-//	}
+	@RequestMapping("/free/list")
+	public String freelist(Model model, @ModelAttribute SearchCondition searchCondition) {
+		
+		//공지사항 검색
+//		List<PostVO> postNotice = postDao.selectListNotice(pageVO);
+//		size()으로 공지사항 개수 전달
+//		model.addAttribute("postNotice", postNotice.size());
+		
+		List<PostVO> postList = postDao.selectFreeList(searchCondition);
+		List<PostVO> result = new ArrayList<>();
+		
+//		result.addAll(postNotice);
+		result.addAll(postList);
+		
+		model.addAttribute("postList", result);
+		
+		int dataCount = postDao.count(searchCondition);
+		searchCondition.setAllData(dataCount);
+		
+		model.addAttribute("pageVO", searchCondition);
+		
+		return "/WEB-INF/views/post/free/list.jsp";
+	}
+
+	@RequestMapping("/mbti/list")
+	public String mbtilist(Model model, @ModelAttribute SearchCondition searchCondition, HttpSession session) {
+		
+		//세션에서 로그인 아이디 및 회원 mbti 불러오기
+	    String memberMbti = (String) session.getAttribute("loginMemberMbti");
+	    String loginId = (String) session.getAttribute("loginMemberId");
+	    
+	    // MBTI 게시판은 MBTI 값이 없으면 접근할 수 없으므로, 값이 없는 경우 처리 로직 추가 (필요하다면 리다이렉트)
+	    if (memberMbti == null || memberMbti.isBlank()) {
+	        // memberMbti가 없으면 오류 페이지나 자유 게시판으로 리다이렉트 처리
+	        // 여기서는 임시로 자유 게시판으로 리다이렉트합니다. 실제 앱에서는 사용자 경험에 맞게 수정
+	        return "redirect:/post/free/list"; 
+	    }
+	    
+	    MemberDto findDto = memberDao.selectByMemberId(loginId);
+	    model.addAttribute("memberDto",findDto);
+	    
+	    List<PostVO> postList;
+
+		if (searchCondition.getKeyword() != null && !searchCondition.getKeyword().isBlank()) {
+			postList = postDao.selectMbtiListSearch(memberMbti, searchCondition);
+		}
+		else {
+			postList = postDao.selectMbtiList(memberMbti, searchCondition);
+		}
+		
+		model.addAttribute("postList", postList);
+
+		int dataCount = postDao.countMbti(memberMbti, searchCondition);
+		searchCondition.setAllData(dataCount);
+		
+		model.addAttribute("pageVO", searchCondition);
+		
+		return "/WEB-INF/views/post/mbti/list.jsp";
+	}
 	
 	//GetMapping으로 작성하기 폼 요청
 	@GetMapping("/write")

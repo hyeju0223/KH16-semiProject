@@ -104,7 +104,7 @@
 			</tr>
 		</thead>
 		<tbody align="center">
-			<c:forEach var="postVO" item="${postList}" varStatus="status">
+			<c:forEach var="postVO" items="${postList}" varStatus="status">
 				<tr>
 					<td>제목</td>
 					<td>
@@ -113,7 +113,7 @@
 								<span class="badge">공지</span>
 							</c:if>
 							
-							<a href="detail?postNo=${postVO.postNO}">
+							<a href="detail?postNo=${postVO.postNo}">
 								${postVO.postTitle}
 							</a>
 						</div>
