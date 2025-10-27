@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.muzic.condition.SearchCondition;
 import com.muzic.dao.MemberDao;
-import com.muzic.dao.MusicDao;
+import com.muzic.dao.MusicViewDao;
 import com.muzic.dto.MemberDto;
 import com.muzic.dto.MusicDto;
 import com.muzic.error.TargetNotFoundException;
+import com.muzic.vo.MusicUploaderVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -27,7 +29,7 @@ public class MypageController {
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired
-	private MusicDao musicDao;
+	private MusicViewDao musicViewDao;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     
@@ -35,11 +37,17 @@ public class MypageController {
 	public String profile(Model model,HttpSession session) {
 		//세션으로 회원 찾기
 		String loginId = (String) session.getAttribute("loginMemberId");
+		String loginNickname = (String) session.getAttribute("loginMemberNickname");
 		MemberDto memberDto = memberDao.selectByMemberId(loginId);
 		if(memberDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
 		
 		//아이디로 음원 리스트 조회
-		List<MusicDto> musicList = musicDao.selectBymemberId(memberDto.getMemberId()); 
+		SearchCondition searchCondition =
+				SearchCondition
+				.builder()
+				.keyword(loginNickname)
+				.build();
+		List<MusicUploaderVO> musicList = musicViewDao.selectUploaderPaging(searchCondition); 
 		//memberDto와 musicList를 jsp로 넘길 수 있도록 model 설정 
 		model.addAttribute("memberDto",memberDto);
 		model.addAttribute("musicList",musicList);

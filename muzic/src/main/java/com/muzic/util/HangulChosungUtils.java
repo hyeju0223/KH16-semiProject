@@ -1,7 +1,5 @@
 package com.muzic.util;
 
-import com.muzic.error.NotKoreanException;
-
 public class HangulChosungUtils {
 
 	private HangulChosungUtils() {} // 인스턴스화 방지
@@ -46,7 +44,7 @@ public class HangulChosungUtils {
 	        }
 	    }
 
-	    return sb.toString();
+	    return sb.toString().toLowerCase();
 	}
 	
 }

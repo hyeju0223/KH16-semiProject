@@ -1,9 +1,6 @@
 package com.muzic.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,19 +10,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.muzic.dao.AttachmentDao;
-import com.muzic.dao.MemberDao;
-import com.muzic.dao.MusicDao;
-import com.muzic.dao.MusicGenreDao;
+import com.muzic.condition.SearchCondition;
 import com.muzic.domain.AttachmentCategory;
 import com.muzic.dto.MusicDto;
 import com.muzic.dto.MusicFormDto;
-import com.muzic.error.TargetNotFoundException;
+import com.muzic.service.AttachmentService;
 import com.muzic.service.MusicService;
-import com.muzic.vo.MusicUserVO;
-import com.muzic.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -37,13 +28,7 @@ public class MusicController {
 	private MusicService musicService;
 	
 	@Autowired
-	private MusicGenreDao musicGenreDao;
-	
-	@Autowired
-	private AttachmentDao attachmentDao;
-	
-	@Autowired
-	private MusicDao musicDao;
+	private AttachmentService attachmentService;
 	
 	@GetMapping("/add")
 	public String add() {
@@ -58,58 +43,49 @@ public class MusicController {
 		String loginMemberId = (String) session.getAttribute("loginMemberId");
 		String loginMemberRole = (String) session.getAttribute("loginMemberRole");
 		
-		// 장르 검증
-		Set<String> selectedGenres = musicFormDto.getMusicGenreSet();
-	    if( selectedGenres == null || selectedGenres.isEmpty()) 
-	    		throw new IllegalArgumentException("장르는 최소 1개 선택해야 합니다.");
-		if(!musicGenreDao.areAllGenresValid(selectedGenres)) 
-				throw new IllegalArgumentException("장르가 선택되지 않았거나 유효하지 않은 장르입니다.");
-		
-		// 음악파일 검증
-		MultipartFile inputMusicFile = musicFormDto.getMusicFile();
-		if(inputMusicFile == null || inputMusicFile.isEmpty()) 
-				throw new IllegalArgumentException("음악파일은 필수로 첨부되어야 합니다.");
-		
 		musicService.registerMusic(musicFormDto, loginMemberId, loginMemberRole);
 	
 		return "redirect:./list";
 	}
 	
 	@GetMapping("/list")
-	public String list() {
+	public String list(Model model, @ModelAttribute SearchCondition searchCondition) {
+		model.addAttribute("musicUserVO", musicService.findUserMusicList(searchCondition));
 		return "/WEB-INF/views/music/list.jsp";
 	}
+
+	// 음원 히스토리는 db에서 cascade로 자동 삭제
+	// 음원-장르 조인 테이블은 통계를 위해서 null로 해놨고 db에서 자동 보존
+	// 서버에서 처리 필요 x
+	@GetMapping("/detail")
+	public String detail (Model model, @RequestParam int musicNo) {
+		MusicDto musicDto = musicService.selectOneMusicDto(musicNo);
+		int coverImageNo =
+				attachmentService.getAttachmentNoByParent(musicNo, AttachmentCategory.COVER.getCategoryName());
+		int musicFileNo = 
+				attachmentService.getAttachmentNoByParent(musicNo, AttachmentCategory.MUSIC.getCategoryName());
+		model.addAttribute("musicDto", musicDto);
+		model.addAttribute("coverImageNo",coverImageNo);
+		model.addAttribute("musicFileNo",musicFileNo);
+		
+		return "/WEB-INF/views/music/detail.jsp";
+	}
 	
-	@GetMapping("/image")
-	public String image(@RequestParam int musicNo) {
+	@PostMapping("/delete")
+	public String delete(@RequestParam int musicNo, HttpSession session) {
+		String loginMemberId = (String) session.getAttribute("loginMemberId");
+		musicService.requestDeleteMusic(loginMemberId, musicNo);
+		return "redirect:/mypage/music/list?musicNo="+musicNo;
+	}
+	
+	@GetMapping("/file")
+	public String file(@RequestParam int attachmentNo) {
 		try {
-			AttachmentCategory category = AttachmentCategory.MUSIC; // 해당하는 카테고리
-			String categoryValue = category.getCategoryName(); // "music"
-			int attachmentNo = attachmentDao.findAttachmentNoByParent(musicNo, categoryValue);
-			
-			 	if (attachmentNo == -1) {
-		            return "redirect:/images/error/no-image.png";
-		        }
-			 	
-			return "redirect:/attachment/download?attachmentNo="+attachmentNo;
+			 if (attachmentNo == -1) return "redirect:/images/error/no-image.png";
+			 return "redirect:/attachment/download?attachmentNo="+attachmentNo;
 		} catch (Exception e) {
 			return "redirect:/images/error/no-image.png";
 		}
 	}
-	
-	
-//	@GetMapping("/list")
-//	public String list(Model model, @ModelAttribute PageVO pageVO) {
-//		List<MusicUserVO> musicUserVOList = board  
-//	}
-	
-	@GetMapping("/detail")
-	public String detail (Model model, @RequestParam int musicNo) {
-		MusicDto musicDto = musicDao.selectOne(musicNo);
-		if(musicDto == null) throw new TargetNotFoundException("존재하지 않는 음원 입니다");
-		model.addAttribute("musicDto", musicDto);
-		
-			return "/WEB-INF/views/music/detail.jsp";
-		}
 	
 }

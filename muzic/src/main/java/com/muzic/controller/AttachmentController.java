@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.muzic.dao.AttachmentDao;
 import com.muzic.dto.AttachmentDto;
 import com.muzic.error.TargetNotFoundException;
 import com.muzic.service.AttachmentService;
@@ -25,14 +24,11 @@ public class AttachmentController {
 	@Autowired
 	private AttachmentService attachmentService;
 	
-	@Autowired
-	private AttachmentDao attachmentDao;
-	
 	@GetMapping("/download")
 	public ResponseEntity<ByteArrayResource> download(@RequestParam int attachmentNo) throws IOException{
 		 
 		// 데이터베이스에서 정보를 조회
-		AttachmentDto attachmentDto = attachmentDao.selectOne(attachmentNo);
+		AttachmentDto attachmentDto = attachmentService.getAttachment(attachmentNo);
 		if(attachmentDto == null) throw new TargetNotFoundException("존재하지 않는 파일입니다.");
 		
 		// 서비스에서 파일을 불러오기

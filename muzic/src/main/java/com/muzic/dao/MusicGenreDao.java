@@ -37,7 +37,7 @@ public class MusicGenreDao {
     
     // DB에서 최신 장르 목록을 다시 로드하여 메모리 캐시를 갱신.
     // 관리자 기능 등으로 장르 추가/삭제 발생 시 이 메서드를 수동으로 호출해야 
-    // 최신 장르 목록이 캐시에 반영됩니다.
+    // 최신 장르 목록이 캐시에 반영.
     
     public boolean addGenre(String genreName) {
         String sql = "insert into music_genre(genre_name) values(?)";
@@ -57,11 +57,12 @@ public class MusicGenreDao {
         return cachedGenres;
     }
     
+    // 음원선택시 선택한 장르가 캐시에 저장한 장르와 모두 일치하는지 확인하는 메소드
     public boolean areAllGenresValid(Set<String> musicGenres) {
         return cachedGenres.containsAll(musicGenres);
     }
     
-    // 필요없음
+    // 필요없음(areAllGenresValid로 전부 검사하는게 중요)
 //    public boolean isExistGenre(String genreName) {
 //        // 해당 장르가 장르목록에 존재하는지
 //    	String sql = "select count(*) from music_genre where genre_name = ?";
