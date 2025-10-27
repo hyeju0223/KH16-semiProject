@@ -43,7 +43,6 @@ public class MemberController {
     // ======================
     // 회원가입
     // ======================
-
     @GetMapping("/join")
     public String join() { return "/WEB-INF/views/member/join.jsp"; }
 
@@ -55,7 +54,8 @@ public class MemberController {
         memberDao.insert(memberDto);
 
         if (attach != null && !attach.isEmpty()) {
-            attachmentService.save(attach, memberDto.getMemberId(), "member");
+        	  attachmentService.save(attach, "profile", memberDto.getMemberId());
+
         }
 
         emailService.sendWelcomeMail(memberDto);
@@ -70,7 +70,6 @@ public class MemberController {
     // ======================
     // 로그인 / 로그아웃
     // ======================
-
     @GetMapping("/login")
     public String login() { return "/WEB-INF/views/member/login.jsp"; }
 
@@ -120,7 +119,6 @@ public class MemberController {
     // ======================
     // 아이디 찾기 (이름+생년월일+이메일)
     // ======================
-
     @GetMapping("/findMemberId")
     public String findMemberId() { return "/WEB-INF/views/member/findMemberId.jsp"; }
 
@@ -150,21 +148,21 @@ public class MemberController {
     public String findMemberIdFinish() { return "/WEB-INF/views/member/findMemberIdFinish.jsp"; }
 
     // ======================
-    // 비밀번호 찾기(본인확인 → 비밀번호 변경)
-    //  - 페이지는 GET만; 인증은 REST에서 진행 후
-    //    /member/changeMemberPw?memberId=...&certNumber=... 로 이동
+    // 비밀번호 찾기 (본인확인 → 비밀번호 변경)
+    //  - 이 페이지에서 본인확인 후 changeMemberPw로 이동
     // ======================
-
     @GetMapping("/findMemberPw")
     public String findMemberPw() { return "/WEB-INF/views/member/findMemberPw.jsp"; }
 
-    // (구)POST /findMemberPw 는 더 이상 사용하지 않음
-    // 프론트에서 인증 성공 시 changeMemberPw 로 이동
+    // 완료 안내 페이지
+    @GetMapping("/findMemberPwFinish")
+    public String findMemberPwFinish() {
+        return "/WEB-INF/views/member/findMemberPwFinish.jsp";
+    }
 
     // ======================
     // 비밀번호 재설정
     // ======================
-
     @GetMapping("/changeMemberPw")
     public String changeMemberPw(@RequestParam String memberId,
                                  @RequestParam String certNumber,
@@ -187,35 +185,54 @@ public class MemberController {
 
         model.addAttribute("memberId", memberId);
         model.addAttribute("certNumber", certNumber);
-
         return "/WEB-INF/views/member/changeMemberPw.jsp";
     }
 
     @PostMapping("/changeMemberPw")
     public String changeMemberPw(@ModelAttribute MemberDto memberDto,
-                                 @RequestParam String certNumber) {
+                                 @RequestParam String certNumber,
+                                 HttpSession session,
+                                 org.springframework.web.servlet.mvc.support.RedirectAttributes ra) {
 
         MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
         if (findDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다.");
 
         CertDto certDto = certDao.selectOne(findDto.getMemberEmail());
-        if (certDto == null) throw new NeedPermissionException("허가받지 않은 접근입니다.");
+        // 인증 정보가 사라졌거나(재발송/정리) 처음부터 없는 경우
+        if (certDto == null) {
+            ra.addFlashAttribute("msg", "인증이 만료되었거나 잘못된 접근입니다. 다시 인증해 주세요.");
+            return "redirect:/member/findMemberPw";
+        }
 
-        if (!certDto.getCertNumber().equals(certNumber))
-            throw new NeedPermissionException("인증번호가 일치하지 않습니다.");
+        // 유효시간(5분) 재확인
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime created = certDto.getCertTime().toLocalDateTime();
+        if (Duration.between(created, now).toSeconds() > 300) {
+            // 만료 시 정리
+            certDao.delete(findDto.getMemberEmail());
+            ra.addFlashAttribute("msg", "인증 유효시간이 만료되었습니다. 다시 인증해 주세요.");
+            return "redirect:/member/findMemberPw";
+        }
 
-        // 새 비밀번호 저장
+        // 인증번호 재확인
+        if (!certDto.getCertNumber().equals(certNumber)) {
+            ra.addFlashAttribute("msg", "인증번호가 일치하지 않습니다. 다시 인증해 주세요.");
+            return "redirect:/member/findMemberPw";
+        }
+
+        // 비밀번호 저장
         String encPw = passwordEncoder.encode(memberDto.getMemberPw());
         findDto.setMemberPw(encPw);
         memberDao.updateMemberPw(findDto);
 
-        // 인증 소모
+        // 인증 소모(삭제)
         certDao.delete(findDto.getMemberEmail());
 
-        // ✅ 변경 후 비번찾기 페이지로 이동 (알림용 파라미터 포함)
-        return "/WEB-INF/views/member/changeMemberPwFinish.jsp";
+        return "redirect:/member/findMemberPwFinish";
     }
 
+
+    // (미사용이면 삭제 가능)
     @RequestMapping("/changeMemberPwFinish")
     public String changeMemberPwFinish() {
         return "/WEB-INF/views/member/changeMemberPwFinish.jsp";
