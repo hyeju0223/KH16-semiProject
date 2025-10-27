@@ -1,11 +1,13 @@
 package com.muzic.util;
 
+import com.muzic.error.InvalidContentException;
+
 public class FileUtils {
 	
 	private FileUtils() {};
 
     public static String getCleanFileName(String originalName) {
-        if (originalName == null || originalName.trim().isEmpty()) throw new IllegalArgumentException("원본 파일 이름은 null이거나 비어있을 수 없습니다.");
+        if (originalName == null || originalName.trim().isEmpty()) throw new InvalidContentException("원본 파일 이름은 null이거나 비어있을 수 없습니다.");
         
         // 1. 앞뒤 공백 제거
         String cleanName = originalName.trim();

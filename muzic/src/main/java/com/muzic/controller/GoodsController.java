@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.muzic.dao.AttachmentDao;
 import com.muzic.dao.GoodsDao;
 import com.muzic.dao.GoodsOrderDao;
 import com.muzic.dto.GoodsDto;
@@ -29,6 +30,8 @@ public class GoodsController {
 	private GoodsDao goodsDao;
 	@Autowired
 	private AttachmentService attachmentService;
+	@Autowired
+	private AttachmentDao attachmentDao;
 
 	// 목록
 	@RequestMapping("/list")
@@ -52,7 +55,7 @@ public class GoodsController {
 	//이미지
 	@GetMapping("/image")
 	public String image(@RequestParam int goodsNo) {
-		int attachmentNo = attachmentService.getAttachmentNoByParent(goodsNo, "goods");
+		int attachmentNo = attachmentDao.findAttachmentNoByParent(goodsNo, "goods");
 		if(attachmentNo != -1) {
 			return "redirect:/attachment/download?attachmentNo=" + attachmentNo;
 		}else {
