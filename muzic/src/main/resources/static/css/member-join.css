@@ -68,8 +68,11 @@ label {
   border-color: #e74c3c !important;
 }
 
-/* ===================== 피드백 ===================== */
-/* 기본적으로 숨김 처리 */
+/* ============================================================
+   피드백 (입력창별로 독립 적용)
+   ============================================================ */
+
+/* 기본 숨김 */
 .success-feedback,
 .fail-feedback,
 .fail2-feedback {
@@ -78,25 +81,55 @@ label {
   margin-top: 4px;
 }
 
-/* ✅ 성공일 때만 success-feedback 표시 */
-.field.success ~ .success-feedback {
+/* ✅ 아이디 */
+input[name=memberId].success ~ .success-feedback {
   display: block;
   color: #1abc9c;
 }
+input[name=memberId].fail ~ .fail-feedback {
+  display: block;
+  color: #e74c3c;
+}
+input[name=memberId].fail2 ~ .fail2-feedback {
+  display: block;
+  color: #e74c3c;
+}
 
-/* ✅ 실패(형식 오류)일 때 fail-feedback 표시 */
+/* ✅ 닉네임 */
+input[name=memberNickname].success ~ .success-feedback {
+  display: block;
+  color: #1abc9c;
+}
+input[name=memberNickname].fail ~ .fail-feedback {
+  display: block;
+  color: #e74c3c;
+}
+input[name=memberNickname].fail2 ~ .fail2-feedback {
+  display: block;
+  color: #e74c3c;
+}
+
+/* ✅ 비밀번호 / 비밀번호 확인 */
+input[name=memberPw].fail ~ .fail-feedback,
+#password-check.fail ~ .fail-feedback {
+  display: block;
+  color: #e74c3c;
+}
+
+/* ✅ 기타 일반 필드 */
+.field.success ~ .success-feedback {
+  color: #1abc9c;
+}
 .field.fail ~ .fail-feedback {
-  display: block;
   color: #e74c3c;
 }
-
-/* ✅ 중복일 때 fail2-feedback 표시 */
 .field.fail2 ~ .fail2-feedback {
-  display: block;
   color: #e74c3c;
 }
 
-/* 버튼 */
+/* ============================================================
+   버튼 및 기타
+   ============================================================ */
 button,
 .btn {
   border: none;

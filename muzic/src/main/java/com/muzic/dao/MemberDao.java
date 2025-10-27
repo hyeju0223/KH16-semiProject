@@ -89,23 +89,25 @@ public class MemberDao {
     }
 
 
-    //  아이디 찾기 (닉네임 + 이메일)
-    public MemberDto findIdByNicknameAndEmail(String nickname, String email) {
-        String sql = "SELECT * FROM member WHERE member_nickname = ? AND member_email = ?";
-        Object[] params = { nickname, email };
-        List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
-        return list.isEmpty() ? null : list.get(0);
-    }
- 
+ // MemberDao.java
+ // MemberDao.java
 
+ // 아이디 찾기: 이름 + 생년월일 + 이메일
+ public MemberDto findIdByNameBirthEmail(String name, String birth, String email) {
+     String sql = "SELECT * FROM member WHERE member_name=? AND member_birth=? AND member_email=?";
+     Object[] p = {name, birth, email};
+     List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, p);
+     return list.isEmpty() ? null : list.get(0);
+ }
 
-    //  비밀번호 찾기 (아이디 + 닉네임 + 이메일)
-    public MemberDto findPwByIdNicknameEmail(String memberId, String nickname, String email) {
-        String sql = "SELECT * FROM member WHERE member_id = ? AND member_nickname = ? AND member_email = ?";
-        Object[] params = { memberId, nickname, email };
-        List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
-        return list.isEmpty() ? null : list.get(0);
-    }
+ // 비번 변경(본인확인): 아이디 + 이름 + 생년월일 + 이메일
+ public MemberDto findByIdNameBirthEmail(String id, String name, String birth, String email) {
+     String sql = "SELECT * FROM member WHERE member_id=? AND member_name=? AND member_birth=? AND member_email=?";
+     Object[] p = {id, name, birth, email};
+     List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, p);
+     return list.isEmpty() ? null : list.get(0);
+ }
+
     // 아이디 중복 검사
     public boolean existsById(String memberId) {
         String sql = "SELECT COUNT(*) FROM member WHERE member_id = ?";
