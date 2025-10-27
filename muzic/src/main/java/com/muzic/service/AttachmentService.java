@@ -14,7 +14,7 @@ import com.muzic.dao.AttachmentDao;
 import com.muzic.dto.AttachmentDto;
 import com.muzic.error.DataPersistenceException;
 import com.muzic.error.TargetNotFoundException;
-import com.muzic.util.FileUtils;
+import com.muzic.util.FileUtil;
 
 @Service
 public class AttachmentService {
@@ -51,7 +51,7 @@ public class AttachmentService {
 	   
 	    String originalName = attach.getOriginalFilename();
 	    // 저장할 파일 이름(중복 방지)
-	    String storedName = category + "_" + attachmentNo + "_" + FileUtils.getCleanFileName(originalName); // 카테고리_attachmentNo_원본이름
+	    String storedName = category + "_" + attachmentNo + "_" + FileUtil.getCleanFileName(originalName); // 카테고리_attachmentNo_원본이름
 
 	    File target = new File(categoryDir, storedName);
 	    

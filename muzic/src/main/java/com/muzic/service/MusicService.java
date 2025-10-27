@@ -39,9 +39,6 @@ public class MusicService {
 	private static final Set<String> ALLOWED_SORT = 
 			Set.of("latest", "like", "play", "");
 	
-	private static final Set<String> ALLOWED_COLUMN = 
-			Set.of("music_album", "music_title_search", "music_artist_search");
-	
 	// 음원 등록
     @Transactional
     public int registerMusic(MusicFormDto musicFormDto, String memberId, String memberRole) 
@@ -138,6 +135,11 @@ public class MusicService {
 			}
 		} 
 		return List.of();
+    }
+    
+    // 음원 재생시 재생수 증가
+    public void updateMusicPlay (int musicNo) {
+    	musicDao.updatePlayCount(musicNo);
     }
     
     public MusicDto selectOneMusicDto(int musicNo) {

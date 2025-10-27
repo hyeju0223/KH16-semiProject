@@ -2,9 +2,9 @@ package com.muzic.util;
 
 import com.muzic.error.InvalidContentException;
 
-public class FileUtils {
+public class FileUtil {
 	
-	private FileUtils() {};
+	private FileUtil() {};
 
     public static String getCleanFileName(String originalName) {
         if (originalName == null || originalName.trim().isEmpty()) throw new InvalidContentException("원본 파일 이름은 null이거나 비어있을 수 없습니다.");

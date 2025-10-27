@@ -118,7 +118,7 @@ public class MusicDao {
 	
 	public boolean updateLikeCount(int musicNo) {
 		String sql = "update music set music_like = ("
-				+ "select count (*) from map_music_like where music_no = ?) "
+				+ "select count (*) from map_music_like where map_music_no = ? and like_status = 'Y') "
 				+ "where music_no = ?";
 		Object[] params = { musicNo, musicNo };
 		return jdbcTemplate.update(sql, params) > 0;

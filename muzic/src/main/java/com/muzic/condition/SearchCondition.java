@@ -17,7 +17,6 @@ public class SearchCondition {
     private String sortType;
     private String column;
     private String keyword;
-    private boolean chosung;
     
     //페이지 네비게이터
     public int getTotalPage() {
@@ -48,9 +47,6 @@ public class SearchCondition {
 	  public boolean isList() {
 	      return column == null || keyword == null; //둘 중 하나라도 null이면
 	  }
-	  public boolean isSearchChosung() {
-		  return isSearch() && chosung;
-	  }
 	  
 	  //주소에 추가 될 파라미터
 	    public String getParams() {
@@ -59,10 +55,6 @@ public class SearchCondition {
 	            //search()가 true라면 주소에 파라미터도 반환
 	        	param.append("&column=").append(column)
 	            .append("&keyword=").append(keyword);
-	        	if(isSearchChosung()) {
-	        		param.append("&chosung=").append(chosung);
-	        	}
-	        		
 	        }
 	          return param.toString();
 	    }

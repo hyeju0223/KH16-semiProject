@@ -1,8 +1,8 @@
 package com.muzic.util;
 
-public class HangulChosungUtils {
+public class HangulChosungUtil {
 
-	private HangulChosungUtils() {} // 인스턴스화 방지
+	private HangulChosungUtil() {} // 인스턴스화 방지
 	
 	private static final char[] CHOSUNG = {
 	        'ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'
@@ -39,12 +39,25 @@ public class HangulChosungUtils {
 	        if (c >= '가' && c <= '힣') { // 한글이면 초성
 	            int index = (c - 0xAC00) / (21 * 28);
 	            sb.append(CHOSUNG[index]);
-	        } else { // 한글이 아니면 그대로
+	        } else if (c == ' ') {
+	            continue;
+	        }	
+	        else { // 한글이 아니면 그대로
 	            sb.append(c);
 	        }
 	    }
 
-	    return sb.toString().toLowerCase();
+	    return sb.toString().toLowerCase().replaceAll("\\s+", ""); // 공백 2차 방어
 	}
 	
+	// 한글여부 판별
+	public static boolean isChosung(String keyword) {
+	    //ㄱ~ ㅎ이 섞여있는지
+	    for (char c : keyword.toCharArray()) {
+	        if (c >= 0x3131 && c <= 0x314E) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 }

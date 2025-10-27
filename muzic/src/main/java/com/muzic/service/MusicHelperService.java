@@ -14,7 +14,7 @@ import com.muzic.dto.MusicDto;
 import com.muzic.dto.MusicFormDto;
 import com.muzic.dto.MusicStatusHistoryDto;
 import com.muzic.error.InvalidContentException;
-import com.muzic.util.HangulChosungUtils;
+import com.muzic.util.HangulChosungUtil;
 
 @Service
 public class MusicHelperService {
@@ -47,11 +47,11 @@ public class MusicHelperService {
         return MusicDto.builder()
                 .musicNo(musicNo)
                 .musicTitle(musicFormDto.getMusicTitle())
-                .musicTitleChosung(HangulChosungUtils.getChosung(musicFormDto.getMusicTitle()))
+                .musicTitleChosung(HangulChosungUtil.getChosung(musicFormDto.getMusicTitle()))
                 .musicArtist(musicFormDto.getMusicArtist())
-                .musicArtistChosung(HangulChosungUtils.getChosung(musicFormDto.getMusicArtist()))
-                .musicTitleSearch(HangulChosungUtils.getSearch(musicFormDto.getMusicTitle()))
-                .musicArtistSearch(HangulChosungUtils.getSearch(musicFormDto.getMusicArtist()))
+                .musicArtistChosung(HangulChosungUtil.getChosung(musicFormDto.getMusicArtist()))
+                .musicTitleSearch(HangulChosungUtil.getSearch(musicFormDto.getMusicTitle()))
+                .musicArtistSearch(HangulChosungUtil.getSearch(musicFormDto.getMusicArtist()))
                 .musicAlbum(musicFormDto.getMusicAlbum())
                 .musicUploader(memberId)
                 .musicStatus(musicStatus)
