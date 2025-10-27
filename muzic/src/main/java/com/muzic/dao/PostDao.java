@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.muzic.condition.SearchCondition;
 import com.muzic.dto.PostDto;
 import com.muzic.mapper.PostListMapper;
 import com.muzic.mapper.PostMapper;
@@ -63,7 +64,7 @@ public class PostDao {
 				  		+ ") TMP"
 				  + ") where rn between ? and ?";
 			
-			Object[] params = {searchCondition.getStr(), searchCondition.getEnd()};
+			Object[] params = {searchCondition.getStart(), searchCondition.getEnd()};
 			
 			return jdbcTemplate.query(sql, postListMapper, params);
 		}
@@ -83,7 +84,7 @@ public class PostDao {
 			sql = sql.replace("#1", "P." + searchCondition.getColumn());
 			
 			//파라미터 키워드 삽입
-			Object[] params = {searchCondition.getKeyword(), searchCondition.getStr(), searchCondition.getEnd()};
+			Object[] params = {searchCondition.getKeyword(), searchCondition.getStart(), searchCondition.getEnd()};
 			
 			return jdbcTemplate.query(sql, postListMapper, params);
 		}
@@ -120,7 +121,7 @@ public class PostDao {
                 + ") where rn between ? and ?";
         
         // 파라미터: [mbti, 시작 번호, 끝 번호]
-        Object[] params = {mbti, searchCondition.getStr(), searchCondition.getEnd()};
+        Object[] params = {mbti, searchCondition.getStart(), searchCondition.getEnd()};
         
         return jdbcTemplate.query(sql, postListMapper, params);
     }
@@ -150,7 +151,7 @@ public class PostDao {
                     + ") TMP"
                 + ") where rn between ? and ?";
 
-        Object[] params = {mbti, searchCondition.getKeyword(), searchCondition.getStr(), searchCondition.getEnd()};
+        Object[] params = {mbti, searchCondition.getKeyword(), searchCondition.getStart(), searchCondition.getEnd()};
         
         return jdbcTemplate.query(sql, postListMapper, params);
     }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.muzic.condition.SearchCondition;
 import com.muzic.dao.MemberDao;
 import com.muzic.dao.PostDao;
 import com.muzic.dto.MemberDto;
