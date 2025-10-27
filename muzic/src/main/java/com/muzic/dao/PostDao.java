@@ -30,18 +30,39 @@ public class PostDao {
 		return jdbcTemplate.queryForObject(sql, int.class);
 	}
 	
-//	public List<PostVO> selectListNotice(searchCondition searchCondition) {
-//		//공지사항 검색용 매핑
-//		String sql = "select * from board_list "
-//				+ "where board_notice = 'Y' and instr(#1, ?) > 0 "
-//				+ "order by board_no desc";
-//		
-//		sql = sql.replace("#1", searchCondition.getColumn());
-//		
-//		Object[] params = {searchCondition.getKeyword()};
-//		
-//		return jdbcTemplate.query(sql, postListMapper, params);
-//	}
+	public List<PostVO> selectListNotice(SearchCondition searchCondition) {
+		//공지사항 검색용 매핑
+		if(searchCondition.isList()) {
+			String sql = "select * from board_list "
+					+ "where post_notice = 'Y' order by post_no desc";
+			return jdbcTemplate.query(sql,  postListMapper);
+		}
+		
+		String sql = "select * from post_list where post_notice = 'Y' "
+				+ "and instr(#1, ?) orber by post_no desc";
+		sql = sql.replace("#1", searchCondition.getColumn());
+		
+		Object[] params = {searchCondition.getKeyword()};
+		
+		return jdbcTemplate.query(sql, postListMapper, params);
+	}
+	
+	public int count(SearchCondition searchCondition) {
+		String column = searchCondition.getColumn();
+	    
+	    // 1. 검색 조건이 없을 때 (column 또는 keyword가 null/빈값)
+	    if (column == null || searchCondition.getKeyword() == null || searchCondition.getKeyword().isBlank()) {
+	        // [수정된 부분] 자유 게시판 조건 (post_mbti is null or post_mbti = '') 추가
+	        String sql = "select count(*) from post where post_mbti is null or post_mbti = ''";
+	        return jdbcTemplate.queryForObject(sql, Integer.class);
+	    }
+
+	    String sql = "select count(*) from post where (post_mbti is null or post_mbti = '') and instr(#1, ?) > 0";
+	    
+	    sql = sql.replace("#1", column);
+	    Object[] params = { searchCondition.getKeyword() };
+	    return jdbcTemplate.queryForObject(sql, Integer.class, params);
+	}
 	
     //게시판 두개에서 공통으로 사용할 코드 빼두기
     String columnList = "P.post_no, P.post_title, P.post_writer, P.post_mbti, P.post_content, "
@@ -58,7 +79,7 @@ public class PostDao {
 				    "select * from ("
 				    	+ "select rownum rn, TMP.* from ("
 				  			+ "select " + columnList + " "
-				  			+ fromClause // 👈 JOIN 구문
+				  			+ fromClause
 				  			+ " where P.post_mbti IS NULL OR P.post_mbti = '' "
 				  			+ "order by P.post_no desc"
 				  		+ ") TMP"
@@ -89,23 +110,6 @@ public class PostDao {
 			return jdbcTemplate.query(sql, postListMapper, params);
 		}
 		
-	}
-	
-	public int count(SearchCondition searchCondition) {
-		String column = searchCondition.getColumn();
-	    
-	    // 1. 검색 조건이 없을 때 (column 또는 keyword가 null/빈값)
-	    if (column == null || searchCondition.getKeyword() == null || searchCondition.getKeyword().isBlank()) {
-	        // [수정된 부분] 자유 게시판 조건 (post_mbti is null or post_mbti = '') 추가
-	        String sql = "select count(*) from post where post_mbti is null or post_mbti = ''";
-	        return jdbcTemplate.queryForObject(sql, Integer.class);
-	    }
-
-	    String sql = "select count(*) from post where (post_mbti is null or post_mbti = '') and instr(#1, ?) > 0";
-	    
-	    sql = sql.replace("#1", column);
-	    Object[] params = { searchCondition.getKeyword() };
-	    return jdbcTemplate.queryForObject(sql, Integer.class, params);
 	}
 	
 	public List<PostVO> selectMbtiList(String mbti, SearchCondition searchCondition) {
@@ -177,10 +181,10 @@ public class PostDao {
 	public void insert(PostDto postDto) {
 		String sql = "insert into post(post_no, post_title, post_writer, "
 				+ "post_mbti, post_music, post_wtime, post_content, post_notice) "
-				+ "values (post_seq nocache, ?, ?, ?, ?, ?, ?, ?)";
+				+ "values (?, ?, ?, ?, ?, SYSTIMESTAMP, ?, ?)";
 		
-		Object[] params = {postDto.getPostTitle(), postDto.getPostWriter(),
-				postDto.getPostMbti(), postDto.getPostMusic(), postDto.getPostWtime(),
+		Object[] params = {postDto.getPostNo() ,postDto.getPostTitle(), postDto.getPostWriter(),
+				postDto.getPostMbti(), postDto.getPostMusic(),
 				postDto.getPostContent(), postDto.getPostNotice()};
 		
 		jdbcTemplate.update(sql, params);
