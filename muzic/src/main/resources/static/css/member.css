@@ -630,3 +630,56 @@ body {
 .link-group a:visited {
   color: #777; /* 방문 후에도 색 유지 */
 }
+/* ============================================================
+   회원가입 완료 페이지 (joinFinish.jsp) 전용 디자인
+   ============================================================ */
+.join-finish-box {
+  width: 600px;
+  margin: 120px auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 60px 50px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.finish-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #111;
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+.finish-sub {
+  font-size: 15px;
+  color: #555;
+  margin-top: 12px;
+  margin-bottom: 40px;
+}
+
+.icon-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #9A9CE3; /* MUZIC 보라색 포인트 */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
+  font-size: 36px;
+}
+
+.success {
+  color: #00b894; /* 초록색 강조 */
+  font-weight: 600;
+}
+
+.btn-area {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
