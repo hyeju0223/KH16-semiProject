@@ -76,32 +76,29 @@
 </div>
 
 
-<%-- <tbody align="center">
-				<c:forEach var="boardListVO" items="${boardList}" varStatus="status">
+<tbody align="center">
+			<c:forEach var="postVO" items="${postList}" varStatus="status">
 				<tr>
-					<td>${boardListVO.boardNo}</td>
-					<td class="left" style="padding-left:${boardListVO.boardDepth * 20  + 10}px">
-						<c:if test="${boardListVO.boardDepth > 0}">
-							<img src="/images/board/reply.png" width="16" height="16">
-						</c:if>
-					
-						공지사항인 경우는 제목앞에 (공지) 추가
-						<c:if test="${boardListVO.boardNotice == 'Y'}">
-							<span class="badge">공지</span>
-						</c:if>
+					<td>제목</td>
+					<td>
+						<div>
+							<c:if test="${boardListVO.boardNotice == 'Y'}">
+								<span class="badge">공지</span>
+							</c:if>
+							
+							<a href="detail?postNo=${postVO.postNo}">
+								${postVO.postTitle}
+							</a>
+						</div>
 						
-						<a href="detail?boardNo=${boardListVO.boardNo}">
-							${boardListVO.boardTitle}
-						</a>
 					</td>
-					<td>${boardListVO.boardWriter == null ? '(탈퇴한사용자)' : boardListVO.memberNickname}</td>
-					<td>${boardListVO.boardWriteTime}</td>
-					<td>${boardListVO.boardRead}</td>
-					<td>${boardListVO.boardLike}</td>
-
-				</tr>
-				</c:forEach>
-			</tbody> --%>
+					<td>${postVO.postWriteTime}</td>
+					<td>${postVO.postLike}</td>
+<%-- 					<td>${postVO.post }</td> --%>
+					<td>조회수</td>
+				</tr> 
+			</c:forEach>
+			</tbody>
 		</table>
 	</div>
 </div>
