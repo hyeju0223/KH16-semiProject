@@ -7,11 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.muzic.dao.AttachmentDao;
 import com.muzic.dao.GoodsDao;
 import com.muzic.dao.GoodsOrderDao;
 import com.muzic.domain.AttachmentCategory;
@@ -19,6 +19,7 @@ import com.muzic.dto.GoodsDto;
 import com.muzic.dto.GoodsOrderDto;
 import com.muzic.error.NeedPermissionException;
 import com.muzic.service.AttachmentService;
+import com.muzic.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -31,33 +32,23 @@ public class GoodsController {
 	private GoodsDao goodsDao;
 	@Autowired
 	private AttachmentService attachmentService;
-	@Autowired
-	private AttachmentDao attachmentDao;
 
 	// 목록
 	@RequestMapping("/list")
 	public String list(Model model, @RequestParam(required = false) String goodsCategory, HttpSession session,@RequestParam(required = false) String column,
-			@RequestParam(required = false) String keyword) {
-		// 이 페이지에 로그인된 회원의 장바구니로가는 아이콘이 있어서 세션이 필요함
-		//String loginMemberId = (String) session.getAttribute("loginMemberId");
-		
-		boolean isSearch = column !=null && keyword !=null;
-		
-		List<GoodsDto> goodsList;
-
-		if(isSearch) {
-			goodsList = goodsDao.selectList(column, keyword); 
-	        
-	        model.addAttribute("column", column);
-	        model.addAttribute("keyword", keyword);
-		}else if (goodsCategory != null && !goodsCategory.isEmpty()) {
-			goodsList = goodsDao.selectByCategory(goodsCategory); // 카테고리별 상품만
-		} else {
-			goodsList = goodsDao.selectList(); // 전체 상품
-		}
-		model.addAttribute("goodsList", goodsList);
-		model.addAttribute("goodsCategory", goodsCategory);
-		return "/WEB-INF/views/store/list.jsp";
+			@RequestParam(required = false) String keyword,@RequestParam(required = false, defaultValue = "regdate_desc") String sort, @ModelAttribute PageVO pageVO) {
+	    int totalCount = goodsDao.countGoods(pageVO, goodsCategory);
+	    pageVO.setAllData(totalCount); // PageVO에 총 데이터 수 설정
+	    List<GoodsDto> goodsList = goodsDao.selectGoodsList(pageVO, goodsCategory, sort); 
+	    
+	    model.addAttribute("column", column);
+	    model.addAttribute("keyword", keyword); 
+	    model.addAttribute("sort", sort);
+	    model.addAttribute("goodsList", goodsList);
+	    model.addAttribute("goodsCategory", goodsCategory);
+	    model.addAttribute("pageVO", pageVO);
+	    
+	    return "/WEB-INF/views/store/list.jsp";
 	}
 	
 	//이미지

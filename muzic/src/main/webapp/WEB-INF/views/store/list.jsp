@@ -23,6 +23,13 @@
 	table-layout: fixed;
 	width: 100%;
 }
+/* 🟢 [추가] 정렬 필터 내부 요소들을 수직 중앙 정렬 */
+.sort-filter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    align-items: center; /* ⭐ 파이프 문자 정렬 핵심 */
+}
 </style>
 <div class="container w-1000">
 	<div class="cell center">
@@ -55,12 +62,14 @@
 		<a href="list?goodsCategory=기타"
 			class="btn-category ${param.goodsCategory == '기타' ? 'active' : ''}">기타</a>
 	</div>
+	
+	
 	<div class="cell center" style="margin-top: 20px; margin-bottom: 20px;">
 		<form action="list" method="get" style="display: inline-flex; gap: 5px;">
 			
 			<select name="column" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
 				<option value="goods_name" ${param.column == 'goods_name' ? 'selected' : ''}>상품명</option>
-				<option value="goods_description" ${param.column == 'goods_description' ? 'selected' : ''}>상품 설명</option>
+				<%-- <option value="goods_description" ${param.column == 'goods_description' ? 'selected' : ''}>상품 설명</option> --%>
 			</select>
 			
 			<input type="text" name="keyword" placeholder="검색어 입력" value="${param.keyword}"
@@ -72,7 +81,34 @@
 			
 		</form>
 	</div>
+	
+	<div class="cell right" style="margin-bottom: 10px;">
+        <div class="sort-filter">
+            
+            <%-- 정렬 기준: sort=price_asc (낮은가격순) --%>
+            <a href="list?goodsCategory=${param.goodsCategory}&column=${param.column}&keyword=${param.keyword}&size=${pageVO.size}&sort=price_asc"
+                class="btn-sort ${param.sort == 'price_asc' ? 'active' : ''}">낮은가격순</a>
+            <span> | </span>
+            
+            <%-- 정렬 기준: sort=price_desc (높은가격순) --%>
+            <a href="list?goodsCategory=${param.goodsCategory}&column=${param.column}&keyword=${param.keyword}&size=${pageVO.size}&sort=price_desc"
+                class="btn-sort ${param.sort == 'price_desc' ? 'active' : ''}">높은가격순</a>
+            <span> | </span>
+            
+            <%-- 정렬 기준: sort=regdate_desc (최신등록순 - 기본값) --%>
+            <a href="list?goodsCategory=${param.goodsCategory}&column=${param.column}&keyword=${param.keyword}&size=${pageVO.size}&sort=regdate_desc"
+                class="btn-sort ${empty param.sort || param.sort == 'regdate_desc' ? 'active' : ''}">최신등록순</a>
+        </div>
+    </div>
+	
 	<div class="cell">
+	
+	<c:if test="${goodsList == null || goodsList.size() == 0}">
+            <div class="center" style="padding: 50px 0;">
+                <p style="font-size: 1.2em; color: #777;">검색 결과가 없습니다.</p>
+            </div>
+        </c:if>
+        
 		<table class="table w-100">
 			<thead>
 				<tr>
@@ -91,7 +127,7 @@
 						<td class="left">
 						
 							<c:if test="${goods.goodsQuantity > 0}">
-							<form class="cartAddForm" style="display: flex; justify-content: flex-start;">
+							<form class="cartAddForm" style="display: flex; justify-content: flex-start; margin-left: 50px;">
 								<div style="display: flex; align-items: center; gap: 10px;">
 									<div class="quantity-selector">
 
@@ -115,7 +151,7 @@
 							</form>
 							</c:if>
 							<c:if test="${goods.goodsQuantity == 0}">
-							    <span style="color: red; font-weight: bold;">품절</span>
+							    <span style="color: red; font-weight: bold; margin-left: 50px;">품절</span>
 							</c:if>
 							
 						</td>
@@ -123,6 +159,48 @@
 				</c:forEach>
 			</tbody>
 		</table>
+	</div>
+	<c:if test="${pageVO != null and pageVO.getTotalPage() > 1}">
+		<div class="cell center">
+			<div class="pagination">
+			
+				<%-- URL 파라미터 설정을 위한 baseLink 생성 --%>
+				<c:url var="baseLink" value="list">
+					<%-- 1. 카테고리 필터 정보 유지 --%>
+					<c:param name="goodsCategory" value="${goodsCategory}"/>
+					<%-- 2. 검색 정보 유지 (Controller에서 model.addAttribute로 받은 값 사용) --%>
+					<c:param name="column" value="${column}"/>
+					<c:param name="keyword" value="${keyword}"/>
+					<%-- 3. 페이지당 게시물 수 유지 --%>
+					<c:param name="size" value="${pageVO.size}"/>
+				</c:url>
+				
+				<c:if test="${pageVO.getStrPage() > 1}">
+					<a href="${baseLink}&page=${pageVO.getStrPage() - 1}">&lt;&lt;</a>
+				</c:if>
+
+				<%-- getTotalPage()와 getEndPage()를 비교하여 블럭의 끝을 결정 --%>
+				<c:forEach var="p" begin="${pageVO.getStrPage()}" 
+						   end="${pageVO.getTotalPage() < pageVO.getEndPage() ? pageVO.getTotalPage() : pageVO.getEndPage()}" step="1">
+					<c:choose>
+						<c:when test="${pageVO.page == p}">
+							<%-- 현재 페이지 --%>
+							<a class="active">${p}</a>
+						</c:when>
+						<c:otherwise>
+							<%-- 다른 페이지 --%>
+							<a href="${baseLink}&page=${p}">${p}</a>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+
+				<c:if test="${pageVO.getEndPage() < pageVO.getTotalPage()}">
+					<a href="${baseLink}&page=${pageVO.getEndPage() + 1}">&gt;&gt;</a>
+				</c:if>
+				
+			</div>
+		</div>
+	</c:if>
 	</div>
 </div>
 <script
