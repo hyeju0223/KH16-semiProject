@@ -14,10 +14,10 @@ public class PostDto {
 	private String postWriter;
 	private String postMbti;
 	private String postContent;
-	private int postMusic;
+	private Integer postMusic;
 	private Timestamp postWtime;
 	private Timestamp postEtime;
 	private int postLike;
-	private int postread;
+	private int postRead;
 	private String postNotice;
 }

@@ -25,7 +25,7 @@ public class PostMapper implements RowMapper<PostDto>{
 		muzicDto.setPostWtime(rs.getTimestamp("post_wtime")); //작성시간
 		muzicDto.setPostEtime(rs.getTimestamp("post_etime")); //수정시간
 		muzicDto.setPostLike(rs.getInt("post_like")); //좋아요 수
-		muzicDto.setPostread(rs.getInt("post_read")); //조회수
+		muzicDto.setPostRead(rs.getInt("post_read")); //조회수
 		muzicDto.setPostNotice(rs.getString("post_notice")); //공지사항
 		
 		return muzicDto;

@@ -14,10 +14,9 @@ public class SearchCondition {
     private int allData; //총 데이터 수
     @Builder.Default
     private int blockNum = 10; // 표시될 블럭 개수
-    private String sort;
+    private String sortType;
     private String column;
     private String keyword;
-    private boolean chosung;
     
     //페이지 네비게이터
     public int getTotalPage() {
@@ -42,33 +41,21 @@ public class SearchCondition {
     }
 
 	//  검색용 메소드
-	  public boolean search() {
+	  public boolean isSearch() {
 	      return column != null && keyword != null; //둘 다 null이 아니라면 true 반환
 	  }
-	  public boolean list() {
+	  public boolean isList() {
 	      return column == null || keyword == null; //둘 중 하나라도 null이면
-	  }
-	  public boolean searchByKoreanSort() {
-	      return "가나다순".equals(sort);
-	  }
-	  public boolean searchChosung() {
-		  return search() && chosung;
 	  }
 	  
 	  //주소에 추가 될 파라미터
 	    public String getParams() {
 	    	StringBuffer param = new StringBuffer("size=" + size);
-	        if(search()) {
+	        if(isSearch()) {
 	            //search()가 true라면 주소에 파라미터도 반환
 	        	param.append("&column=").append(column)
 	            .append("&keyword=").append(keyword);
-	        	if(searchChosung()) {
-	        		param.append("&chosung=").append(chosung);
-	        	}
-	        		
 	        }
-	        
 	          return param.toString();
-	
 	    }
 }

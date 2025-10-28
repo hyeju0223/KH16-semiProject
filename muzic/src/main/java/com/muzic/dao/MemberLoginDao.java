@@ -52,23 +52,28 @@ public class MemberLoginDao {
     
       //최초 로그인 기록 생성 (회원가입 시)
      
+ // ★ 변경
     public void insert(String memberId) {
-        String sql = "INSERT INTO member_login(login_no, login_member, login_try_time) "
-                   + "VALUES(member_login_seq.NEXTVAL, ?, SYSTIMESTAMP)";
+        String sql =
+            "INSERT INTO member_login(" +
+            "  login_no, login_member, login_fail_count, login_locked, login_try_time" +
+            ") VALUES(" +
+            "  member_login_seq.NEXTVAL, ?, 0, 'N', SYSTIMESTAMP" +
+            ")";
         jdbcTemplate.update(sql, memberId);
     }
-
     
       //로그인 시도 실패 시 실패 횟수 +1
      
+ // ★ 변경
     public void increaseFailCount(String memberId) {
-        String sql = "UPDATE member_login "
-                   + "SET login_fail_count = login_fail_count + 1, "
-                   + "login_try_time = SYSTIMESTAMP "
-                   + "WHERE login_member = ?";
+        String sql =
+            "UPDATE member_login " +
+            "SET login_fail_count = NVL(login_fail_count, 0) + 1, " + // ← NULL 방지
+            "    login_try_time = SYSTIMESTAMP " +
+            "WHERE login_member = ?";
         jdbcTemplate.update(sql, memberId);
     }
-
     
       //로그인 성공 시 실패 기록 초기화
      

@@ -31,6 +31,8 @@ public class GoodsController {
 	private GoodsDao goodsDao;
 	@Autowired
 	private AttachmentService attachmentService;
+	@Autowired
+	private AttachmentDao attachmentDao;
 
 	// 목록
 	@RequestMapping("/list")

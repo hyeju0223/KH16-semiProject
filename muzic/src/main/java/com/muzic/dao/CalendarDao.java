@@ -1,5 +1,6 @@
 package com.muzic.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,29 @@ public class CalendarDao {
 		Object[] params = {calendarNo};
 		List<CalendarDto> list = jdbcTemplate.query(sql, calendarMapper, params);
 		return list.isEmpty() ? null : list.get(0);
-		
 	}
+	
+	//출석체크 조회
+	public String selectAttendance(CalendarDto calendarDto) {
+		String sql = "select calendar_attendance from calendar where calendar_member=? and calendar_day=?";
+		Object[] params = {calendarDto.getCalendarMember(), calendarDto.getCalendarDay()};
+		try {
+			return jdbcTemplate.queryForObject(sql,String.class, params);			
+		} catch (Exception e) { //일정이 없을 경우 null로 예외처리
+			return null;
+		}
+	}
+	
+	//출석체크 개수조회
+	public int selectTotalAttendance(String memberId, String dateToChar) {
+	
+		String sql = "select count(calendar_attendance) from calendar where calendar_member=? "
+				+ "and calendar_attendance = 'Y' "
+				+ "and to_char(calendar_day, ?)";
+		Object[] params = {memberId, dateToChar};
+		return jdbcTemplate.queryForObject(sql,Integer.class, params);			
+	}
+
 
 	//일정 삭제
 	public boolean delete(int calendarNo) {
@@ -76,6 +98,26 @@ public class CalendarDao {
 		};
 		return jdbcTemplate.update(sql,params) > 0;
 		
+	}
+	
+	//출석체크 (업데이트)
+	public boolean updateAttendance(CalendarDto calendarDto) {
+		String sql = "update calendar set calendar_attendance='Y' where calendar_member=? "
+				+ "and calendar_day =?";
+		Object[] params = {calendarDto.getCalendarMember(), calendarDto.getCalendarDay()};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+	
+	//출석체크 (추가)
+	public void checkAttendance(CalendarDto calendarDto) {
+		String sql = "insert into calendar("
+				+ "calendar_no, calendar_day, calendar_member,"
+				+ "calendar_schedule_title, calendar_schedule_content, calendar_attendance)"
+				+ " values (?,?,?,'출석체크','출석체크','Y')";
+		Object[] params = {
+				calendarDto.getCalendarNo(), calendarDto.getCalendarDay(),calendarDto.getCalendarMember()
+				};
+		jdbcTemplate.update(sql, params);
 	}
 	
 
