@@ -146,4 +146,39 @@ public class AttachmentService {
 		return attachmentDao.findAttachment(attachmentNo);
 	}
 	
+	@Transactional
+	public int saveTemp(MultipartFile attach) throws IllegalStateException, IOException {
+	    
+	    int attactNo = attachmentDao.sequence();
+
+	    // 업로드 폴더 설정?
+	    File tempUpload = new File(home, UPLOAD_PATH + "temp");
+	    if (!tempUpload.exists()) {
+	    	tempUpload.mkdirs();
+	    }
+
+	    String originalName = attach.getOriginalFilename();
+	    //중복방지
+	    String storedName = "temp_" + attactNo + "_" + FileUtil.getCleanFileName(originalName);
+	    File target = new File(tempUpload, storedName);
+
+	    attach.transferTo(target);
+
+	    AttachmentDto attachmentDto = AttachmentDto.builder()
+	    		.attachmentNo(attactNo) //파일 번호
+	            .attachmentType(attach.getContentType()) //파일 타입
+	            .attachmentPath(UPLOAD_PATH + "temp") //파일 저장 상대경로
+	            .attachmentCategory("temp") //파일 분류? 카테고리?..
+	            .attachmentParent(null) //부모PK?
+	            .attachmentOriginalName(originalName) //원본파일
+	            .attachmentStoredName(storedName) //서버에 저장된 실제 파일 이름
+	            .attachmentSize(attach.getSize()) //파일의 크기
+	            .build();
+
+	        attachmentDao.insert(attachmentDto);
+	        
+	        return attactNo; //생성한 번호 반환
+
+	}
+
 }

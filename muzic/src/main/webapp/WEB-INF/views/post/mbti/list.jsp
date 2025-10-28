@@ -67,21 +67,19 @@
 		<a href="/">메인으로</a>
 	</div>
 	<div class="cell">
-	<table class="table table-border w-100">
-		<thead>
-			<tr>
-				<th width="40%">제목</th>
-				<th>작성자</th>
-				<th>작성일</th>
-<!-- 				<th>조회수</th> -->
-				<th>좋아요</th>
-			</tr>
-		</thead>
-	</div>
-</div>
+		<table class="table table-border w-100">
+			<thead>
+				<tr>
+					<th width="40%">제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
+<!-- 					<th>조회수</th> -->
+					<th>좋아요</th>
+				</tr>
+			</thead>
 
 
-<tbody align="center">
+		<tbody align="center">
 			<c:forEach var="postVO" items="${postList}" varStatus="status">
 				<tr>
 					<td>
@@ -95,12 +93,12 @@
 							</a>
 						</div>
 					</td>
-					<td>${postVO.postWriter}</td>
-					<td>${postVO.postWriteTime}</td>
-					<td>${postVO.postLike}</td>
+						<td>${postVO.postWriter}</td>
+						<td>${postVO.postWriteTime}</td>
+						<td>${postVO.postLike}</td>
 <%-- 					<td>${postVO.post }</td> --%>
-				</tr> 
-			</c:forEach>
+					</tr> 
+				</c:forEach>
 			</tbody>
 		</table>
 	</div>

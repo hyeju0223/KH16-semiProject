@@ -19,5 +19,5 @@ public class PostDto {
 	private Timestamp postEtime;
 	private int postLike;
 	private int postRead;
-	private String postNotice;
+	private String postNotice = "N";
 }

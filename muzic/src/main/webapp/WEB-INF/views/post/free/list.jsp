@@ -62,7 +62,7 @@
 			</c:otherwise>
 			</c:choose>
 	</div>
-	<div class="cell right">
+	<div class="cell right">	
 		<a href="/">메인으로</a>
 	</div>
 	

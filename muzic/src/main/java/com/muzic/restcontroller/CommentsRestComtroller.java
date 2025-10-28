@@ -49,6 +49,7 @@ public class CommentsRestComtroller {
 			boolean owner = loginId != null 
 					&& commentsDto.getCommentsWriter() != null 
 					&& loginId.equals(commentsDto.getCommentsWriter());
+			
 			boolean writer = postDto.getPostWriter() != null
 					&& commentsDto.getCommentsWriter() != null
 					&& postDto.getPostWriter().equals(commentsDto.getCommentsWriter());
