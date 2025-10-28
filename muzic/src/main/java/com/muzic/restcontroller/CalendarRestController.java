@@ -1,7 +1,5 @@
 package com.muzic.restcontroller;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.muzic.dao.CalendarDao;
 import com.muzic.dao.MemberDao;
 import com.muzic.dto.CalendarDto;
-import com.muzic.dto.MemberDto;
-import com.muzic.error.TargetNotFoundException;
-import com.muzic.service.CalendarPointService;
-
-import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin
 @RestController
