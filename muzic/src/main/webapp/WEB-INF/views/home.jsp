@@ -131,6 +131,8 @@
       margin: 10px;
       padding: 10px;
     }
+    
+
 
     .music-rank {
       margin-top: 5px;
@@ -345,6 +347,7 @@
       margin: 20px;
       gap: 20px;
     }
+    
 
     .album-title {
       font-weight: bold;
@@ -473,10 +476,16 @@
         $(document).on("mouseleave", ".music-rank, .music-rank-1", function(){
         $(this).removeClass("music-rank music-rank-1").addClass("music-rank");
       });
+        
+        //문자열 자르기
+        $(".post-comment-title").each(function(){
+        	var text = $(this).text();
+        	var change = text.substring(0, 5);
+        	$(this).text(change);
+        	}
+        });
 
     });
-
-
 
   </script>
 </head>
@@ -650,123 +659,35 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
             <div class="post free-post-area w-100">
               <span class="post-title">자유 게시판</span>
 
-              <div class="free-post flex-box ms-20">
-                <div style="color: red;">HOT</div>
-                <div class="free-post-title">신나는</div>
-                <div class="free-post-content">에너지 충전해주는 곡 들으...</div>
-                <div class="reply">[5]</div>
-                <div class="like">
-                  <i class="fa-solid fa-heart red"></i>10
+		 	<c:forEach var="freePostDto" items="${freePostList}">
+				<div class="free-post flex-box ms-20">
+                  <div style="color: red;">HOT</div>
+                  <div class="post-comment-title">${freePostDto.postTitle}</div>
+                  <div class="post-comment-content">${freePostDto.postContent}</div>
+                  <div class="reply">${freePostDto.commentNo}</div>
+                  <div class="like">
+                    <i class="fa-solid fa-heart red"></i>${freePostDto.postLike}
+                  </div>
                 </div>
-              </div>
-
-              <div class="free-post flex-box ms-20">
-                <div style="color: red;">HOT</div>
-                <div class="free-post-title">신나는</div>
-                <div class="free-post-content">에너지 충전해주는 곡 들으면서...</div>
-                <div class="reply">[5]</div>
-                <div class="like">
-                  <i class="fa-solid fa-heart red"></i>10
-                </div>
-              </div>
-              <div class="free-post flex-box ms-20">
-                <div style="color: red;">HOT</div>
-                <div class="free-post-title">신나는</div>
-                <div class="free-post-content">에너지 충전해주는 곡 들으...</div>
-                <div class="reply">[5]</div>
-                <div class="like">
-                  <i class="fa-solid fa-heart red"></i>10
-                </div>
-              </div>
-              <div class="free-post flex-box ms-20">
-                <div style="color: red;">HOT</div>
-                <div class="free-post-title">신나는</div>
-                <div class="free-post-content">에너지 충전해주는 곡 들으...</div>
-                <div class="reply">[5]</div>
-                <div class="like">
-                  <i class="fa-solid fa-heart red"></i>10
-                </div>
-              </div>
-              <div class="free-post flex-box ms-20">
-                <div style="color: red;">HOT</div>
-                <div class="free-post-title">신나는</div>
-                <div class="free-post-content">에너지 충전해주는 곡 들으...</div>
-                <div class="reply">[5]</div>
-                <div class="like">
-                  <i class="fa-solid fa-heart red"></i>10
-                </div>
-              </div>
-              <div class="free-post flex-box ms-20">
-                <div style="color: red;">HOT</div>
-                <div class="free-post-title">신나는</div>
-                <div class="free-post-content">에너지 충전해주는 곡 들으...</div>
-                <div class="reply">[5]</div>
-                <div class="like">
-                  <i class="fa-solid fa-heart red"></i>10
-                </div>
-              </div>
-              <div class="free-post flex-box ms-20">
-                <div style="color: red;">HOT</div>
-                <div class="free-post-title">신나는</div>
-                <div class="free-post-content">에너지 충전해주는 곡 들으...</div>
-                <div class="reply">[5]</div>
-                <div class="like">
-                  <i class="fa-solid fa-heart red"></i>10
-                </div>
-              </div>
-              <div class="free-post flex-box ms-20">
-                <div style="color: red;">HOT</div>
-                <div class="free-post-title">신나는</div>
-                <div class="free-post-content">에너지 충전해주는 곡 들으...</div>
-                <div class="reply">[5]</div>
-                <div class="like">
-                  <i class="fa-solid fa-heart red"></i>10
-                </div>
-              </div>
-              <div class="free-post flex-box ms-20">
-                <div style="color: red;">HOT</div>
-                <div class="free-post-title">신나는</div>
-                <div class="free-post-content">에너지 충전해주는 곡 들으...</div>
-                <div class="reply">[5]</div>
-                <div class="like">
-                  <i class="fa-solid fa-heart red"></i>10
-                </div>
-              </div>
-              <div class="free-post flex-box ms-20">
-                <div style="color: red;">HOT</div>
-                <div class="free-post-title">신나는</div>
-                <div class="free-post-content">에너지 충전해주는 곡 들으...</div>
-                <div class="reply">[5]</div>
-                <div class="like">
-                  <i class="fa-solid fa-heart red"></i>10
-                </div>
-              </div>
-              <div class="free-post flex-box ms-20">
-                <div style="color: red;">HOT</div>
-                <div class="free-post-title">신나는</div>
-                <div class="free-post-content">에너지 충전해주는 곡 들으...</div>
-                <div class="reply">[5]</div>
-                <div class="like">
-                  <i class="fa-solid fa-heart red"></i>10
-                </div>
-              </div>
+			</c:forEach> 
+    
             </div>
 	
             <div class="post mbti-post w-100 ms-20">
               <div class="post free-post-area">
                 <span class="post-title">MBTI 게시판</span>
 
-<%-- 			<c:forEach var="" items=""> --%>
-<!-- 				<div class="free-post flex-box ms-20"> -->
-<!--                   <div style="color: red;">HOT</div> -->
-<!--                   <div class="free-post-title">신나는</div> -->
-<!--                   <div class="free-post-content">에너지 충전해주는 곡 들으...</div> -->
-<!--                   <div class="reply">[5]</div> -->
-<!--                   <div class="like"> -->
-<!--                     <i class="fa-solid fa-heart red"></i>10 -->
-<!--                   </div> -->
-<!--                 </div> -->
-<%-- 			</c:forEach> --%>
+ 			<c:forEach var="mbtiPostDto" items="${mbtiPostList}">
+				<div class="free-post flex-box ms-20">
+                  <div style="color: red;">HOT</div>
+                  <div class="post-comment-title">${mbtiPostDto.postTitle}</div>
+                  <div class="post-comment-content">${mbtiPostDto.postContent}</div>
+                  <div class="reply">${mbtiPostDto.commentNo}</div>
+                  <div class="like">
+                    <i class="fa-solid fa-heart red"></i>${mbtiPostDto.postLike}
+                  </div>
+                </div>
+			</c:forEach> 
                
 
 
