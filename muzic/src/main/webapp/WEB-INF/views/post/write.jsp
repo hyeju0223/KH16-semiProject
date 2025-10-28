@@ -3,23 +3,15 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.css">
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Trix의 기본 첨부 기능 비활성화 (보안 및 DB 문제 방지) -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">  
+<script src="/summernote/custom-summernote.js"></script>
+
 <script>
-    // Trix 에디터의 파일 첨부 기능을 비활성화합니다.
-    Trix.config.attachments.preview.caption = {
-        name: false,
-        size: false
-    };
-    Trix.config.attachments.preview.captionText = false;
 
-    document.addEventListener("trix-file-accept", function(event) {
-        event.preventDefault();
-        // 사용자에게 파일 첨부가 허용되지 않음을 알릴 수 있습니다.
-        // console.log("파일 첨부는 현재 허용되지 않습니다."); 
-    });
 </script>
 
 <form autocomplete="off" action="${pageContext.request.contextPath}/post/write" method="post">
@@ -45,20 +37,11 @@
         <label>제목 <span class="red">*</span></label>
         <input type="text" name="postTitle" required class="field w-100">
     </div>
-<!--     <div class="cell"> -->
-<!--         <label>내용 <span class="red">*</span></label> -->
-<!--         <textarea name="postContent"></textarea> -->
-<!--     </div> -->
+
 	<div class="cell">
         <label>내용 <span class="red">*</span></label>
-        <!-- Trix 에디터가 실제 내용(HTML)을 저장할 숨겨진 input 필드. name 속성이 중요합니다. -->
-        <input id="postContentInput" type="hidden" name="postContent">
-        
-        <!-- trix-editor 태그를 사용하여 에디터를 표시하고, input 필드와 연결합니다. -->
-        <trix-editor input="postContentInput" class="trix-content"></trix-editor>
+        <textarea name="postContent" class="summernote-editor"></textarea>
     </div>
-    <!-- Trix Editor 적용 끝 -->
-
 
     <div class="cell">
         <label>음악 선택</label>
@@ -69,15 +52,6 @@
 			</c:forEach>
         </select>
     </div>
-    
-<%--     <c:choose> --%>
-<%--     	<c:when test="${not empty post.postMbti}"> --%>
-<%--        		<a href="/post/mbti/list?mbti=${sessionScope.loginMemberMbti}" class="btn btn-neutral">목록으로</a> --%>
-<%--     	</c:when> --%>
-<%--     	<c:otherwise> --%>
-<!--        		<a href="/post/free/list" class="btn btn-neutral">목록으로</a> -->
-<%--     	</c:otherwise> --%>
-<%-- 	</c:choose> --%>
 
 	<div class="cell right">
         <!-- 목록보기/취소 버튼 경로 동적 설정 -->
@@ -91,9 +65,6 @@
                 <a href="${pageContext.request.contextPath}/post/free/list" class="btn btn-neutral">목록보기</a>
             </c:otherwise>
         </c:choose>
-        <button class="btn btn-positive">등록하기</button>
-    </div>
-
         <button class="btn btn-positive">등록하기</button>
     </div>
 </div>

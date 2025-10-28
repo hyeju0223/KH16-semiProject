@@ -105,10 +105,11 @@ public class PostController {
 	
 	@GetMapping("/write")
 	public String redirectToFreeWrite() {
-	    return "redirect:free/write";
+//		사용자가 /post/write로 접속했을 때, 기본적으로 자유 게시판(free)의 글쓰기 폼으로 연결해 주기 위한 코드
+		return "redirect:free/write";
 	}
 	
-	// URL 경로의 {boardType} 변수를 받아 처리
+	// {postMbti} 부분(free 또는 mbti)을 postMbti 변수로 받아서 사용
 	// 예: /post/free/write, /post/mbti/write
 	@GetMapping("/{postMbti}/write")
 	public String unifiedWrite(@PathVariable String postMbti, Model model, HttpSession session) {
@@ -167,13 +168,18 @@ public class PostController {
 		}
         postDto.setPostWriter(loginId);
         
-		// MBTI 값은 폼의 hidden 필드에서 넘어오거나 (MBTI 게시판) null/빈 문자열
-		// 세션에서 강제로 덮어쓰지 않고, DTO에 담겨온 값을 그대로 사용
-		String postMbti = postDto.getPostMbti();
-		if (postMbti == null || postMbti.isBlank()) {
-		    postDto.setPostMbti(null); // DB에 NULL로 저장되도록 명시적으로 설정
-		} else {
-		    // MBTI 게시판 글인 경우, DTO에 담겨온 값을 그대로 사용
+//		String postMbti = postDto.getPostMbti();
+		
+		String postMbti = (String) session.getAttribute("loginMemberMbti");
+		
+		if (postMbti != null && !postMbti.isBlank()) {
+		    // 세션에 MBTI가 있다 = MBTI 게시판에서 글을 쓴 것이다.
+		    postDto.setPostMbti(postMbti); // DB에 MBTI 값 저장
+		} 
+		// 2. 자유 게시판 작성 로직
+		else {
+		    // 세션에 MBTI가 없다 = 자유 게시판에서 글을 쓴 것이다.
+		    postDto.setPostMbti(null); // DB에 NULL 값 저장
 		}
 		
 		int postNo = postDao.sequence();
@@ -225,17 +231,22 @@ public class PostController {
 	//GetMapping으로 수정 폼 달라고 요청
 	@GetMapping("/edit")
 	public String edit(Model model, @RequestParam int postNo) {
-		
-		//게시글 번호로 DB에서 해당 게시글 정보를 조회
-		PostDto postDto = postDao.selectOne(postNo);
-		
-		// 만약 조회한 게시글이 null이라면 에러메세지 출력
-		if(postDto == null) throw new TargetNotFoundException("존재하지 않는 게시물입니다");
-
-		//회된 게시글 정보(postDto)를 postDto라는 이름으로 View에 전달
-		model.addAttribute("postDto", postDto);
-		
-		return "/WEB-INF/views/post/edit.jsp";
+	    
+	    //게시글 번호로 DB에서 해당 게시글 정보를 조회
+	    PostDto postDto = postDao.selectOne(postNo);
+	    
+	    // 만약 조회한 게시글이 null이라면 에러메세지 출력
+	    if(postDto == null) throw new TargetNotFoundException("존재하지 않는 게시물입니다");
+	            
+	    // 전체 음악 목록을 조회하여 Model에 추가
+	    // SearchCondition은 기본 페이징/검색 조건 없이 전체 목록을 가져오기 위해 사용
+	    List<MusicUserVO> musicList = musicService.findUserMusicList(new SearchCondition()); 
+	    model.addAttribute("musicList", musicList);
+	    
+	    //회된 게시글 정보(postDto)를 postDto라는 이름으로 View에 전달
+	    model.addAttribute("postDto", postDto);
+	    
+	    return "/WEB-INF/views/post/edit.jsp";
 	}
 	
 	//PostMapping으로 사용자가 수정 폼에서 입력한 데이터를 받아서 실제로 처리하고 저장

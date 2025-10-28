@@ -27,3 +27,4 @@
 <a href="/store/list">STORE</a>
 <a href="/post/free/list">자유게시판</a>
 <a href="/post/mbti/list">mbti게시판</a>
+<a href="/member/login">로그인</a>
