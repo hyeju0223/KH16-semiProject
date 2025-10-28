@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.muzic.dto.GoodsDto;
 import com.muzic.mapper.GoodsMapper;
+import com.muzic.vo.PageVO;
 
 @Repository
 public class GoodsDao {
@@ -84,7 +85,125 @@ public class GoodsDao {
 	public int selectPrice(int goodsNo) {
 		String sql = "select goods_point from goods where goods_no=?";
 		Object[] params = { goodsNo };
-		return jdbcTemplate.queryForObject(sql, params, Integer.class);
+		return jdbcTemplate.queryForObject(sql, Integer.class,params);
 	}
+
+	public int countGoods(PageVO pageVO, String goodsCategory) {
+	    // 텍스트 검색 컬럼 허용 목록 검증 (SQL Injection 방지)
+	    Set<String> allowList = Set.of("goods_name", "goods_description");
+	    
+	    // 1. 카테고리 필터가 있는 경우
+	    if (goodsCategory != null && !goodsCategory.isEmpty()) {
+	        if (pageVO.search() && allowList.contains(pageVO.getColumn())) {
+	            // 1-1. 카테고리 + 검색
+	            String sql = "SELECT COUNT(*) FROM GOODS WHERE goods_category = ? AND INSTR(#1, ?) > 0";
+	            sql = sql.replace("#1", pageVO.getColumn());
+	            Object[] params = { goodsCategory, pageVO.getKeyword() };
+	            return jdbcTemplate.queryForObject(sql, int.class, params);
+	        } else {
+	            // 1-2. 카테고리만
+	            String sql = "SELECT COUNT(*) FROM GOODS WHERE goods_category = ?";
+	            Object[] params = { goodsCategory };
+	            return jdbcTemplate.queryForObject(sql, int.class, params);
+	        }
+	    } 
+	    // 2. 카테고리 필터가 없는 경우
+	    else {
+	        if (pageVO.search() && allowList.contains(pageVO.getColumn())) {
+	            // 2-1. 검색만
+	            String sql = "SELECT COUNT(*) FROM GOODS WHERE INSTR(#1, ?) > 0";
+	            sql = sql.replace("#1", pageVO.getColumn());
+	            Object[] params = { pageVO.getKeyword() };
+	            return jdbcTemplate.queryForObject(sql, int.class, params);
+	        } else {
+	            // 2-2. 전체 목록
+	            String sql = "SELECT COUNT(*) FROM GOODS";
+	            return jdbcTemplate.queryForObject(sql, int.class);
+	        }
+	    }
+	}
+	private String getOrderByClause(String sort) {
+        if ("price_asc".equals(sort)) {
+            return "goods_point ASC, goods_no DESC"; // 낮은가격순
+        } else if ("price_desc".equals(sort)) {
+            return "goods_point DESC, goods_no DESC"; // 높은가격순
+        } else {
+            // 기본값: 최신등록순 (regdate_desc)
+            return "goods_registration_time DESC, goods_no DESC";
+        }
+    }
+	
+	public List<GoodsDto> selectGoodsList(PageVO pageVO, String goodsCategory, String sort) {
+	    Set<String> allowList = Set.of("goods_name", "goods_description");
+	    String orderByClause = getOrderByClause(sort);
+	    
+	    // 1. 카테고리 필터가 있는 경우
+	    if (goodsCategory != null && !goodsCategory.isEmpty()) {
+	        
+	        if (pageVO.search() && allowList.contains(pageVO.getColumn())) {
+	            // 1-1. 카테고리 + 검색
+	            String sql = "SELECT * FROM ( "
+	                       + "    SELECT ROWNUM AS RNUM, TMP.* FROM ( "
+	                       + "        SELECT goods_no, goods_name, goods_description, goods_point, goods_quantity, goods_category, goods_expiration, goods_registration_time, goods_edit_time "
+	                       + "        FROM GOODS "
+	                       + "        WHERE goods_category = ? AND INSTR(#1, ?) > 0 " 
+	                       + "        ORDER BY " + orderByClause
+	                       + "    ) TMP"
+	                       + ") WHERE RNUM BETWEEN ? AND ?";
+	            
+	            sql = sql.replace("#1", pageVO.getColumn());
+	            Object[] params = { goodsCategory, pageVO.getKeyword(), pageVO.getStr(), pageVO.getEnd() };
+	            return jdbcTemplate.query(sql, goodsMapper, params);
+	            
+	        } else {
+	            // 1-2. 카테고리만
+	            String sql = "SELECT * FROM ( "
+	                       + "    SELECT ROWNUM AS RNUM, TMP.* FROM ( "
+	                       + "        SELECT goods_no, goods_name, goods_description, goods_point, goods_quantity, goods_category, goods_expiration, goods_registration_time, goods_edit_time "
+	                       + "        FROM GOODS "
+	                       + "        WHERE goods_category = ? " 
+	                       + "        ORDER BY " + orderByClause
+	                       + "    ) TMP"
+	                       + ") WHERE RNUM BETWEEN ? AND ?";
+	            
+	            Object[] params = { goodsCategory, pageVO.getStr(), pageVO.getEnd() };
+	            return jdbcTemplate.query(sql, goodsMapper, params);
+	        }
+	        
+	    } 
+	    // 2. 카테고리 필터가 없는 경우
+	    else {
+	        
+	        if (pageVO.search() && allowList.contains(pageVO.getColumn())) {
+	            // 2-1. 검색만
+	            String sql = "SELECT * FROM ( "
+	                       + "    SELECT ROWNUM AS RNUM, TMP.* FROM ( "
+	                       + "        SELECT goods_no, goods_name, goods_description, goods_point, goods_quantity, goods_category, goods_expiration, goods_registration_time, goods_edit_time "
+	                       + "        FROM GOODS "
+	                       + "        WHERE INSTR(#1, ?) > 0 " 
+	                       + "        ORDER BY " + orderByClause
+	                       + "    ) TMP"
+	                       + ") WHERE RNUM BETWEEN ? AND ?";
+	            
+	            sql = sql.replace("#1", pageVO.getColumn());
+	            Object[] params = { pageVO.getKeyword(), pageVO.getStr(), pageVO.getEnd() };
+	            return jdbcTemplate.query(sql, goodsMapper, params);
+	            
+	        } else {
+	            // 2-2. 전체 목록
+	            String sql = "SELECT * FROM ( "
+	                       + "    SELECT ROWNUM AS RNUM, TMP.* FROM ( "
+	                       + "        SELECT goods_no, goods_name, goods_description, goods_point, goods_quantity, goods_category, goods_expiration, goods_registration_time, goods_edit_time "
+	                       + "        FROM GOODS "
+	                       + "        ORDER BY " + orderByClause
+	                       + "    ) TMP"
+	                       + ") WHERE RNUM BETWEEN ? AND ?";
+	            
+	            Object[] params = { pageVO.getStr(), pageVO.getEnd() };
+	            return jdbcTemplate.query(sql, goodsMapper, params);
+	        }
+	    }
+	}
+	
 
 }

@@ -39,6 +39,18 @@
 	font-size: 1.3em;
 	font-weight: bold;
 }
+/* 🟢 [추가] 장바구니 목록 항목별 구분선 */
+.table tbody tr {
+    border-bottom: 1px solid #e0e0e0; /* 얇은 회색 선 추가 */
+}
+.table tbody tr:last-child {
+    border-bottom: none;
+}
+.table>tbody>tr>td {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	vertical-align: middle;
+}
 
 </style>
 
@@ -67,6 +79,8 @@
 										</div>
 										<button id="deleteSelected" class="btn btn-negative" style="padding: 5px 15px;">선택 삭제</button>
 									</div>
+									<br>
+									<hr color="#e0e0e0">
 								</td>
 							</tr>
 						</thead>
@@ -97,9 +111,12 @@
 												<i class="fa-solid fa-xmark"></i>
 											</button>
 										</form>
+										
 									</td>
 								</tr>
+								
 							</c:forEach>
+							
 						</tbody>
 					</table>
 				</div>
@@ -120,8 +137,8 @@
 			</div>
 		</c:otherwise>
 	</c:choose>
-	<div class="cell">
-		<a href="../list"><button type="button">계속 쇼핑</button></a>
+	<div class="cell right">
+		<a href="../list"><button type="button" class="btn btn-neutral">계속 쇼핑하기</button></a>
 	</div>
 </div>
 
