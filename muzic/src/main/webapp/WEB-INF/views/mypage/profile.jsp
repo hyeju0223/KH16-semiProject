@@ -47,6 +47,27 @@ ${memberDto.memberAddress1} ${memberDto.memberAddress2}<br>
 	</c:forEach>
 </table>
 
+<h4>주문 리스트</h4>
+<%-- <table border="1">
+	<c:forEach var="goodsOrderDto" items="${goodsOrderList}">
+	<thead>
+		<th>주문시간</th>
+		<th>상품이미지</th>
+		<th>상품명</th>
+		<th>구매수량</th>
+		<th>구매포인트</th>
+	</thead>
+	<tbody>
+		<td>${goodsOrderDto.orderTime}</td>
+		<td>${goodsOrderDto.}</td>
+		<td>${goodsOrderDto.}</td>
+		<td>${goodsOrderDto.quantity}</td>
+		<td>${goodsOrderDto.point}</td>
+	</tbody>
+	</c:forEach>
+</table> --%>
+
+
 
 <a href="withDraw">탈퇴하기 ></a>
 

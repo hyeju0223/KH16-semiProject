@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <link rel="stylesheet" type="text/css" href="/css/commons.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
@@ -409,6 +408,9 @@
                     success : function(response){
                     	if(response == "success"){
                             alert("포인트 지급이 완료되었습니다!");
+                    	}
+                    	if(response == "already"){
+                    		alert("포인트 지급은 한 달에 한 번만 가능합니다!");
                     	}
                     	if(response == "fail"){
                     		alert("총 출석일수가 부족합니다!");

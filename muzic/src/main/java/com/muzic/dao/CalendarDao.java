@@ -64,15 +64,17 @@ public class CalendarDao {
 		} catch (Exception e) { //일정이 없을 경우 null로 예외처리
 			return null;
 		}
+		
 	}
 	
 	//출석체크 개수조회
-	public int selectTotalAttendance(String memberId, String dateToChar) {
+	public int selectTotalAttendance(String memberId) {
 	
 		String sql = "select count(calendar_attendance) from calendar where calendar_member=? "
 				+ "and calendar_attendance = 'Y' "
-				+ "and to_char(calendar_day, ?)";
-		Object[] params = {memberId, dateToChar};
+				+ "and calendar_day between trunc(sysdate, 'MM')"
+				+ "and last_day(sysdate)";
+		Object[] params = {memberId};
 		return jdbcTemplate.queryForObject(sql,Integer.class, params);			
 	}
 

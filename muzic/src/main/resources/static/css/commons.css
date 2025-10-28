@@ -7,7 +7,7 @@
 */
 
 div{
-    box-shadow: 0 0 1px gray;
+    /* box-shadow: 0 0 1px gray; */
 }
 
 *{
@@ -332,21 +332,21 @@ div{
         - bottom : 하단...
         - right : 우측...
         */
-        .fullscreen {
+        /* .fullscreen {
             position: fixed;
             top: 0;
             left: 0;
             bottom: 0;
             right: 0;
             background-color: rgba(0, 0, 0, 0.5);
-        }
+        } */
 
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
   .cell {
     color: blue;
     font-size: 50px;
   }
-}
+} */
 
 /* 메인에 따라 추가한 부분 */
 

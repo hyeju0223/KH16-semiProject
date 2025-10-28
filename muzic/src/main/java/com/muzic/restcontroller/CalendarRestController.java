@@ -31,7 +31,7 @@ public class CalendarRestController {
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired
-//	private CalendarPointService calendarPointService;
+	private CalendarPointService calendarPointService;
 	
 	//일정 조회
 	@PostMapping("/home")
@@ -65,14 +65,14 @@ public class CalendarRestController {
 		
 	}
 	
-//	//출석체크 선물
-//	@PostMapping("/gift")
-//	public String gift(HttpSession session) {
-//		
-////		return calendarPointService.giftPoint(session);
-//		
-//		
-//	}
+	//출석체크 선물
+	@PostMapping("/gift")
+	public String gift(HttpSession session) {
+		
+		return calendarPointService.giftPoint(session);
+		
+		
+	}
 	
 
 }
