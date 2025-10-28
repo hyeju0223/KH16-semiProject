@@ -756,17 +756,17 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
               <div class="post free-post-area">
                 <span class="post-title">MBTI 게시판</span>
 
-			<c:forEach var="" items="">
-				<div class="free-post flex-box ms-20">
-                  <div style="color: red;">HOT</div>
-                  <div class="free-post-title">신나는</div>
-                  <div class="free-post-content">에너지 충전해주는 곡 들으...</div>
-                  <div class="reply">[5]</div>
-                  <div class="like">
-                    <i class="fa-solid fa-heart red"></i>10
-                  </div>
-                </div>
-			</c:forEach>
+<%-- 			<c:forEach var="" items=""> --%>
+<!-- 				<div class="free-post flex-box ms-20"> -->
+<!--                   <div style="color: red;">HOT</div> -->
+<!--                   <div class="free-post-title">신나는</div> -->
+<!--                   <div class="free-post-content">에너지 충전해주는 곡 들으...</div> -->
+<!--                   <div class="reply">[5]</div> -->
+<!--                   <div class="like"> -->
+<!--                     <i class="fa-solid fa-heart red"></i>10 -->
+<!--                   </div> -->
+<!--                 </div> -->
+<%-- 			</c:forEach> --%>
                
 
 
