@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.muzic.dao.AttachmentDao;
 import com.muzic.dao.GoodsDao;
 import com.muzic.dao.GoodsOrderDao;
+import com.muzic.domain.AttachmentCategory;
 import com.muzic.dto.GoodsDto;
 import com.muzic.dto.GoodsOrderDto;
 import com.muzic.error.NeedPermissionException;
@@ -32,17 +34,24 @@ public class GoodsController {
 
 	// 목록
 	@RequestMapping("/list")
-	public String list(Model model, @RequestParam(required = false) String goodsCategory, HttpSession session) {
+	public String list(Model model, @RequestParam(required = false) String goodsCategory, HttpSession session,@RequestParam(required = false) String column,
+			@RequestParam(required = false) String keyword) {
 		// 이 페이지에 로그인된 회원의 장바구니로가는 아이콘이 있어서 세션이 필요함
 		//String loginMemberId = (String) session.getAttribute("loginMemberId");
 		
-
+		boolean isSearch = column !=null && keyword !=null;
+		
 		List<GoodsDto> goodsList;
 
-		if (goodsCategory == null || goodsCategory.isEmpty()) {
-			goodsList = goodsDao.selectList(); // 전체 상품
-		} else {
+		if(isSearch) {
+			goodsList = goodsDao.selectList(column, keyword); 
+	        
+	        model.addAttribute("column", column);
+	        model.addAttribute("keyword", keyword);
+		}else if (goodsCategory != null && !goodsCategory.isEmpty()) {
 			goodsList = goodsDao.selectByCategory(goodsCategory); // 카테고리별 상품만
+		} else {
+			goodsList = goodsDao.selectList(); // 전체 상품
 		}
 		model.addAttribute("goodsList", goodsList);
 		model.addAttribute("goodsCategory", goodsCategory);
@@ -52,7 +61,9 @@ public class GoodsController {
 	//이미지
 	@GetMapping("/image")
 	public String image(@RequestParam int goodsNo) {
-		int attachmentNo = attachmentService.getAttachmentNoByParent(goodsNo, "goods");
+		AttachmentCategory category = AttachmentCategory.GOODS;
+		String categoryValue = category.getCategoryName();
+		int attachmentNo = attachmentService.getAttachmentNoByParent(goodsNo, categoryValue);
 		if(attachmentNo != -1) {
 			return "redirect:/attachment/download?attachmentNo=" + attachmentNo;
 		}else {

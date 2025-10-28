@@ -55,6 +55,23 @@
 		<a href="list?goodsCategory=기타"
 			class="btn-category ${param.goodsCategory == '기타' ? 'active' : ''}">기타</a>
 	</div>
+	<div class="cell center" style="margin-top: 20px; margin-bottom: 20px;">
+		<form action="list" method="get" style="display: inline-flex; gap: 5px;">
+			
+			<select name="column" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+				<option value="goods_name" ${param.column == 'goods_name' ? 'selected' : ''}>상품명</option>
+				<option value="goods_description" ${param.column == 'goods_description' ? 'selected' : ''}>상품 설명</option>
+			</select>
+			
+			<input type="text" name="keyword" placeholder="검색어 입력" value="${param.keyword}"
+				style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 200px;">
+			
+			<button type="submit" class="btn btn-positive">
+				<i class="fa-solid fa-magnifying-glass"></i> 검색
+			</button>
+			
+		</form>
+	</div>
 	<div class="cell">
 		<table class="table w-100">
 			<thead>
@@ -71,39 +88,36 @@
 							style="width: 100px; height: 100px; object-fit: cover;"></td>
 						<td class="left"><a href="detail?goodsNo=${goods.goodsNo}"
 							style="font-size: 1.25em">${goods.goodsName}</a><br>${goods.goodsPoint} point<br></td>
-						<td class="right">
-							<form class="cartAddForm" style="display: flex; justify-content: flex-end;">
+						<td class="left">
+						
+							<c:if test="${goods.goodsQuantity > 0}">
+							<form class="cartAddForm" style="display: flex; justify-content: flex-start;">
 								<div style="display: flex; align-items: center; gap: 10px;">
-									<!-- 수량 입력창 -->
 									<div class="quantity-selector">
 
-										<button type="button" class="btn-qty btn-qty-down"
-											${goods.goodsQuantity == 0 ? "disabled" : ""}>-</button>
+										<button type="button" class="btn-qty btn-qty-down">-</button>
 
 										<input type="number" name="goodsQuantity" class="input-qty"
-											value="1" min="1" max="${goods.goodsQuantity}"
-											${goods.goodsQuantity == 0 ? "disabled" : ""}>
+											value="1" min="1" max="${goods.goodsQuantity}">
 
-										<button type="button" class="btn-qty btn-qty-up"
-											${goods.goodsQuantity == 0 ? "disabled" : ""}>+</button>
+										<button type="button" class="btn-qty btn-qty-up">+</button>
 									</div>
 									<div>
-										<!-- 바로구매 -->
-										<c:if test="${goods.goodsQuantity > 0}">
-											<button type="submit" class="btn btn-positive"
-												formaction="buy?goodsNo=${goods.goodsNo}" formmethod="post"
-												onclick="return confirm('구매하시겠습니까?');">바로구매</button>
-										</c:if>
+										<button type="submit" class="btn btn-positive"
+											formaction="buy?goodsNo=${goods.goodsNo}" formmethod="post"
+											onclick="return confirm('구매하시겠습니까?');">바로구매</button>
 
-										<!-- 장바구니 담기 -->
-										<button type="button" class="cartAddBtn btn btn-neutral"
-											${goods.goodsQuantity == 0 ? "disabled" : ""}>
-
-											${goods.goodsQuantity == 0 ? "품절" : "장바구니 담기"}</button>
+										<button type="button" class="cartAddBtn btn btn-neutral">
+											장바구니 담기</button>
 									</div>
-									<!-- 장바구니 담기용 hidden -->
 									<input type="hidden" name="goodsNo" value="${goods.goodsNo}">
+								</div>
 							</form>
+							</c:if>
+							<c:if test="${goods.goodsQuantity == 0}">
+							    <span style="color: red; font-weight: bold;">품절</span>
+							</c:if>
+							
 						</td>
 					</tr>
 				</c:forEach>

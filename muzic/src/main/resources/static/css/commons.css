@@ -8,7 +8,7 @@
 
 /* 영역을 시각화하는 테스트 디자인 코드 */
 div {
-/*   box-shadow: 0 0 1px 0 grey; */
+   box-shadow: 0 0 1px 0 grey;
 }
 
 * {

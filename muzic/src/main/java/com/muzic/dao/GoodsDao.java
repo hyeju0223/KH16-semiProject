@@ -1,6 +1,7 @@
 package com.muzic.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,6 +38,26 @@ public class GoodsDao {
 		String sql = "select * from goods order by goods_no desc";
 		return jdbcTemplate.query(sql, goodsMapper);
 	}
+	
+	//검색 목록 조회
+	public List<GoodsDto> selectList(String column, String keyword) {
+		// 1. 컬럼 허용 목록 검증 (SQL Injection 방지)
+		// 실제 데이터베이스의 컬럼명에 맞게 조정하세요.
+		Set<String> allowList = Set.of("goods_name", "goods_description", "goods_category");
+
+		if (!allowList.contains(column)) {
+			return List.of();
+		}
+
+		String sql = "select * from goods where INSTR(#1, ?) > 0 order by #1, goods_no desc";
+		
+		sql = sql.replace("#1", column);
+		
+		Object[] params = { keyword };
+		
+		return jdbcTemplate.query(sql, goodsMapper, params);
+	}
+	
 
 	// 단일 상품 조회
 	public GoodsDto selectOne(int goodsNo) {
