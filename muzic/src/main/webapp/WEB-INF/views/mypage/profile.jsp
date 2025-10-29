@@ -20,7 +20,7 @@
 ${memberDto.memberAddress1} ${memberDto.memberAddress2}<br>
 <hr>
 <div><a href="edit">프로필 수정</a></div>
-<div><a href="/member/changeMemberPw">비밀번호 변경 ></a></div>
+<div><a href="password">비밀번호 변경 ></a></div>
 <div><a href="calendar/">나의 일정 ></a></div>
 <hr>
 <div>달력1 / 달력 2</div>
@@ -47,25 +47,25 @@ ${memberDto.memberAddress1} ${memberDto.memberAddress2}<br>
 	</c:forEach>
 </table>
 
-<h4>주문 리스트</h4>
-<%-- <table border="1">
-	<c:forEach var="goodsOrderDto" items="${goodsOrderList}">
-	<thead>
-		<th>주문시간</th>
-		<th>상품이미지</th>
-		<th>상품명</th>
-		<th>구매수량</th>
-		<th>구매포인트</th>
-	</thead>
-	<tbody>
-		<td>${goodsOrderDto.orderTime}</td>
-		<td>${goodsOrderDto.}</td>
-		<td>${goodsOrderDto.}</td>
-		<td>${goodsOrderDto.quantity}</td>
-		<td>${goodsOrderDto.point}</td>
-	</tbody>
-	</c:forEach>
-</table> --%>
+<!-- <h4>주문 리스트</h4> -->
+<!-- <table border="1"> -->
+<%-- 	<c:forEach var="goodsOrderDto" items="${goodsOrderList}"> --%>
+<!-- 	<thead> -->
+<!-- 		<th>주문시간</th> -->
+<!-- 		<th>상품이미지</th> -->
+<!-- 		<th>상품명</th> -->
+<!-- 		<th>구매수량</th> -->
+<!-- 		<th>구매포인트</th> -->
+<!-- 	</thead> -->
+<!-- 	<tbody> -->
+<%-- 		<td>${goodsOrderDto.orderTime}</td> --%>
+<%-- 		<td>${goodsOrderDto.}</td> --%>
+<%-- 		<td>${goodsOrderDto.}</td> --%>
+<%-- 		<td>${goodsOrderDto.quantity}</td> --%>
+<%-- 		<td>${goodsOrderDto.point}</td> --%>
+<!-- 	</tbody> -->
+<%-- 	</c:forEach> --%>
+<!-- </table>  -->
 
 
 

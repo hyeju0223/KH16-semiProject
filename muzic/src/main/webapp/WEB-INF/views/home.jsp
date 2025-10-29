@@ -26,8 +26,13 @@
       font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
       color: #2d3436;
     }
-
+    
     a {
+    color: inherit;
+          text-decoration: none;
+    }
+
+    .teg {
       color: inherit;
       text-decoration: none;
       transition-duration: 0.3s;
@@ -35,10 +40,10 @@
     }
     
 
-    a:hover {
+    .teg:hover {
       color: #9396D5;
     }
-
+    
 
     .top-bar,
     .album-area,
@@ -128,8 +133,8 @@
     .post-title {
       font-size: 24px;
       font-weight: bold;
-      margin: 10px;
-      padding: 10px;
+      margin : 10px;
+
     }
     
 
@@ -154,18 +159,6 @@
       padding-left: 5px;
     }
 
-    .music-rank .ranking-text {
-      font-size: 16px;
-      padding: 0.5em;
-      margin-left: 20px;
-    }
-
-    .music-rank-1 .ranking-text {
-      font-size: 18px;
-      padding: 0.5em;
-      margin-left: 5px;
-
-    }
 
     .album-box {
 
@@ -344,8 +337,13 @@
 
     .post .free-post,
     .post .mbti-post {
-      margin: 20px;
       gap: 20px;
+    }
+    
+    .post-comment-content,
+    .post-comment-title,
+    .reply, .like {
+    	padding : 8px;
     }
     
 
@@ -471,6 +469,7 @@
       //호버 기능을 위한 클래스 추가
       $(document).on("mouseenter", ".music-rank", function(){
         $(this).removeClass("music-rank music-rank-1").addClass("music-rank-1");
+        
       });
 
         $(document).on("mouseleave", ".music-rank, .music-rank-1", function(){
@@ -480,10 +479,16 @@
         //문자열 자르기
         $(".post-comment-title").each(function(){
         	var text = $(this).text();
-        	var change = text.substring(0, 5);
-        	$(this).text(change);
-        	}
+        	var change = text.substring(0, 3);
+        	$(this).text(change); 
         });
+        
+        $(".post-comment-content").each(function(){
+        	var text = $(this).text();
+        	var change = text.substring(0, 20);
+        	$(this).text(change); 
+        });
+        
 
     });
 
@@ -509,7 +514,7 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
     <!-- 로고 -->
     <div class="top-bar cell center flex-box flex-center">
       <div class="cell">
-        <a href=""><img src="/image/home/logo.png" class="logo"></a>
+        <a href="/"><img src="/image/home/logo.png" class="logo"></a>
       </div>
       <!-- 검색창 -->
       <!-- <div class="cell w-100 shearch-area">
@@ -519,26 +524,40 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
         </button>
       </div> -->
       <div class="flex-fill "></div>
+      
+      <c:choose>
+       <c:when test="${sessionScope.loginMemberId != null}">
       <div class="cell w-120 profile-text">
-        <a href="#"><i class="fa-solid fa-headset"></i>고객센터</a>
+        <a href="#"  class="teg"><i class="fa-solid fa-headset"></i>고객센터</a>
       </div>
       <div class="cell w-120 profile-text">
         <a href="/mypage/profile"><i class="fa-solid fa-user"></i>마이페이지</a>
       </div>
       <div class="cell w-120 profile-text">
-        <a href="#"><i class="fa-solid fa-cart-shopping"></i>장바구니</a>
+        <a href="#" class="teg"><i class="fa-solid fa-cart-shopping"></i>장바구니</a>
       </div>
       <!-- 회원상태 -->
       <div class="cell w-150 profile-area flex-box flex-center">
         <div class="cell profile-img-area">
           <img src="/image/home/profile-img.jpg" class="profile-img">
         </div>
-        <a href="#" class="profile-state">로그아웃</a>
+        <a href="#" class="profile-state teg">로그아웃</a>
         </span>
       </div>
+       </c:when>
+       
+       <c:otherwise>
+             <div class="cell w-120 profile-text">
+        <a href="#"  class="teg"><i class="fa-solid fa-headset"></i>고객센터</a>
+      </div>
+      <!-- 회원상태 -->
+      <div class="cell w-150 profile-area flex-box flex-center">
+        <a href="/member/login" class="profile-state teg">로그인</a>
+      </div>
+       </c:otherwise>
+      </c:choose>
+      
     </div>
-
-<<<<<<< HEAD
     <!-- 앨범 영역-->
     <div class="cell center album-area flex-box flex-center swiper mt-30" id="album-swiper">
       <div class="swiper-wrapper">
@@ -603,12 +622,12 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
 
     <!-- 메뉴 영역-->
     <div class="cell center menu-bar flex-box flex-center mt-30">
-      <div class="menu-text"><a href="/post/free/list">커뮤니티</a></div>
-      <div class="menu-text" style="font-weight: 500; font-size: 37px;"><a href="/post/mbti/list">MBTI</a></div>
-      <div class="menu-text"><a href="music/add">음원등록</a></div>
-      <div class="menu-text"><a href="/store/list"">스토어</a></div>
+      <div class="menu-text"><a href="/post/free/list" class="teg">커뮤니티</a></div>
+      <div class="menu-text" style="font-weight: 500; font-size: 37px;"><a href="/post/mbti/list" class="teg">MBTI</a></div>
+      <div class="menu-text"><a href="music/add" class="teg">음원등록</a></div>
+      <div class="menu-text"><a href="/store/list"" class="teg">스토어</a></div>
       <div class="menu-block w-300"></div>
-      <div class="menu-text"><a href="#">이벤트</a></div>
+      <div class="menu-text"><a href="#" class="teg">이벤트</a></div>
     </div>
     <hr class="line">
     <div class="advertising-text">
@@ -647,8 +666,12 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
           <div class="cell banner-area area center mt-30">
             <div class="banner swiper" id="banner-swiper">
               <div class="swiper-wrapper">
-                <img src="/image/home/banner-1-1100x200.png" class="banner-img swiper-slide">
-                <img src="/image/home/banner-2-1100x200.png" class="banner-img swiper-slide">
+              <div class="swiper-slide">
+                <a href="music/add" class="teg" ><img src="/image/home/banner-1-1100x200.png" class="banner-img" ></a>
+              </div>
+              <div class="swiper-slide">
+                <a href="store/list" class="teg"><img src="/image/home/banner-2-1100x200.png" class="banner-img" ></a>
+              </div>
               </div>
               <div class="swiper-pagination"></div>
             </div>
@@ -656,45 +679,44 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
 
 
 
-          <div class="cell post-area area flex-box w-100 mt-30">
+          <div class="cell post-area area flex-box w-100 mt-50">
             <div class="post free-post-area w-100">
               <span class="post-title">자유 게시판</span>
-
-		 	<c:forEach var="freePostDto" items="${freePostList}">
-				<div class="free-post flex-box ms-20">
-                  <div style="color: red;">HOT</div>
-                  <div class="post-comment-title">${freePostDto.postTitle}</div>
-                  <div class="post-comment-content">${freePostDto.postContent}</div>
-                  <div class="reply">${freePostDto.commentNo}</div>
-                  <div class="like">
-                    <i class="fa-solid fa-heart red"></i>${freePostDto.postLike}
-                  </div>
-                </div>
+              
+						<table class="free-post flex-box ms-10 mt-30">
+ 			<c:forEach var="freePostDto" items="${freePostList}" end="8">
+						    <tr>
+						    <td style="color: red;">HOT</td>
+						      <td class="post-comment-title">${freePostDto.postTitle}</td>
+						      <td class="post-comment-content">${freePostDto.postContent}</td>
+						      <td class="reply">${freePostDto.commentNo}</td>
+						      <td class="like"><i class="fa-solid fa-heart red"></i> ${freePostDto.postLike}</td>
+						    </tr>
 			</c:forEach> 
+						</table>              
     
             </div>
 	
             <div class="post mbti-post w-100 ms-20">
               <div class="post free-post-area">
-                <span class="post-title">MBTI 게시판</span>
+                <span class="post-title ms-20">MBTI 게시판</span>
 
- 			<c:forEach var="mbtiPostDto" items="${mbtiPostList}">
-				<div class="free-post flex-box ms-20">
-                  <div style="color: red;">HOT</div>
-                  <div class="post-comment-title">${mbtiPostDto.postTitle}</div>
-                  <div class="post-comment-content">${mbtiPostDto.postContent}</div>
-                  <div class="reply">${mbtiPostDto.commentNo}</div>
-                  <div class="like">
-                    <i class="fa-solid fa-heart red"></i>${mbtiPostDto.postLike}
-                  </div>
-                </div>
+				<div class="free-post flex-box ms-20 mt-30">
+						<table class="free-post flex-box">
+ 			<c:forEach var="mbtiPostDto" items="${mbtiPostList}"  end="8">
+						    <tr>
+						     <td style="color: red;">HOT</td> 
+						      <td class="post-comment-title">${mbtiPostDto.postTitle}</td>
+						      <td class="post-comment-content">${mbtiPostDto.postContent}</td>
+						      <td class="reply">${mbtiPostDto.commentNo}</td>
+						      <td><i class="fa-solid fa-heart red "></i> ${mbtiPostDto.postLike}</td>
+						    </tr>
 			</c:forEach> 
-               
-
-
+						</table>
+                </div>
+                
+                
               </div>
-
-
             </div>
           </div>
         </div>
@@ -702,21 +724,41 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
 
         <div class="end-area">
           <!-- 로그인 영역-->
+          <c:choose>
+            <c:when test="${sessionScope.loginMemberId != null}">
+             <div class="cell login-area">
+            <div class="cell login-box center">
+            <span>환영합니다, ${memberDto.memberNickname}님!</span>
+              <a href="/member/logout" class="teg">
+              <div class="cell login-bar">
+                <span> 로그아웃 </span>
+              </div>
+              </a>
+            </div>
+          </div>
+            </c:when>
+            <c:otherwise>
+            
+          
           <div class="cell login-area">
             <div class="cell login-box center">
-              <a href="/member/login">
+            
+              <a href="/member/login" class="teg">
               <div class="cell login-bar">
                 <span> 로그인 </span>
               </div>
               </a>
+              
               <div class="cell">
-                <a href="member/findMemberId">아이디</a>
+                <a href="member/findMemberId" class="teg">아이디</a>
                 <span>/</span>
-                <a href="member/findMemberPw">비밀번호 찾기</a>
-                <a href="member/join">회원가입</a>
+                <a href="member/findMemberPw" class="teg">비밀번호 찾기</a>
+                <a href="member/join" class="teg">회원가입</a>
               </div>
             </div>
           </div>
+            </c:otherwise>
+          </c:choose>
 
           <!-- 광고2 영역 -->
 
@@ -736,98 +778,22 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
               </div>
             </div>
             <div class="mt-10 rank-area">
-              <div class="flex-box flex-center music-rank">
-                <span class="ranking-text">1</span>
-                <span class="ranking-update">- 0</span>
+            
+            <c:forEach var="musicDto" items="${musicRankList}" end="9" varStatus="i" >
+              <a href="music/add"  ><div class="flex-box flex-center music-rank">
+                <span class="ranking-text">${i.count}</span>
+<!--                 <span class="ranking-update">- 0</span> -->
                 <img class="album-img" src="/image/home/album-img3.jpg">
                 <div class="flex-fill">
-                  <div><span class="album-title">앨범명</span></div>
-                  <div><span class="album-artist">아티스트명</span></div>
+                  <div><span class="album-title elipsis">${musicDto.musicTitle}</span></div>
+                  <div><span class="album-artist elipsis">${musicDto.musicArtist}</span></div>
                 </div>
               </div>
+              </a>
+              </c:forEach>
 
-              <div class="flex-box flex-center music-rank">
-                <span class="ranking-text">2</span>
-                <span class="ranking-update">- 0</span>
-                <img class="album-img" src="/image/home/album-img3.jpg">
-                <div class="flex-fill">
-                  <div><span class="album-title">앨범명</span></div>
-                  <div><span class="album-artist">아티스트명</span></div>
-                </div>
-              </div>
 
-              <div class="flex-box flex-center music-rank">
-                <span class="ranking-text">3</span>
-                <span class="ranking-update">- 0</span>
-                <img class="album-img" src="/image/home/album-img3.jpg">
-                <div class="flex-fill">
-                  <div><span class="album-title">앨범명</span></div>
-                  <div><span class="album-artist">아티스트명</span></div>
-                </div>
-              </div>
-
-              <div class="flex-box flex-center music-rank">
-                <span class="ranking-text">4</span>
-                <span class="ranking-update">- 0</span>
-                <div class="flex-fill">
-                  <div><span class="album-title">앨범명</span></div>
-                  <div><span class="album-artist">아티스트명</span></div>
-                </div>
-              </div>
-
-              <div class="flex-box flex-center music-rank">
-                <span class="ranking-text">5</span>
-                <span class="ranking-update">- 0</span>
-                <div class="flex-fill">
-                  <div><span class="album-title">앨범명</span></div>
-                  <div><span class="album-artist">아티스트명</span></div>
-                </div>
-              </div>
-
-              <div class="flex-box flex-center music-rank">
-                <span class="ranking-text">6</span>
-                <span class="ranking-update">- 0</span>
-                <div class="flex-fill">
-                  <div><span class="album-title">앨범명</span></div>
-                  <div><span class="album-artist">아티스트명</span></div>
-                </div>
-              </div>
-
-              <div class="flex-box flex-center music-rank">
-                <span class="ranking-text">7</span>
-                <span class="ranking-update">- 0</span>
-                <div class="flex-fill">
-                  <div><span class="album-title">앨범명</span></div>
-                  <div><span class="album-artist">아티스트명</span></div>
-                </div>
-              </div>
-
-              <div class="flex-box flex-center music-rank">
-                <span class="ranking-text">8</span>
-                <span class="ranking-update">- 0</span>
-                <div class="flex-fill">
-                  <div><span class="album-title">앨범명</span></div>
-                  <div><span class="album-artist">아티스트명</span></div>
-                </div>
-              </div>
-
-              <div class="flex-box flex-center music-rank">
-                <span class="ranking-text">9</span>
-                <span class="ranking-update">- 0</span>
-                <div class="flex-fill">
-                  <div><span class="album-title">앨범명</span></div>
-                  <div><span class="album-artist">아티스트명</span></div>
-                </div>
-              </div>
-
-              <div class="flex-box flex-center music-rank">
-                <span class="ranking-text">10</span>
-                <span class="ranking-update" style="margin-left: -7px;">- 0</span>
-                <div class="flex-fill" style="margin-left: -2px;">
-                  <div><span class="album-title">앨범명</span></div>
-                  <div><span class="album-artist">아티스트명</span></div>
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -855,11 +821,3 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
 </body>
 
 </html>
-=======
-<a href="/mypage/profile">마이페이지</a>
-<br>
-<a href="/store/list">STORE</a>
-<a href="/post/free/list">자유게시판</a>
-<a href="/post/mbti/list">mbti게시판</a>
-<a href="/member/login">로그인</a>
->>>>>>> refs/remotes/origin/yejin-20251028
