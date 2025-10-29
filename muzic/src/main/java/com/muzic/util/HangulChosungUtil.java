@@ -50,14 +50,15 @@ public class HangulChosungUtil {
 	    return sb.toString().toLowerCase().replaceAll("\\s+", ""); // 공백 2차 방어
 	}
 	
-	// 한글여부 판별
-	public static boolean isChosung(String keyword) {
-	    //ㄱ~ ㅎ이 섞여있는지
-	    for (char c : keyword.toCharArray()) {
-	        if (c >= 0x3131 && c <= 0x314E) {
-	            return true;
-	        }
-	    }
-	    return false;
-	}
+//	// 한글여부 판별
+//	public static boolean isChosung(String keyword) {
+//	    //ㄱ~ ㅎ이 섞여있는지
+//	    for (char c : keyword.toCharArray()) {
+//	        if (c >= 0x3131 && c <= 0x314E) {
+//	            return true;
+//	        }
+//	    }
+//	    return false;
+//	}
+	
 }

@@ -1,0 +1,129 @@
+.music-card {
+  border-radius: 14px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 15px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.music-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+}
+
+/* 💿 커버 이미지 */
+.music-cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-bottom: 1px solid #eee;
+}
+
+.cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ▶ 중앙 재생 버튼 */
+.play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.play-btn:hover {
+  background: #9396D5;
+  color: white;
+}
+
+.play-btn i {
+  font-size: 28px;
+}
+
+/* 🎧 정보 영역 */
+.music-info {
+  text-align: center;
+  padding: 15px;
+}
+
+.music-title, 
+.music-artist, 
+.music-album {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.music-title {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.music-title i,
+.music-artist i,
+.music-album i {
+  margin-right: 6px;
+  color: #9396D5;
+}
+
+/* 📊 메타 정보 (시간, 좋아요 등) */
+.music-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  padding: 0 15px;
+  margin-top: 8px;
+}
+
+/* 🕒 재생시간 */
+.music-time {
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ❤️ 좋아요 */
+.music-like {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: #9396D5;
+  transition: color 0.2s ease;
+}
+
+.music-like:hover i {
+  color: #d63031;
+}
+
+/* ❤️ 활성 하트 색상 */
+.music-like i.fa-solid.red {
+  color: #d63031;
+}
+
+  .play-btn {
+    width: 60px;
+    height: 60px;
+  }
+
+  .music-title {
+    font-size: 16px;
+  }

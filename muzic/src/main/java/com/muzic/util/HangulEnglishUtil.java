@@ -12,7 +12,7 @@ public class HangulEnglishUtil {
         return KoreanUtils.convertEnglishTypedToKorean(englishTyped);
     }
 
-    // 한글 -> 영어
+    // 한글 -> 영어 사용 별로없음
     public static String toEnglish(String hangulTyped) {
         if (hangulTyped == null || hangulTyped.isBlank()) return hangulTyped;
         return KoreanUtils.convertKoreanTypedToEnglish(hangulTyped);

@@ -37,7 +37,7 @@ public class MusicService {
 	private MusicHelperService musicHelperService;
 	
 	private static final Set<String> ALLOWED_SORT = 
-			Set.of("latest", "like", "play", "");
+			Set.of("latest", "like", "play");
 	
 	// 음원 등록
     @Transactional

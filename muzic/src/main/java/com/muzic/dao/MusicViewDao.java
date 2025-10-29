@@ -31,9 +31,9 @@ public class MusicViewDao {
 		return list.isEmpty() ? null : list.get(0);
 	}
 	
-	public MusicUploaderVO selectOneMusicUploaderVO(int musicNo) {
-		String sql = "select * from music_uploader_view where music_no = ?";
-		Object[] params = {musicNo};
+	public MusicUploaderVO selectOneMusicUploaderVO(String nickname) {
+		String sql = "select * from music_uploader_view where uploader_nickname = ?";
+		Object[] params = {nickname};
 		List<MusicUploaderVO> list = jdbcTemplate.query(sql, musicUploaderVOMapper, params);
 		return list.isEmpty() ? null : list.get(0);
 	}

@@ -17,6 +17,7 @@ public class SearchCondition {
     private String sortType;
     private String column;
     private String keyword;
+    private boolean mixedJamo;
     
     //페이지 네비게이터
     public int getTotalPage() {

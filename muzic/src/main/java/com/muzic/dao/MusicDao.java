@@ -29,13 +29,15 @@ public class MusicDao {
 	public boolean insert(MusicDto musicDto) {
 		String sql = "insert into music("
 				+ "music_no, music_title, music_title_chosung, music_artist, music_artist_chosung, "
-				+ "music_title_search, music_artist_search, music_album, music_uploader, music_status) "
+				+ "music_title_search, music_artist_search, music_album, music_uploader, "
+				+ "music_status, music_album_chosung, music_album_search) "
 				+ "values("
-				+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Object[] params = { 
 				musicDto.getMusicNo(), musicDto.getMusicTitle(), musicDto.getMusicTitleChosung(), 
 				musicDto.getMusicArtist(), musicDto.getMusicArtistChosung(), musicDto.getMusicTitleSearch(), 
-				musicDto.getMusicArtistSearch(), musicDto.getMusicAlbum(), musicDto.getMusicUploader(), musicDto.getMusicStatus()
+				musicDto.getMusicArtistSearch(), musicDto.getMusicAlbum(), musicDto.getMusicUploader(), 
+				musicDto.getMusicStatus(), musicDto.getMusicAlbumChosung(), musicDto.getMusicAlbumSearch()
 				};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
@@ -49,7 +51,8 @@ public class MusicDao {
 	public boolean update(MusicDto musicDto) {
 		String sql = "update music set music_title = ?, music_title_chosung = ?, music_artist = ?, "
 		        	+ "music_artist_chosung = ?,  music_title_search = ?, music_artist_search = ?, "
-		            + "music_album = ?, music_status = ?, music_etime = systimestamp "
+		            + "music_album = ?, music_status = ?, music_album_chosung = ?, "
+		            + "music_album_search = ?, music_etime = systimestamp "
 		            + "where music_no = ?";
 	    Object[] params = {
 	        musicDto.getMusicTitle(), musicDto.getMusicTitleChosung(), musicDto.getMusicArtist(),  
