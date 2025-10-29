@@ -185,3 +185,22 @@ button, .btn{
 .cert-feedback.ok{ color: var(--ok); }       /* 예: 초록 */
 .cert-feedback.error{ color: var(--bad); }   /* 예: 빨강 */
 
+/* 타이머 기본 스타일 (항상 보이면 JS에서 보여줄 때 display를 켬) */
+.cert-timer{
+  display:none;         /* JS가 show()/hide() */
+  margin-top:8px;
+  font-size:16px;       /* '남은 시간'과 동일 크기 */
+  color: var(--bad);    /* 기본 빨강 */
+  font-weight:600;      /* 굵게 */
+}
+
+/* (선택) 만료 상태 따로 쓰고 싶으면 유지 가능 */
+.cert-timer.expired{
+  color: var(--bad);
+}
+
+#certTimerText{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: .3px;
+}
+

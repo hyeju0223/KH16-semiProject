@@ -17,4 +17,7 @@ public class HangulEnglishUtil {
         if (hangulTyped == null || hangulTyped.isBlank()) return hangulTyped;
         return KoreanUtils.convertKoreanTypedToEnglish(hangulTyped);
     }
+    
+    
+    
 }
