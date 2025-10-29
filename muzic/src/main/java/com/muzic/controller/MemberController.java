@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.muzic.dao.CertDao;
 import com.muzic.dao.MemberDao;
@@ -47,22 +49,61 @@ public class MemberController {
     public String join() { return "/WEB-INF/views/member/join.jsp"; }
 
     @PostMapping("/join")
+    @Transactional
     public String join(@ModelAttribute MemberDto memberDto,
-                       @RequestParam(required = false) MultipartFile attach)
+                       @RequestParam("certNumber") String certNumber,
+                       @RequestParam(required = false) MultipartFile attach,
+                       RedirectAttributes ra)
             throws IOException, MessagingException {
 
-        memberDao.insert(memberDto);
-
-        if (attach != null && !attach.isEmpty()) {
-        	  attachmentService.save(attach, "profile", memberDto.getMemberId());
-
+        // 필수값 최소 검증
+        if (memberDto.getMemberId() == null || memberDto.getMemberPw() == null
+                || memberDto.getMemberEmail() == null) {
+            ra.addFlashAttribute("msg", "필수 항목이 누락되었습니다.");
+            return "redirect:/member/join";
         }
 
+        // 1) 인증 정보 조회
+        CertDto certDto = certDao.selectOne(memberDto.getMemberEmail());
+        if (certDto == null) {
+            ra.addFlashAttribute("msg", "인증이 만료되었거나 잘못된 접근입니다. 다시 인증해 주세요.");
+            return "redirect:/member/join";
+        }
+
+        // 2) 5분 만료 확인
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime created = certDto.getCertTime().toLocalDateTime();
+        if (Duration.between(created, now).toSeconds() > 300) {
+            certDao.delete(memberDto.getMemberEmail()); // 정리
+            ra.addFlashAttribute("msg", "인증 유효시간이 만료되었습니다. 다시 인증해 주세요.");
+            return "redirect:/member/join";
+        }
+
+        // 3) 인증번호 일치 확인
+        if (!certDto.getCertNumber().equals(certNumber)) {
+            ra.addFlashAttribute("msg", "인증번호가 일치하지 않습니다. 다시 인증해 주세요.");
+            return "redirect:/member/join";
+        }
+
+        // 4) 회원 저장 (비번은 그대로 저장 — 해시는 안 함)
+        memberDao.insert(memberDto);
+
+        // 5) 프로필 첨부(옵션)
+        if (attach != null && !attach.isEmpty()) {
+            attachmentService.save(attach, "profile", memberDto.getMemberId());
+        }
+
+        // 6) 환영 메일 / 로그인 로그 등(옵션)
         emailService.sendWelcomeMail(memberDto);
         memberLoginDao.insert(memberDto.getMemberId());
 
+        // 7) 인증 소모(삭제)
+        certDao.delete(memberDto.getMemberEmail());
+
         return "redirect:/member/joinFinish";
     }
+
+ 
 
     @RequestMapping("/joinFinish")
     public String joinFinish() { return "/WEB-INF/views/member/joinFinish.jsp"; }
