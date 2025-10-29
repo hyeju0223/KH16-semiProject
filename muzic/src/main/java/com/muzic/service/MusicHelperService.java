@@ -55,6 +55,8 @@ public class MusicHelperService {
                 .musicAlbum(musicFormDto.getMusicAlbum())
                 .musicUploader(memberId)
                 .musicStatus(musicStatus)
+                .musicAlbumChosung(HangulChosungUtil.getChosung(musicFormDto.getMusicAlbum()))
+                .musicAlbumSearch(HangulChosungUtil.getSearch(musicFormDto.getMusicAlbum()))
                 .build();
     }
     

@@ -23,5 +23,7 @@ public class MusicDto {
     private Timestamp musicUtime;       // music_utime
     private Timestamp musicEtime;		// music_etime
     private String musicStatus;		//music_status
+    private String musicAlbumChosung;
+    private String musicAlbumSearch;
 }
 

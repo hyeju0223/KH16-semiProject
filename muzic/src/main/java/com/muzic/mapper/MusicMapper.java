@@ -28,6 +28,8 @@ public class MusicMapper implements RowMapper<MusicDto> {
 			        .musicUtime(rs.getTimestamp("music_utime"))
 			        .musicEtime(rs.getTimestamp("music_etime"))
 			        .musicStatus(rs.getString("music_status"))
+			        .musicAlbumChosung(rs.getString("music_album_chosung"))
+			        .musicAlbumSearch(rs.getString("music_album_search"))
 			        .build();
 	}
 }

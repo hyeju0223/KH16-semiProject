@@ -2,32 +2,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
     <title>음원 목록</title>
+
+    <!-- ✅ jQuery (항상 head 또는 맨 위에 두기) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <style>
         body { font-family: 'Pretendard', sans-serif; margin: 30px; background-color: #f9f9f9; color: #333; }
         h1 { text-align: center; margin-bottom: 25px; }
 
-        /* 정렬 바 */
-        .sort-bar {
-            text-align: right;
-            margin-bottom: 15px;
-            font-size: 15px;
-        }
-        .sort-link {
-            color: #555;
-            text-decoration: none;
-            margin-left: 15px;
-            font-weight: 500;
-        }
-        .sort-link:hover {
-            color: #000;
-        }
-        .sort-active {
-            color: #000;
-            font-weight: 700;
-            border-bottom: 2px solid #000;
-            padding-bottom: 3px;
-        }
+        /* ✅ 정렬 바 */
+        .sort-bar { text-align: right; margin-bottom: 15px; font-size: 15px; }
+        .sort-link { color: #555; text-decoration: none; margin-left: 15px; font-weight: 500; }
+        .sort-link:hover { color: #000; }
+        .sort-active { color: #000; font-weight: 700; border-bottom: 2px solid #000; padding-bottom: 3px; }
 
         table { width: 100%; border-collapse: collapse; background-color: white; }
         th, td { padding: 12px 10px; border-bottom: 1px solid #ddd; text-align: center; }
@@ -40,10 +32,15 @@
         .btn-like { background-color: #e74c3c; }
         .empty { text-align: center; padding: 40px 0; color: #888; }
     </style>
-</head>
-<body>
 
+    <script src="/js/music/search.js"></script>
+</head>
+
+<body>
 <h1>음원 목록</h1>
+
+<!-- 🔍 공통 검색바 include -->
+<jsp:include page="/WEB-INF/views/template/music-search-bar.jsp" />
 
 <!-- 🔽 정렬 탭 -->
 <div class="sort-bar">
@@ -105,5 +102,6 @@
     </c:otherwise>
 </c:choose>
 
+<!-- <script src="/js/music-search.js"></script> -->
 </body>
 </html>
