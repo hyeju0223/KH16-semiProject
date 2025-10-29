@@ -29,7 +29,7 @@ public class MainController {
 		//세션으로 회원 찾기 및 예외처리
 		String loginId = (String) session.getAttribute("loginMemberId");
 		MemberDto findDto = memberDao.selectByMemberId(loginId);
-		if(findDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
+//		if(findDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
 		
 		model.addAttribute("memberDto", findDto);
 		

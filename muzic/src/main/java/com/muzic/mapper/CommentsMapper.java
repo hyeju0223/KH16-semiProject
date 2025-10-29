@@ -15,15 +15,15 @@ public class CommentsMapper implements RowMapper<CommentsDto>{
 	public CommentsDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 		CommentsDto commentsDto = new CommentsDto();
 		
-		commentsDto.setCommentsNo(rs.getInt("comments_no"));
-		commentsDto.setCommentsPost(rs.getInt("comments_post"));
-		commentsDto.setCommentsWriter(rs.getString("comments_writer"));
-		commentsDto.setCommentsContent(rs.getString("comments_content"));
-		commentsDto.setCommentsWtime(rs.getTimestamp("comments_wtime"));
-		commentsDto.setCommentsEtime(rs.getTimestamp("comments_etime"));
-		commentsDto.setCommentsLike(rs.getInt("comments_like"));
-		commentsDto.setCommentsOrigin(rs.getInt("comments_origin"));
-		commentsDto.setCommentsDepth(rs.getInt("comments_depth"));
+		commentsDto.setCommentNo(rs.getInt("comment_no"));
+		commentsDto.setCommentPost(rs.getInt("comment_post"));
+		commentsDto.setCommentWriter(rs.getString("comment_writer"));
+		commentsDto.setCommentContent(rs.getString("comment_content"));
+		commentsDto.setCommentWtime(rs.getTimestamp("comment_wtime"));
+		commentsDto.setCommentEtime(rs.getTimestamp("comment_etime"));
+		commentsDto.setCommentLike(rs.getInt("comment_like"));
+		commentsDto.setCommentOrigin(rs.getInt("comment_origin"));
+		commentsDto.setCommentDepth(rs.getInt("comment_depth"));
 		
 		return commentsDto;
 	}

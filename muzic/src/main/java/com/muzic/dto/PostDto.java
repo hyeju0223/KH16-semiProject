@@ -1,6 +1,7 @@
 package com.muzic.dto;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,4 +21,14 @@ public class PostDto {
 	private int postLike;
 	private int postRead;
 	private String postNotice = "N";
+	
+//	private List<Integer> attachmentTempNos;
+//	
+//	public List<Integer> getAttachmentTempNos() {
+//        return attachmentTempNos;
+//    }
+//
+//    public void setAttachmentTempNos(List<Integer> attachmentTempNos) {
+//        this.attachmentTempNos = attachmentTempNos;
+//    }
 }

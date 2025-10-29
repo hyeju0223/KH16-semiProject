@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,38 +33,39 @@ public class CommentsRestComtroller {
 	@Autowired
 	private PostDao postDao;
 	
-	@PostMapping("/list")
-	public List<CommentsVO> list(@RequestParam int commentsPost, HttpSession session) {
+//	@PostMapping("/list")
+	@GetMapping("/list")
+	public List<CommentsVO> list(@RequestParam int commentPost, HttpSession session) {
 		String loginId = (String)session.getAttribute("loginMemberId");
 		
-		PostDto postDto = postDao.selectOne(commentsPost);
+		PostDto postDto = postDao.selectOne(commentPost);
 		
 		if(postDto == null) throw new TargetNotFoundException("존재하지 않는 글 정보 입니다");
 		
-		List<CommentsDto> list = commentsDao.selectList(commentsPost);
+		List<CommentsDto> list = commentsDao.selectList(commentPost);
 		List<CommentsVO> result = new ArrayList<>(); //빈 목록 생성
 		
 		//boolean ownwe, writer;
 		
 		for(CommentsDto commentsDto : list) {
 			boolean owner = loginId != null 
-					&& commentsDto.getCommentsWriter() != null 
-					&& loginId.equals(commentsDto.getCommentsWriter());
+					&& commentsDto.getCommentWriter() != null 
+					&& loginId.equals(commentsDto.getCommentWriter());
 			
 			boolean writer = postDto.getPostWriter() != null
-					&& commentsDto.getCommentsWriter() != null
-					&& postDto.getPostWriter().equals(commentsDto.getCommentsWriter());
+					&& commentsDto.getCommentWriter() != null
+					&& postDto.getPostWriter().equals(commentsDto.getCommentWriter());
 			
 			result.add(CommentsVO.builder()
-					.commentsNo(commentsDto.getCommentsNo())
-					.commentsPost(commentsDto.getCommentsPost())
-					.commentsWriter(commentsDto.getCommentsWriter())
-					.commentsContent(commentsDto.getCommentsContent())
-					.commentsWtime(commentsDto.getCommentsWtime())
-					.commentsEtime(commentsDto.getCommentsEtime())
-					.commentsLike(commentsDto.getCommentsLike())
-					.commentsOrigin(commentsDto.getCommentsOrigin())
-					.commentsDepth(commentsDto.getCommentsDepth())
+					.commentNo(commentsDto.getCommentNo())
+					.commentPost(commentsDto.getCommentPost())
+					.commentWriter(commentsDto.getCommentWriter())
+					.commentContent(commentsDto.getCommentContent())
+					.commentWtime(commentsDto.getCommentWtime())
+					.commentEtime(commentsDto.getCommentEtime())
+					.commentLike(commentsDto.getCommentLike())
+					.commentOrigin(commentsDto.getCommentOrigin())
+					.commentDepth(commentsDto.getCommentDepth())
 					.owner(owner)
 					.writer(writer)
 				.build());
@@ -75,34 +77,42 @@ public class CommentsRestComtroller {
 	public void write(@ModelAttribute CommentsDto commentsDto, HttpSession session) {
 		int sequence = commentsDao.sequence();
 		
-		commentsDto.setCommentsNo(sequence);
+		commentsDto.setCommentNo(sequence);
 		String loginId = (String) session.getAttribute("loginMemberId");
-		commentsDto.setCommentsWriter(loginId);
+		
+		if (loginId == null) {
+	        throw new NeedPermissionException("로그인 후 이용 가능합니다."); 
+	    }
+		
+		commentsDto.setCommentWriter(loginId);
+		
+		commentsDto.setCommentOrigin(0); 
+	    commentsDto.setCommentDepth(0);
 		
 		commentsDao.insert(commentsDto);
 	}
 	
 	@PostMapping("/delete")
-	public void delete(@RequestParam int commentsNo, HttpSession session) {
+	public void delete(@RequestParam int commentNo, HttpSession session) {
 		String loginId = (String) session.getAttribute("loginMemberId");
 		
-		CommentsDto commentsDto = commentsDao.selectOne(commentsNo);
+		CommentsDto commentsDto = commentsDao.selectOne(commentNo);
 		if(commentsDto == null) throw new TargetNotFoundException("존재하지 않는 댓글입니다");
 		
-		boolean owner = loginId.equals(commentsDto.getCommentsWriter());
+		boolean owner = loginId.equals(commentsDto.getCommentWriter());
 		if(owner == false) throw new NeedPermissionException("권한이 부족합니다");
 		
-		commentsDao.delete(commentsNo);
+		commentsDao.delete(commentNo);
 	}
 	
 	@PostMapping("/edit")
 	public void edit(@ModelAttribute CommentsDto commentsDto, HttpSession session) {
 		String loginId = (String) session.getAttribute("loginMemberId");
 		
-		CommentsDto addDto = commentsDao.selectOne(commentsDto.getCommentsNo());
+		CommentsDto addDto = commentsDao.selectOne(commentsDto.getCommentNo());
 		if(addDto == null) throw new TargetNotFoundException("존재하지 않는 댓글입니다");
 		
-		boolean owner = loginId.equals(addDto.getCommentsWriter());
+		boolean owner = loginId.equals(addDto.getCommentWriter());
 		if(owner == false) throw new NeedPermissionException("권한이 부족합니다");
 		
 		commentsDao.update(commentsDto);

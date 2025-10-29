@@ -477,13 +477,13 @@
         $(this).removeClass("music-rank music-rank-1").addClass("music-rank");
       });
         
-        //문자열 자르기
-        $(".post-comment-title").each(function(){
-        	var text = $(this).text();
-        	var change = text.substring(0, 5);
-        	$(this).text(change);
-        	}
-        });
+//         //문자열 자르기
+//         $(".post-comment-title").each(function(){
+//         	var text = $(this).text();
+//         	var change = text.substring(0, 5);
+//         	$(this).text(change);
+//         	}
+//         });
 
     });
 
@@ -538,7 +538,6 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
       </div>
     </div>
 
-<<<<<<< HEAD
     <!-- 앨범 영역-->
     <div class="cell center album-area flex-box flex-center swiper mt-30" id="album-swiper">
       <div class="swiper-wrapper">
@@ -855,11 +854,3 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
 </body>
 
 </html>
-=======
-<a href="/mypage/profile">마이페이지</a>
-<br>
-<a href="/store/list">STORE</a>
-<a href="/post/free/list">자유게시판</a>
-<a href="/post/mbti/list">mbti게시판</a>
-<a href="/member/login">로그인</a>
->>>>>>> refs/remotes/origin/yejin-20251028
