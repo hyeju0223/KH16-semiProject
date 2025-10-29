@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
@@ -93,14 +94,16 @@
 										data-price="${goodsCart.cartTotal }"></td>
 									<td><img src="image?goodsNo=${goodsCart.cartGoods}"
 										style="width: 100px; height: 100px; object-fit: cover;"></td>
-									<td class="left"><a
+									<td class="left" width="40%"><a
 										href="/store/detail?goodsNo=${goodsCart.cartGoods}">${goodsCart.goodsName}</a></td>
-									<td>${goodsCart.goodsPoint} point</td>
+									<%-- <td>${goodsCart.goodsPoint} point</td> --%>
 									<td><input type="number" class="input-quantity"
 										value="${goodsCart.cartQuantity}" min="1"
 										max="${goodsCart.goodsQuantity}"
 										data-goods-no="${goodsCart.cartGoods}"></td>
-									<td>${goodsCart.cartTotal} point</td>
+									<td>
+									<fmt:formatNumber value="${goodsCart.cartTotal}" pattern="#,##0" /> point
+									</td>
 									<td>
 										<form action="delete" method="post">
 											<input type="hidden" name="goodsNo"
@@ -149,6 +152,12 @@
 
 <script>
 	$(function() {
+		
+		// ❗ [추가] 숫자에 쉼표를 찍어주는 포맷팅 함수 (100000 -> 100,000)
+	    function formatNumber(number) {
+	        // Intl.NumberFormat은 최신 JavaScript 표준 포맷팅 방식입니다.
+	        return new Intl.NumberFormat('ko-KR').format(number);
+	    }
 
 		//수량변경 
 		$(".input-quantity").change(function() {
@@ -196,7 +205,7 @@
 				total += parseInt($(this).data("price"));
 			});
 			//총액 태그에 계산된 total 넣기
-			$("#totalPrice").text(total);
+			$("#totalPrice").text(formatNumber(total));
 		}
 
 		//전체 체크박스 클릭 이벤트

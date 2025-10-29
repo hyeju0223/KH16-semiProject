@@ -63,7 +63,7 @@
 				</table>
 			</div>
 
-			<div style="text-align: right; margin-top: 20px;">
+			<div>
 				<a href="/store/list" class="btn">취소</a>
 				<button type="submit" class="btn btn-positive">상품 등록하기</button>
 			</div>

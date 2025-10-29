@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
 <link rel="stylesheet" type="text/css" href="/css/cart.css">
 <link rel="stylesheet" type="text/css"
@@ -33,8 +34,9 @@
 </style>
 <div class="container w-1000">
 	<div class="cell center">
-		<h1>STORE</h1>
+		<a href="/store/list"><h1>STORE</h1></a>
 	</div>
+	<a href="../">메인으로</a>
 	<div class="cell right">
 		<a href="cart/list"> <i class="fa-solid fa-cart-shopping"></i>
 		</a>
@@ -64,15 +66,12 @@
 	</div>
 	
 	
-	<div class="cell center" style="margin-top: 20px; margin-bottom: 20px;">
+	<div class="cell center" style="margin-top: 50px; margin-bottom: 20px;">
 		<form action="list" method="get" style="display: inline-flex; gap: 5px;">
 			
-			<select name="column" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-				<option value="goods_name" ${param.column == 'goods_name' ? 'selected' : ''}>상품명</option>
-				<%-- <option value="goods_description" ${param.column == 'goods_description' ? 'selected' : ''}>상품 설명</option> --%>
-			</select>
+			<input type="hidden" name="column" value="goods_name">
 			
-			<input type="text" name="keyword" placeholder="검색어 입력" value="${param.keyword}"
+			<input type="text" name="keyword" placeholder="상품명 입력" value="${param.keyword}"
 				style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 200px;">
 			
 			<button type="submit" class="btn btn-positive">
@@ -123,7 +122,7 @@
 						<td><img src="image?goodsNo=${goods.goodsNo}"
 							style="width: 100px; height: 100px; object-fit: cover;"></td>
 						<td class="left"><a href="detail?goodsNo=${goods.goodsNo}"
-							style="font-size: 1.25em">${goods.goodsName}</a><br>${goods.goodsPoint} point<br></td>
+							style="font-size: 1.25em">${goods.goodsName}</a><br><br><fmt:formatNumber value="${goods.goodsPoint}" pattern="#,##0" />point<br></td>
 						<td class="left">
 						
 							<c:if test="${goods.goodsQuantity > 0}">
@@ -202,6 +201,7 @@
 		</div>
 	</c:if>
 	</div>
+<div>
 </div>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -222,7 +222,7 @@
 					"goodsQuantity" : $form.find('[name=goodsQuantity]').val()
 				},
 				success : function() {
-					var result = confirm("장바구니에 상품을 담았습니다. 장바구니로 이동하시겠습니까?");
+					var result = confirm("장바구니로 이동하시겠습니까?");
 					if (result) {
 						location.href = "/store/cart/list";
 					}

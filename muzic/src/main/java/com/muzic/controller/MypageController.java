@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.muzic.condition.SearchCondition;
+import com.muzic.dao.GoodsDao;
 import com.muzic.dao.MemberDao;
 import com.muzic.dao.MusicViewDao;
 import com.muzic.dto.MemberDto;
 import com.muzic.dto.MusicDto;
 import com.muzic.error.TargetNotFoundException;
+import com.muzic.vo.GoodsOrderViewVO;
 import com.muzic.vo.MusicUploaderVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -32,6 +34,8 @@ public class MypageController {
 	private MusicViewDao musicViewDao;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private GoodsDao goodsDao;
     
 	@GetMapping("/profile")
 	public String profile(Model model,HttpSession session) {
@@ -51,6 +55,9 @@ public class MypageController {
 		//memberDto와 musicList를 jsp로 넘길 수 있도록 model 설정 
 		model.addAttribute("memberDto",memberDto);
 		model.addAttribute("musicList",musicList);
+		//주문내역
+		List<GoodsOrderViewVO> orderList = goodsDao.selectOrdersWithGoodsInfo(loginId);
+        model.addAttribute("orderList", orderList);
 		return "/WEB-INF/views/mypage/profile.jsp";
 	}
 	

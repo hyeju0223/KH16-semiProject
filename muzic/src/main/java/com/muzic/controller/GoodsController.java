@@ -18,6 +18,7 @@ import com.muzic.domain.AttachmentCategory;
 import com.muzic.dto.GoodsDto;
 import com.muzic.dto.GoodsOrderDto;
 import com.muzic.error.NeedPermissionException;
+import com.muzic.error.TargetNotFoundException;
 import com.muzic.service.AttachmentService;
 import com.muzic.vo.PageVO;
 
@@ -35,31 +36,32 @@ public class GoodsController {
 
 	// 목록
 	@RequestMapping("/list")
-	public String list(Model model, @RequestParam(required = false) String goodsCategory, HttpSession session,@RequestParam(required = false) String column,
-			@RequestParam(required = false) String keyword,@RequestParam(required = false, defaultValue = "regdate_desc") String sort, @ModelAttribute PageVO pageVO) {
-	    int totalCount = goodsDao.countGoods(pageVO, goodsCategory);
-	    pageVO.setAllData(totalCount); // PageVO에 총 데이터 수 설정
-	    List<GoodsDto> goodsList = goodsDao.selectGoodsList(pageVO, goodsCategory, sort); 
-	    
-	    model.addAttribute("column", column);
-	    model.addAttribute("keyword", keyword); 
-	    model.addAttribute("sort", sort);
-	    model.addAttribute("goodsList", goodsList);
-	    model.addAttribute("goodsCategory", goodsCategory);
-	    model.addAttribute("pageVO", pageVO);
-	    
-	    return "/WEB-INF/views/store/list.jsp";
+	public String list(Model model, @RequestParam(required = false) String goodsCategory, HttpSession session,
+			@RequestParam(required = false) String column, @RequestParam(required = false) String keyword,
+			@RequestParam(required = false, defaultValue = "regdate_desc") String sort, @ModelAttribute PageVO pageVO) {
+		int totalCount = goodsDao.countGoods(pageVO, goodsCategory);
+		pageVO.setAllData(totalCount); // PageVO에 총 데이터 수 설정
+		List<GoodsDto> goodsList = goodsDao.selectGoodsList(pageVO, goodsCategory, sort);
+
+		model.addAttribute("column", column);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("sort", sort);
+		model.addAttribute("goodsList", goodsList);
+		model.addAttribute("goodsCategory", goodsCategory);
+		model.addAttribute("pageVO", pageVO);
+
+		return "/WEB-INF/views/store/list.jsp";
 	}
-	
-	//이미지
+
+	// 이미지
 	@GetMapping("/image")
 	public String image(@RequestParam int goodsNo) {
 		AttachmentCategory category = AttachmentCategory.GOODS;
 		String categoryValue = category.getCategoryName();
 		int attachmentNo = attachmentService.getAttachmentNoByParent(goodsNo, categoryValue);
-		if(attachmentNo != -1) {
+		if (attachmentNo != -1) {
 			return "redirect:/attachment/download?attachmentNo=" + attachmentNo;
-		}else {
+		} else {
 			return "redirect:/images/error/no-image.png";
 		}
 	}
@@ -67,7 +69,11 @@ public class GoodsController {
 	// 상세 정보
 	@GetMapping("/detail")
 	public String detail(@RequestParam int goodsNo, Model model) {
+
 		GoodsDto goodsDto = goodsDao.selectOne(goodsNo);
+		if (goodsDto == null) {
+			throw new TargetNotFoundException("존재하지 않는 상품입니다.");
+		}
 		model.addAttribute("goodsDto", goodsDto);
 		return "/WEB-INF/views/store/detail.jsp";
 	}
