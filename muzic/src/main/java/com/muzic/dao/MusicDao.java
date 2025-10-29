@@ -129,6 +129,12 @@ public class MusicDao {
 		Object[] params = { musicNo };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+	
+	//전체 조회 구문 추가
+	public List<MusicDto> selectListByRank() {
+		String sql = "select * from music order by music_like desc, music_play desc";
+		return jdbcTemplate.query(sql, musicMapper);
+	}
 }
 	
 

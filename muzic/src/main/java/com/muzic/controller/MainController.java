@@ -8,8 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.muzic.dao.MemberDao;
+import com.muzic.dao.MusicDao;
 import com.muzic.dao.PostCommentsDao;
 import com.muzic.dto.MemberDto;
+import com.muzic.dto.MusicDto;
 import com.muzic.error.TargetNotFoundException;
 import com.muzic.vo.PostCommentsVO;
 
@@ -22,6 +24,8 @@ public class MainController {
 	private MemberDao memberDao;
 	@Autowired
 	private PostCommentsDao postCommentsDao;
+	@Autowired
+	private MusicDao musicDao;
 
 	@RequestMapping("/")
 	public String main(Model model, HttpSession session) {
@@ -39,6 +43,12 @@ public class MainController {
 		List<PostCommentsVO> mbtiPostList = postCommentsDao.selectListByMbti();
 		model.addAttribute("mbtiPostList",mbtiPostList);
 		
+		//음원 목록(인기순) 가져오기
+		List<MusicDto> musicRankList = musicDao.selectListByRank();
+		model.addAttribute("musicRankList",musicRankList);
+		
 		return "/WEB-INF/views/home.jsp";
 	}
+	
+
 }

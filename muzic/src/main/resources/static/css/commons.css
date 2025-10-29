@@ -354,14 +354,14 @@ div{
       font-family: Arial, Helvetica, sans-serif;
     }
 
-    a{
+    teg{
       color: inherit;
       text-decoration: none;
       transition-duration: 0.3s;
  
     }
 
-    a:hover{
+    teg:hover{
       color: #9396D5;
     }
 
