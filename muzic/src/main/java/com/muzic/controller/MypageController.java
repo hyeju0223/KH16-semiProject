@@ -182,7 +182,7 @@ public class MypageController {
 		memberDao.update(memberDto);
 		
 		return "redirect:profile";
-	}
+	} 
 	
 	
 }

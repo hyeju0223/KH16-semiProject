@@ -20,7 +20,7 @@
 ${memberDto.memberAddress1} ${memberDto.memberAddress2}<br>
 <hr>
 <div><a href="edit">프로필 수정</a></div>
-<div><a href="/member/changeMemberPw">비밀번호 변경 ></a></div>
+<div><a href="password">비밀번호 변경 ></a></div>
 <div><a href="calendar/">나의 일정 ></a></div>
 <hr>
 <div>달력1 / 달력 2</div>
@@ -47,6 +47,7 @@ ${memberDto.memberAddress1} ${memberDto.memberAddress2}<br>
 	</c:forEach>
 </table>
 
+
 <h4>주문 리스트</h4>
 <%-- <table border="1">
 	<thead>
@@ -69,6 +70,7 @@ ${memberDto.memberAddress1} ${memberDto.memberAddress2}<br>
 		</c:forEach>
 	</tbody>
 </table> --%>
+ 
 
 
 
