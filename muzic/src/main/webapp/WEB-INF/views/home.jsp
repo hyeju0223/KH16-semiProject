@@ -476,6 +476,7 @@
         $(this).removeClass("music-rank music-rank-1").addClass("music-rank");
       });
         
+<<<<<<< HEAD
         //문자열 자르기
       /*   $(".post-comment-title").each(function(){
         	var text = $(this).text();
@@ -494,6 +495,13 @@
         	$(this).text(change); 
         });
         
+//         //문자열 자르기
+//         $(".post-comment-title").each(function(){
+//         	var text = $(this).text();
+//         	var change = text.substring(0, 5);
+//         	$(this).text(change);
+//         	}
+//         });
 
     });
 
@@ -826,4 +834,5 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
     </div>
 </body>
 
+</html>
 </html>

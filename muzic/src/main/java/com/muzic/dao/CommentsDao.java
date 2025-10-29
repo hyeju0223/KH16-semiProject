@@ -17,52 +17,53 @@ public class CommentsDao {
 	private CommentsMapper commentsMapper;
 	
 	public int sequence() {
-		String sql = "select comments_sql.nextval from dual";
+		String sql = "select comments_seq.nextval from dual";
 		return jdbcTemplate.queryForObject(sql, int.class);
 	}
 	
-	public List<CommentsDto> selectList(String commentsWriter) {
+	public List<CommentsDto> selectList(String commentWriter) {
 		
-		String sql = "select * from where comments_writer = ? "
-				+ "order by comments_no desc";
-		Object[] params = {commentsWriter};
+		String sql = "select * from comments where comment_writer = ? "
+				+ "order by comment_no desc";
+		Object[] params = {commentWriter};
 		return jdbcTemplate.query(sql, commentsMapper, params);
 	}
 	
-	public List<CommentsDto> selectList(int commentsPost) {
+	public List<CommentsDto> selectList(int commentPost) {
 		
-		String sql = "select * from where comments_post = ? "
-				+ "ordder by comments_no desc";
-		Object[] params = {commentsPost};
+		String sql = "select * from comments where comment_post = ? "
+				+ "order by comment_no desc";
+		Object[] params = {commentPost};
 		return jdbcTemplate.query(sql, commentsMapper, params);
 	}
 	
-	public boolean delete(int commentsNo) {
-		String sql = "delete comments where comments_no = ?";
-		Object[] params = {commentsNo};
+	public boolean delete(int commentNo) {
+		String sql = "delete from comments where comment_no = ?";
+		Object[] params = {commentNo};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	
 	public void insert(CommentsDto commentsDto) {
-		String sql = "insert into comments(comments_no, comments_post,"
-				+ "comments_writer, comments_content) "
-				+ " values (?, ?, ?, ?)";
-		Object[] params = {commentsDto.getCommentsNo(), commentsDto.getCommentsPost(),
-				commentsDto.getCommentsWriter(), commentsDto.getCommentsContent()};
+		String sql = "insert into comments(comment_no, comment_post,"
+				+ "comment_writer, comment_content, comment_wtime) "
+				+ " values (?, ?, ?, ?, systimestamp)";
+		Object[] params = {
+				commentsDto.getCommentNo(), commentsDto.getCommentPost(),
+				commentsDto.getCommentWriter(), commentsDto.getCommentContent()};
 		jdbcTemplate.update(sql, params);
 	}
 	
 	public boolean update(CommentsDto commentsDto) {
 		String sql = "update comments set "
-				+ "comments_content = ?, comments_etime = systimestamp"
-				+ " where comments_no = ?";
-		Object[] params = {commentsDto.getCommentsContent(), commentsDto.getCommentsNo()};
+				+ "comment_content = ?, comment_etime = systimestamp"
+				+ " where comment_no = ?";
+		Object[] params = {commentsDto.getCommentContent(), commentsDto.getCommentNo()};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	
-	public CommentsDto selectOne(int commentsNo) {
-		String sql = "select * from where comments_no = ?";
-		int[] params = {commentsNo};
+	public CommentsDto selectOne(int commentNo) {
+		String sql = "select * from comments where comment_no = ?";
+		Object[] params = {commentNo};
 		List<CommentsDto> commentsList = jdbcTemplate.query(sql, commentsMapper, params);
 		return commentsList.isEmpty() ? null : commentsList.get(0);
 	}

@@ -227,7 +227,21 @@ public class PostDao {
 		
 		return jdbcTemplate.update(sql, params) > 0;
 	}
-
+	
+	//좋아요 설정
+	public boolean updatePostLike(int postNo, int count) {
+		String sql = "update post set post_like = ? where post_no = ?";
+		Object[] params = {count, postNo};
+		
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+	public boolean updatePostLike(int postNo) {
+		String sql = "update post set post_no = "
+				+ "(select count(*) from post_like where post_no = ?) "
+				+ "where post_no = ?";
+		Object[] params = {postNo, postNo};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
 }
 
 

@@ -14,14 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.muzic.condition.SearchCondition;
+import com.muzic.dao.AttachmentDao;
 import com.muzic.dao.MemberDao;
 import com.muzic.dao.MusicViewDao;
 import com.muzic.dao.PostDao;
 import com.muzic.dto.MemberDto;
-import com.muzic.dto.MusicDto;
 import com.muzic.dto.PostDto;
 import com.muzic.error.NeedPermissionException;
 import com.muzic.error.TargetNotFoundException;
+import com.muzic.service.AttachmentService;
 import com.muzic.service.MusicService;
 import com.muzic.vo.MusicUserVO;
 import com.muzic.vo.PostVO;
@@ -41,6 +42,10 @@ public class PostController {
 	private MusicService musicService;
 	@Autowired
 	private MusicViewDao musicViewDao;
+	@Autowired
+	private AttachmentDao attachmentDao;
+	@Autowired
+	private AttachmentService attachmentService;
 	
 	@RequestMapping("/free/list")
 	public String freelist(Model model, @ModelAttribute SearchCondition searchCondition) {
@@ -142,7 +147,8 @@ public class PostController {
 	
 	//PostMapping으로 사용자가 작성 폼에서 입력한 데이터를 받아서 실제로 처리하고 저장
 	@PostMapping("/write")
-	public String write(@ModelAttribute PostDto postDto, HttpSession session) {
+	public String write(@ModelAttribute PostDto postDto, 
+			@RequestParam(required = false) List<Integer> attachmentNo, HttpSession session) {
 		
 		//공지사항 처리 로직 (기존과 동일)
 		String notice = postDto.getPostNotice();
@@ -184,6 +190,8 @@ public class PostController {
 		
 		int postNo = postDao.sequence();
 		postDto.setPostNo(postNo);
+
+		String postNoStr = Integer.toString(postNo);
 		
 		Integer musicNo = postDto.getPostMusic();
 
