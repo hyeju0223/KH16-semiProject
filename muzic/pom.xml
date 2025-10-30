@@ -110,12 +110,6 @@
 		  <artifactId>korean-utils</artifactId>
 		  <version>0.0.1</version>
 		</dependency>
-
-		<dependency>
-			<groupId>com.kh</groupId>
-			<artifactId>khdata</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 	
 	<build>

@@ -82,7 +82,10 @@ public class MemberRestController {
         return true;
     }
  // MemberRestController.java  (/rest/member/login)
-
+    @GetMapping(value="/checkMemberEmail", produces="application/json")
+    public boolean checkMemberEmail(@RequestParam String memberEmail){
+        return memberDao.existsByEmail(memberEmail); // true = 중복
+    }
  // MemberRestController.java  (/rest/member/login)
     @PostMapping("/login")
     public Map<String, Object> loginRest(

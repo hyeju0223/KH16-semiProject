@@ -114,6 +114,14 @@ public class MemberDao {
         int count = jdbcTemplate.queryForObject(sql, int.class, memberId);
         return count > 0;
     }
+    
+    public boolean existsByEmail(String memberEmail) {
+        Integer count = jdbcTemplate.queryForObject(
+            "SELECT COUNT(*) FROM member WHERE member_email = ?",
+            Integer.class, memberEmail
+        );
+        return count != null && count > 0;
+    }
 
     //  닉네임 중복 검사
     public boolean existsByNickname(String nickname) {
@@ -156,4 +164,5 @@ public class MemberDao {
 		Object[] params = {point, memberId};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+	
 }
