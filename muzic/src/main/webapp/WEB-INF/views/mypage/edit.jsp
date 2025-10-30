@@ -74,8 +74,8 @@
             background-color: #636e72;
             border-radius: 50%;
             position: absolute;
-            left: 140px;
-            top: 140px;
+            left: 130px;
+            top: 130px;
             z-index: 10;
             border: 1px solid #ffffff;
         }
@@ -89,8 +89,8 @@
         .change-text {
             font-size: 30px;
             position: absolute;
-            left: 45px;
-            top: 80px;
+            left: 38px;
+            top: 73px;
             opacity: 0;
         }
 

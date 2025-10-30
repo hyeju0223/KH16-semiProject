@@ -123,9 +123,9 @@ public class MypageController {
 	
 	@PostMapping("/password")
 	public String password(HttpSession session,
-			@RequestParam String loginPw,
-			@RequestParam String changePw,
-			@RequestParam String changePw2) {
+			@RequestParam String memberPw,
+			@RequestParam String memberChangePw1,
+			@RequestParam String memberChangePw2) {
 		
 		//세션으로 회원 찾기
 		String loginId = (String) session.getAttribute("loginMemberId");
@@ -133,23 +133,23 @@ public class MypageController {
 		if(findDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
 		
 		//현재 비밀번호와 입력한 현재 비밀번호가 일치하지 않는다면
-		if(! bCryptPasswordEncoder.matches(loginPw, findDto.getMemberPw())) { 
+		if(! bCryptPasswordEncoder.matches(memberPw, findDto.getMemberPw())) { 
 			return "redirect:password?loginPwError";
 		}
 		
 		//현재 비밀번호와 입력한 변경 비밀번호가 같다면
-		if(loginPw.equals(changePw)||loginPw.equals(changePw2)) {
+		if(memberPw.equals(memberChangePw1)||memberPw.equals(memberChangePw2)) {
 			return "redirect:password?samePwError";
 		}
 		
 		//입력한 두 변경 비밀번호가 일치하지 않는다면
-		if(! changePw.equals(changePw2)) {
+		if(! memberChangePw1.equals(memberChangePw2)) {
 			return "redirect:password?changePwError";
 		}
 		
 		//해시 비밀번호로 변환 후 신규 비밀번호로 교체
-		String hashed = bCryptPasswordEncoder.encode(changePw);		
-		findDto.setMemberPw(hashed);
+		String hashed = bCryptPasswordEncoder.encode(memberChangePw1);		
+		findDto.setMemberPw(memberChangePw1);
 		//DB에 업데이트
 		memberDao.updateMemberPw(findDto);
 		

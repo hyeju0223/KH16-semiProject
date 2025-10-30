@@ -151,6 +151,7 @@ public class MemberDao {
 		return jdbcTemplate.update(sql,params) > 0;
 	}
 
+	//포인트 추가
 	public boolean addPoint(int point, String memberId) {
 		String sql = "update member set member_point=member_point+? where member_id=?";
 		Object[] params = {point, memberId};

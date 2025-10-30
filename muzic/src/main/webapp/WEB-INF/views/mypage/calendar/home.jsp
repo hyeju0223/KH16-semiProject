@@ -190,7 +190,6 @@
             // //jajx에서 가지고 온 데이터
             var calendarData = [];
             var memberId = "${memberDto.memberId}";
-
             var date = new Date(); //현재 날짜 가져오기
             var year = date.getFullYear(); //현재 년도
             var month = date.getMonth() + 1;  //현재 월 (10월인데 js입장에선 9월, 그래서 +1 해야함)
@@ -399,12 +398,13 @@
                 });
 
             };
-            
-            $(".gift-btn").on("click", function(){
 
+            $(".gift-btn").on("click", function(){
+            	//var checkDay = $(".schedule.addCalendar").not(".prevSchedule").length;
                 $.ajax({
                     url : "/mypage/calendar/gift",
                     method : "post",
+                    //data : {checkDay},
                     success : function(response){
                     	if(response == "success"){
                             alert("포인트 지급이 완료되었습니다!");

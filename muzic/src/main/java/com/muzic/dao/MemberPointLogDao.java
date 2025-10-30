@@ -14,7 +14,7 @@ public class MemberPointLogDao {
 	//포인트 선물에 따른 로그 등록
 	
 	public int sequence() {
-		String sql = "select point_log_no.nextval from dual";
+		String sql = "select point_log.nextval from dual";
 		
 		return jdbcTemplate.queryForObject(sql, int.class);
 	}
@@ -25,6 +25,7 @@ public class MemberPointLogDao {
 				+ "point_log_reason"
 				+ ") values (?,?,?,?)";
 		Object[] params = {
+				memberPointLogDto.getPointLogNo(),
 				memberPointLogDto.getPointLogMember(), 
 				memberPointLogDto.getPointLogChange(),
 				memberPointLogDto.getPointLogReason()
@@ -32,10 +33,12 @@ public class MemberPointLogDao {
 		jdbcTemplate.update(sql, params);
 	}
 	
-	public String selectReasonByMonthly(String memberId) {
-		String sql = "select point_log_reason from member_point_log where point_log_member=? "
-				+ "and point_log_time between trunc(sysdate, 'MM') and last_day(sysdate)";
-		Object[] params = {memberId};
-		return jdbcTemplate.queryForObject(sql,String.class, params);
+	public boolean selectReasonByMonthly(String memberId) {
+		String sql = "select count(*) from member_point_log "
+				+ "where point_log_member = ? and point_log_reason = '출석체크' "
+				+ "and point_log_time >= trunc(sysdate, 'MM')";
+		Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, memberId);
+		return cnt != null && cnt > 0;
+
 	}
 }
