@@ -25,5 +25,8 @@ public class MusicUploaderVO {
     private String adminComment;       
     @Builder.Default
     private Set<String> musicGenres = new HashSet<>();
+    private int coverAttachmentNo;
+    private int musicFileAttachmentNo;
+    
     
 }

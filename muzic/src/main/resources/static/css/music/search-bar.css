@@ -1,0 +1,77 @@
+/* 🔍 검색 박스 전체 */
+.mz-search-box {
+    position: relative;
+    width: 100%;
+}
+
+/* 입력창 */
+#mz-search-input {
+    width: 100%;
+    padding: 12px 45px 12px 18px;
+    border: 2px solid #c9c9ee;
+    border-radius: 30px;
+    outline: none;
+    font-size: 15px;
+    background: #fafaff;
+    transition: .2s;
+    font-family: "Poppins","Gowun Dodum", sans-serif;
+}
+
+#mz-search-input:focus {
+    border-color: #9396D5;
+    box-shadow: 0 0 8px rgba(147,150,213,0.35);
+}
+
+/* 검색 버튼 */
+.mz-search-btn {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    font-size: 18px;
+    color: #777;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.mz-search-btn:hover {
+    color: #9396D5;
+}
+
+/* 미리보기 박스 */
+.mz-search-preview {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #e2e3f5;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(147,150,213,0.2);
+    z-index: 1000;
+    display: none;
+    padding: 12px 0;
+}
+
+/* 리스트 */
+.mz-preview-item {
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: .15s;
+}
+
+.mz-preview-item:hover {
+    background: rgba(147,150,213,0.08);
+}
+
+/* 섹션 제목 */
+.mz-preview-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #666;
+    padding: 6px 15px;
+    opacity: .9;
+}

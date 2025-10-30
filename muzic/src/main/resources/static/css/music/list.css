@@ -1,0 +1,172 @@
+/* ===== Grid ===== */
+.music-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 26px;
+}
+
+/* ===== Card ===== */
+.music-card {
+    background: linear-gradient(180deg, #f9f9ff 0%, #f1f0ff 100%);
+    border: 1px solid rgba(147,150,213,0.3);
+    border-radius: 18px;
+    padding: 14px;
+    cursor: pointer;
+    transition: .24s ease;
+}
+
+.music-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 24px rgba(147,150,213,0.35);
+    border-color: rgba(147,150,213,0.6);
+}
+
+/* ===== Album Cover ===== */
+.cover-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #a3a6ec 0%, #dee0ff 100%);
+}
+
+.cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: .3s;
+}
+
+.music-card:hover .cover-img {
+    transform: scale(1.08);
+}
+
+/* ===== Play Button (Glass) ===== */
+.play-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 46px;
+    height: 46px;
+    background: rgba(147,150,213,0.85);
+    backdrop-filter: blur(7px);
+    border: 1px solid rgba(255,255,255,0.6);
+    color: #fff;
+    font-size: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .2s;
+}
+
+.play-btn:hover {
+    transform: scale(1.22);
+    background: rgba(123,127,224,1);
+}
+
+/* ===== Title / Artist ===== */
+.title {
+    font-weight: 600;
+    font-size: 15px;
+    margin-top: 10px;
+    color: #222;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.artist {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+/* ===== Stats ===== */
+.music-stats {
+    display: flex;
+    gap: 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6d6f90;
+}
+
+.music-stats i {
+    color: #9396D5;
+    margin-right: 4px;
+}
+
+/* ===== Like Animation ===== */
+.like-area {
+    cursor: pointer;
+    transition: .2s;
+}
+
+.like-area.liked i {
+    color: #ff4d8e;
+    animation: heartPop .25s ease-in-out;
+}
+
+@keyframes heartPop {
+    50% { transform: scale(1.3); }
+}
+
+/* ===== Sort Bar ===== */
+.music-sort-bar {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.music-sort-bar a {
+    font-size: 16px;
+    font-weight: 500;
+    color: #888;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: .2s;
+}
+
+.music-sort-bar a:hover {
+    color: #7b7fe0;
+}
+
+.music-sort-bar a.on {
+    font-weight: 700;
+    color: #5b5ecf;
+    border-bottom: 2px solid #5b5ecf;
+}
+.like-area {
+    cursor: pointer;
+    position: relative;
+}
+
+/* hover 시 컬러 변화 + scale hint */
+.like-area:hover i {
+    color: #ff4d8e;
+    transform: scale(1.15);
+}
+
+/* 손가락 커서 */
+.like-area:hover {
+    filter: brightness(1.15);
+}
+
+/* 눌렀을 때 ripple 효과 */
+.like-area.liked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 22px;
+    height: 22px;
+    background: rgba(255, 77, 142, .35);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: likeRipple .4s ease-out forwards;
+}
+
+@keyframes likeRipple {
+    to { transform: translate(-50%, -50%) scale(2.8); opacity: 0; }
+}

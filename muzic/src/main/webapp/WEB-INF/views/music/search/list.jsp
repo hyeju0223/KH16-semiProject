@@ -22,7 +22,7 @@
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/views/template/music-search-bar.jsp" />
+<%-- <jsp:include page="/WEB-INF/views/template/music-search-bar.jsp" /> --%>
 
 <div class="result-container">
 

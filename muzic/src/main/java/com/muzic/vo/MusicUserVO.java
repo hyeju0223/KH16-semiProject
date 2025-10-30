@@ -22,5 +22,7 @@ public class MusicUserVO {
     private Timestamp musicUtime;
     @Builder.Default
     private Set<String> musicGenres = new HashSet<>();
+    private int coverAttachmentNo;
+    private int musicFileAttachmentNo;
     
 }

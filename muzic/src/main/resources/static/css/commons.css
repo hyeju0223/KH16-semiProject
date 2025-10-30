@@ -6,15 +6,6 @@
     - 홈페이지에서 자주 사용하는 디자인 코드를 모아서 이곳에 저장
 */
 
-div{
-   /* box-shadow: 0 0 1px 0 grey; */
-}
-
-*{
-    box-sizing: border-box;
-    font-family: 고딕;
-}
-
          /*
             컨테이너와 셀 디자인
             - 컨테이너(container) : 작은 화면 한 개를 표현하기 위한 단위영역 (폭과 가운데 정렬이 중요)
@@ -417,4 +408,42 @@ div{
       width: 20%;
       font-size: 24px;
     }
+/* 음원 등록페이지 css  */
+.genre-wrap {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
 
+.genre-tag {
+	position: relative;
+	cursor: pointer;
+}
+
+.genre-tag input[type="checkbox"] {
+	display: none;
+}
+
+.genre-tag span {
+	display: inline-block;
+	padding: 6px 12px;
+	border: 1px solid #9396D5;
+	border-radius: 20px;
+	font-size: 14px;
+	color: #9396D5;
+	background: #fff;
+	transition: all .2s;
+}
+
+.genre-tag:hover span {
+	background: #f1f2ff;
+	border-color: #7f82d1;
+}
+
+.genre-tag input[type="checkbox"]:checked + span {
+	background: #9396D5;
+	color: #fff;
+	border-color: #9396D5;
+	font-weight: 600;
+	box-shadow: 0 0 5px rgba(147,150,213,0.5);
+}

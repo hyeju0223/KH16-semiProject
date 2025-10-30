@@ -1,6 +1,7 @@
 package com.muzic.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.muzic.dto.MusicFormDto;
 import com.muzic.dto.MusicStatusHistoryDto;
 import com.muzic.error.InvalidContentException;
 import com.muzic.util.HangulChosungUtil;
+import com.muzic.vo.MusicUserVO;
 
 @Service
 public class MusicHelperService {
@@ -110,5 +112,14 @@ public class MusicHelperService {
     		attachmentService.delete(beforeMusicFileNo);
     	}
     	saveAttachments(musicFormDto, musicNo);
+    }
+    
+    public void setMusicAttachmentNo(List<MusicUserVO> list) {
+        for (MusicUserVO vo : list) {
+            int coverNo = attachmentService.getAttachmentNoByParent(vo.getMusicNo(), "COVER");
+            int musicFileNo = attachmentService.getAttachmentNoByParent(vo.getMusicNo(), "MUSIC");
+            vo.setCoverAttachmentNo(coverNo);
+            vo.setMusicFileAttachmentNo(musicFileNo);
+        }
     }
 }

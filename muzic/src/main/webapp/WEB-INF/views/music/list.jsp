@@ -1,107 +1,57 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>음원 목록</title>
+<link rel="stylesheet" href="/css/commons.css">
+<link rel="stylesheet" href="/css/music/music-commons.css">
+<link rel="stylesheet" href="/css/music/list.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <!-- ✅ jQuery (항상 head 또는 맨 위에 두기) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<div class="container w-1100 mt-40">
+	
+	<jsp:include page="/WEB-INF/views/music/search-bar.jsp" ></jsp:include>
+	
+	<div class="mz-title mb-20">Muzic Library</div>
+	<div class="mz-sub mb-30">K-뮤직 감성 플레이리스트를 만나보세요 🎧</div>
+	<div class="page-header-line"></div>
 
-    <style>
-        body { font-family: 'Pretendard', sans-serif; margin: 30px; background-color: #f9f9f9; color: #333; }
-        h1 { text-align: center; margin-bottom: 25px; }
+	<!-- Sort bar -->
+	<div class="music-sort-bar mb-20">
+		<a href="/music/list?sortType=latest" class="${param.sortType=='latest' ? 'on' : ''}">최신순</a>
+		<a href="/music/list?sortType=like"   class="${param.sortType=='like' ? 'on' : ''}">좋아요순</a>
+		<a href="/music/list?sortType=play"   class="${param.sortType=='play' ? 'on' : ''}">조회순</a>
+	</div>
 
-        /* ✅ 정렬 바 */
-        .sort-bar { text-align: right; margin-bottom: 15px; font-size: 15px; }
-        .sort-link { color: #555; text-decoration: none; margin-left: 15px; font-weight: 500; }
-        .sort-link:hover { color: #000; }
-        .sort-active { color: #000; font-weight: 700; border-bottom: 2px solid #000; padding-bottom: 3px; }
+	<!-- Grid -->
+	<div class="music-grid">
+		<c:forEach var="m" items="${musicUserVO}">
+			<div class="music-card" onclick="location.href='/music/detail?musicNo=${m.musicNo}'">
 
-        table { width: 100%; border-collapse: collapse; background-color: white; }
-        th, td { padding: 12px 10px; border-bottom: 1px solid #ddd; text-align: center; }
-        th { background-color: #f0f0f0; }
-        tr:hover { background-color: #f7f7f7; }
+				<div class="cover-wrap">
+					<img class="cover-img"
+						src="/music/file?attachmentNo=${m.coverAttachmentNo}"
+						onerror="this.src='/images/error/no-image.png'">
 
-        .btn { display: inline-block; padding: 6px 12px; border-radius: 6px; text-decoration: none; color: white; }
-        .btn-view { background-color: #3498db; }
-        .btn-play { background-color: #2ecc71; }
-        .btn-like { background-color: #e74c3c; }
-        .empty { text-align: center; padding: 40px 0; color: #888; }
-    </style>
+					<button class="play-btn"
+						onclick="event.stopPropagation(); location.href='/music/detail?musicNo=${m.musicNo}'">
+						<i class="fa-solid fa-play"></i>
+					</button>
+				</div>
 
-    <script src="/js/music/search.js"></script>
-</head>
+				<div class="title">${m.musicTitle}</div>
+				<div class="artist">${m.musicArtist}</div>
 
-<body>
-<h1>음원 목록</h1>
+				<div class="music-stats">
+					<div class="stat like-area" onclick="toggleLike(this, event)">
+						<i class="fa-regular fa-heart"></i> ${m.musicLike}
+					</div>
 
-<!-- 🔍 공통 검색바 include -->
-<jsp:include page="/WEB-INF/views/template/music-search-bar.jsp" />
+					<div class="stat">
+						<i class="fa-solid fa-headphones"></i> ${m.musicPlay}
+					</div>
+				</div>
 
-<!-- 🔽 정렬 탭 -->
-<div class="sort-bar">
-    <span>정렬: </span>
-    <a href="/music/list?sortType=latest"
-       class="sort-link ${searchCondition.sortType == 'latest' or empty searchCondition.sortType ? 'sort-active' : ''}">
-        최신순
-    </a>
-    |
-    <a href="/music/list?sortType=like"
-       class="sort-link ${searchCondition.sortType == 'like' ? 'sort-active' : ''}">
-        좋아요순
-    </a>
-    |
-    <a href="/music/list?sortType=play"
-       class="sort-link ${searchCondition.sortType == 'play' ? 'sort-active' : ''}">
-        재생순
-    </a>
+			</div>
+		</c:forEach>
+	</div>
 </div>
-
-<!-- 🔽 목록 -->
-<c:choose>
-    <c:when test="${empty musicUserVO}">
-        <div class="empty">등록된 음원이 없습니다.</div>
-    </c:when>
-    <c:otherwise>
-        <table>
-            <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>앨범</th>
-                    <th>제목</th>
-                    <th>아티스트</th>
-                    <th>재생수</th>
-                    <th>좋아요</th>
-                    <th>등록일</th>
-                    <th>관리</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="music" items="${musicUserVO}">
-                    <tr>
-                        <td>${music.musicNo}</td>
-                        <td>${music.musicAlbum}</td>
-                        <td>${music.musicTitle}</td>
-                        <td>${music.musicArtist}</td>
-                        <td>${music.musicPlay}</td>
-                        <td>${music.musicLike}</td>
-                        <td><fmt:formatDate value="${music.musicUtime}" pattern="yyyy-MM-dd"/></td>
-                        <td>
-                            <a href="/music/detail?musicNo=${music.musicNo}" class="btn btn-view">보기</a>
-                            <a href="/music/play?musicNo=${music.musicNo}" class="btn btn-play">재생</a>
-                            <a href="/music/like?musicNo=${music.musicNo}" class="btn btn-like">좋아요</a>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-    </c:otherwise>
-</c:choose>
-
-<!-- <script src="/js/music-search.js"></script> -->
-</body>
-</html>
+<script src="/js/music/list.js"></script>

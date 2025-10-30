@@ -25,6 +25,8 @@ public class MusicUploaderVOMapper implements RowMapper<MusicUploaderVO> {
                 .musicEtime(rs.getTimestamp("music_etime"))
                 .musicStatus(rs.getString("music_status"))
                 .adminComment(rs.getString("admin_comment"))
+                .coverAttachmentNo(rs.getInt("cover_attachment_no"))
+                .musicFileAttachmentNo(rs.getInt("music_file_attachment_No"))
                 // musicGenres는 Dao에서 따로 Set으로 주입 예정
                 .build();
     }

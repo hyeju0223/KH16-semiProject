@@ -2,8 +2,8 @@ $(function() {
 
     // 좋아요 버튼 클릭
     $(".btn-like").on("click", function() {
-        const $btn = $(this);
-        const musicNo = $btn.data("music-no");
+        var $btn = $(this);
+        var musicNo = $btn.data("music-no");
 
         $.ajax({
             url: "/rest/music/toggle",
@@ -27,7 +27,7 @@ $(function() {
 
     // 재생 버튼 클릭 시 재생수 증가
     $(".btn-play").on("click", function() {
-        const musicNo = $(this).data("music-no");
+        var musicNo = $(this).data("music-no");
 
         $.ajax({
             url: "/rest/music/play",

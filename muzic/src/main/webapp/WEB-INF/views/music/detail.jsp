@@ -1,55 +1,90 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-    <link rel="stylesheet" href="/css/common.css">
-    <link rel="stylesheet" href="/css/music/detail.css">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-	
-    <!-- 🔸 JS -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-</head>
+<link rel="stylesheet" href="/css/common.css">
+<link rel="stylesheet" href="/css/music/detail.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></script>
 
-<body>
-<div class="container w-600 mt-40">
-    <div class="music-card" data-music-no="${musicDto.musicNo}">
-        <!-- 🎵 앨범 커버 -->
-        <div class="music-cover">
-            <img src="/attachment/download/${coverAttachmentNo}" alt="앨범 커버" class="cover-img">
+<div class="container w-800 mt-40">
+    
+    <div class="music-detail-wrapper flex gap-30">
 
-            <!-- ▶ 재생버튼 -->
-            <div class="play-btn" data-music-no="${musicDto.musicNo}">
+        <!-- 앨범 커버 영역 -->
+        <div class="album-box relative">
+            <img 
+                class="album-cover"
+                src="<c:choose>
+                        <c:when test='${coverAttachmentNo > 0}'>
+                            /attachment/download/${coverAttachmentNo}
+                        </c:when>
+                        <c:otherwise>
+                            /images/default_cover.png
+                        </c:otherwise>
+                    </c:choose>"
+                alt="cover"
+            >
+
+            <!-- 재생 버튼 -->
+            <button id="play-btn" class="play-button center-abs">
                 <i class="fa-solid fa-play"></i>
-            </div>
+            </button>
+
+            <!-- 재생 시간 -->
+            <div class="duration-box">03:00</div>
         </div>
 
-        <!-- 🎧 정보 영역 -->
-        <div class="music-info">
-            <div class="music-title">
-                <i class="fa-solid fa-music purple"></i> ${musicDto.musicTitle}
-            </div>
+        <!-- 정보 -->
+        <div class="info-box flex-col gap-10">
+            <h2 class="music-title">${musicDto.musicTitle}</h2>
+            <p class="artist">👤 ${musicDto.musicArtist}</p>
 
-            <div class="music-artist">
-                <i class="fa-solid fa-user gray"></i> ${musicDto.musicArtist}
-            </div>
+            <c:if test="${not empty musicDto.musicAlbum}">
+                <p class="album">💿 ${musicDto.musicAlbum}</p>
+            </c:if>
 
-            <div class="music-album">
-                <i class="fa-solid fa-compact-disc gray"></i> ${musicDto.musicAlbum}
-            </div>
+            <p class="uploader">
+                업로더: 
+                <c:choose>
+                    <c:when test="${not empty musicUserVO.memberNickname}">
+                        ${musicUserVO.memberNickname}
+                    </c:when>
+                    <c:otherwise>
+                        탈퇴회원
+                    </c:otherwise>
+                </c:choose>
+            </p>
 
-            <div class="music-meta">
-                <div class="music-time">
-                    <i class="fa-solid fa-clock blue"></i>
-                    <span>${musicDto.musicUtime}</span>
-                </div>
+            <p class="meta">업로드: ${musicDto.musicUtime}</p>
+            <p class="meta">재생수: ${musicDto.musicPlay}</p>
+            <p class="meta">좋아요: ${musicDto.musicLike}</p>
 
-                <div class="music-like">
-                    <i class="fa-regular fa-heart"></i>
-                    <span class="like-count">${musicDto.musicLike}</span>
-                </div>
-            </div>
+            <!-- 좋아요 버튼 -->
+            <form action="/music/like" method="post">
+                <input type="hidden" name="musicNo" value="${musicDto.musicNo}">
+                <button class="btn-primary w-100">❤️ 좋아요</button>
+            </form>
+
         </div>
     </div>
+
+    <!-- 오디오 -->
+    <audio id="audio-player" style="display:none;">
+        <source src="/attachment/download/${musicAttachmentNo}" type="audio/mpeg">
+    </audio>
 </div>
-</body>
-</html>
+
+<script>
+$(function(){
+    const audio = $("#audio-player")[0];
+
+    $("#play-btn").click(function(){
+        if(audio.paused){
+            audio.play();
+            $(this).html('<i class="fa-solid fa-pause"></i>');
+        } else {
+            audio.pause();
+            $(this).html('<i class="fa-solid fa-play"></i>');
+        }
+    });
+});
+</script>

@@ -22,6 +22,8 @@ public class MusicUserVOMapper implements RowMapper<MusicUserVO> {
                 .musicPlay(rs.getInt("music_play"))
                 .musicLike(rs.getInt("music_like"))
                 .musicUtime(rs.getTimestamp("music_utime"))
+                .coverAttachmentNo(rs.getInt("cover_attachment_no"))
+                .musicFileAttachmentNo(rs.getInt("music_file_attachment_No"))
                 // musicGenres는 따로 DAO에서 setGenreSet()으로 채워줘야 함.
                 .build();
     }

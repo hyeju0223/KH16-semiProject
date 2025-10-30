@@ -18,6 +18,9 @@ public class MusicSearchService {
 
     @Autowired
     private MusicSearchDao musicSearchDao;
+    
+    @Autowired
+    private MusicHelperService musicHelperService;
 
     // 허용 정렬값
     private static final Set<String> ALLOWED_SORT =
@@ -85,7 +88,10 @@ public class MusicSearchService {
 
             List<MusicUserVO> result = performSearch(searchCondition, sortType); // 검색 실행
             searchCondition.setKeyword(originalKeyword); // 검색어 원복(3개의 컬럼을 순회해야하므로 원복 필요)
-            if (!result.isEmpty()) return result; // 결과 있으면 바로 반환
+            if (!result.isEmpty()) {
+            	musicHelperService.setMusicAttachmentNo(result);
+            	return result; // 결과 있으면 바로 반환
+            }
         }
 
         // 2차 영타 입력 시 한글로 변환 후 재검색
@@ -107,7 +113,10 @@ public class MusicSearchService {
 
                     List<MusicUserVO> result = performSearch(searchCondition, sortType);
                     searchCondition.setKeyword(originalKeyword); // 검색어 복원
-                    if (!result.isEmpty()) return result; // 검색어 있을 때까지 컬럼 순회
+                    if (!result.isEmpty()) { // 검색어 있을 때까지 컬럼 순회
+                    	musicHelperService.setMusicAttachmentNo(result);
+                    	return result; // 결과 있으면 바로 반환
+                    }
                 }
             }
         }
@@ -137,7 +146,10 @@ public class MusicSearchService {
 
         List<MusicUserVO> result = performSearch(searchCondition, sortType); // 탐색 순회 x(레스트 컨트롤러에서 순회 담당)
         searchCondition.setKeyword(originalKeyword); // 원본 키워드 복원
-        if (!result.isEmpty()) return result; // 빈 리스트가 아니라면 종료
+        if (!result.isEmpty()) {  // 빈 리스트가 아니라면 종료
+        	musicHelperService.setMusicAttachmentNo(result);
+        	return result;
+        }
 
         // 2차 영타 → 한글 변환 재검색
         if (SearchUtil.isWithoutHangul(keyword)) { // 한글이 아예 없다면
@@ -161,7 +173,10 @@ public class MusicSearchService {
                 result = performSearch(searchCondition, sortType); // 검색 시작
                 searchCondition.setKeyword(converted); // 변환된 검색어로 searchCondition 세팅(해당 코드 없어도 무관)
 
-                if (!result.isEmpty()) return result; // 조회결과가 있다면 리스트 반환
+                if (!result.isEmpty()) { // 조회결과가 있다면 리스트 반환
+                	musicHelperService.setMusicAttachmentNo(result);
+                	return result;
+                } 
             }
         }
         return List.of(); // 없다면 빈 리스트 반환
