@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.muzic.dao.CalendarDao;
 import com.muzic.dao.MemberDao;
+import com.muzic.dao.MemberPointLogDao;
 import com.muzic.dto.CalendarDto;
-import com.muzic.service.CalendarPointService;
+import com.muzic.dto.MemberDto;
+import com.muzic.dto.MemberPointLogDto;
+import com.muzic.error.TargetNotFoundException;
+//import com.muzic.service.CalendarPointService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -26,8 +30,10 @@ public class CalendarRestController {
 	private CalendarDao calendarDao;
 	@Autowired
 	private MemberDao memberDao;
+//	@Autowired
+//	private CalendarPointService calendarPointService;
 	@Autowired
-	private CalendarPointService calendarPointService;
+	private MemberPointLogDao memberPointLogDao;
 	
 	//일정 조회
 	@PostMapping("/home")
@@ -65,7 +71,42 @@ public class CalendarRestController {
 	@PostMapping("/gift")
 	public String gift(HttpSession session) {
 		
-		return calendarPointService.giftPoint(session);
+		String loginId = (String) session.getAttribute("loginMemberId");
+		MemberDto findDto = memberDao.selectByMemberId(loginId);
+		if(findDto == null) throw new TargetNotFoundException("존재하지 않는 회원입니다");
+
+		//총 출석체크 개수 구하기
+		int totalAttendance = calendarDao.selectTotalAttendance(loginId);
+
+		boolean already = memberPointLogDao.selectReasonByMonthly(loginId);
+
+		
+		int point = 0;
+		if(already){
+			return "already";					
+		}
+		else if(totalAttendance >= 30 ) {
+			point = 1000;
+
+		}else if(totalAttendance >= 20 ) {
+			point = 300;
+		}
+		else if(totalAttendance >= 5 ) {
+			point = 100;
+		} else {
+			return "fail";
+		}
+		
+		//포인트 로그 등록을 위한 Dto(회원 아이디, 증감 포인트, 변경사유)
+		MemberPointLogDto memberPointLogDto = new MemberPointLogDto();
+		memberPointLogDto.setPointLogNo(memberPointLogDao.sequence());
+		memberPointLogDto.setPointLogMember(loginId);
+		memberPointLogDto.setPointLogReason("출석체크");
+		
+		memberDao.addPoint(point,loginId);
+		memberPointLogDto.setPointLogChange(point);	
+		memberPointLogDao.insertByGiftpoint(memberPointLogDto);
+		return "success";
 		
 		
 	}
