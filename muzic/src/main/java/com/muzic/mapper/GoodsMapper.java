@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.muzic.dto.GoodsDto;
 
 @Component
-public class GoodsMapper implements RowMapper<GoodsDto>{
+public class GoodsMapper implements RowMapper<GoodsDto> {
 
 	@Override
 	public GoodsDto mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -20,7 +20,14 @@ public class GoodsMapper implements RowMapper<GoodsDto>{
 		goodsDto.setGoodsPoint(rs.getInt("goods_point"));
 		goodsDto.setGoodsQuantity(rs.getInt("goods_quantity"));
 		goodsDto.setGoodsCategory(rs.getString("goods_category"));
-		goodsDto.setGoodsExpiration(rs.getTimestamp("goods_expiration"));
+
+		// 🚨 수정 부분: getTimestamp()로 가져온 후 toLocalDateTime()으로 변환
+		if (rs.getTimestamp("goods_expiration") != null) {
+			goodsDto.setGoodsExpiration(rs.getTimestamp("goods_expiration").toLocalDateTime());
+		} else {
+			goodsDto.setGoodsExpiration(null);
+		}
+
 		goodsDto.setGoodsRegistrationTime(rs.getTimestamp("goods_registration_time"));
 		goodsDto.setGoodsEditTime(rs.getTimestamp("goods_edit_time"));
 		return goodsDto;

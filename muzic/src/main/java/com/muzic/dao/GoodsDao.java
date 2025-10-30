@@ -201,4 +201,28 @@ public class GoodsDao {
 		return jdbcTemplate.query(sql, goodsOrderViewMapper, params);
 	}
 
+
+	public boolean delete(int goodsNo) {
+        String sql = "DELETE FROM goods WHERE goods_no = ?";
+        Object[] params = {goodsNo};
+        return jdbcTemplate.update(sql, params) > 0; 
+    }
+
+	public boolean update(GoodsDto goodsDto) {
+		String sql = "UPDATE goods SET "
+	               + "goods_name=?, goods_description=?, goods_point=?, goods_quantity=?, goods_category=?, "
+	               + "goods_expiration=?, goods_edit_time=SYSTIMESTAMP " // goods_edit_time 업데이트
+	               + "WHERE goods_no=?";
+	    Object[] params = {
+	        goodsDto.getGoodsName(),
+	        goodsDto.getGoodsDescription(), // DTO에 description 필드가 있다고 가정
+	        goodsDto.getGoodsPoint(),
+	        goodsDto.getGoodsQuantity(),
+	        goodsDto.getGoodsCategory(),
+	        goodsDto.getGoodsExpiration(), // DTO에 expiration 필드가 있다고 가정 (Timestamp 타입)
+	        goodsDto.getGoodsNo() // WHERE 조건
+	    };
+	    return jdbcTemplate.update(sql, params) > 0;
+	}
+
 }

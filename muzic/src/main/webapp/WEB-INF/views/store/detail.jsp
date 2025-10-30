@@ -150,8 +150,8 @@ input[type="number"]::-webkit-inner-spin-button {
 		<p style="line-height: 1.8;">${goodsDto.goodsDescription}</p>
 	</div>
 
-	<div class="cell" style="margin-top: 30px;">
-		<a href="list"><button type="button">목록</button></a>
+	<div class="cell right" style="margin-top: 30px;">
+		<a href="list"><button type="button" class="btn btn-neutral">목록</button></a>
 	</div>
 </div>
 

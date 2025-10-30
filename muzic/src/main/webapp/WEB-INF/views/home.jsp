@@ -476,15 +476,9 @@
         $(this).removeClass("music-rank music-rank-1").addClass("music-rank");
       });
         
-<<<<<<< HEAD
         //문자열 자르기
-      /*   $(".post-comment-title").each(function(){
+        $(".post-comment-title").each(function(){
         	var text = $(this).text();
-<<<<<<< HEAD
-        	var change = text.substring(0, 5);
-        	$(this).text(change);
-        	} */
-       /*  }); */
         	var change = text.substring(0, 3);
         	$(this).text(change); 
         });
@@ -495,13 +489,6 @@
         	$(this).text(change); 
         });
         
-//         //문자열 자르기
-//         $(".post-comment-title").each(function(){
-//         	var text = $(this).text();
-//         	var change = text.substring(0, 5);
-//         	$(this).text(change);
-//         	}
-//         });
 
     });
 
@@ -571,7 +558,6 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
       </c:choose>
       
     </div>
-
     <!-- 앨범 영역-->
     <div class="cell center album-area flex-box flex-center swiper mt-30" id="album-swiper">
       <div class="swiper-wrapper">
@@ -834,5 +820,4 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
     </div>
 </body>
 
-</html>
 </html>

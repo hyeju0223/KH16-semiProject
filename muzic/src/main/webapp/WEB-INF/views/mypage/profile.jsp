@@ -47,29 +47,27 @@ ${memberDto.memberAddress1} ${memberDto.memberAddress2}<br>
 	</c:forEach>
 </table>
 
-<<<<<<< HEAD
 <h4>주문 리스트</h4>
-<%-- <table border="1">
+<table border="1">
 	<thead>
-		<th>주문번호</th>
-		<th>주문시간</th>
 		<th>상품이미지</th>
 		<th>상품명</th>
 		<th>구매수량</th>
 		<th>구매포인트</th>
+		<th>주문시간</th>
 	</thead>
 	<tbody>
 	<c:forEach var="goodsOrderDto" items="${orderList}">
 	<tr>
-		<td>${goodsOrderDto.orderNo}</td>
-		<td>${goodsOrderDto.orderTime}</td>
-		<td>${goodsOrderDto.}</td>
+		<td><img src="/store/image?goodsNo=${goodsOrderDto.orderGoods}" style="width: 100px; height: 100px; object-fit: cover;"></td>
+		<td><a href="/store/detail?goodsNo=${goodsOrderDto.orderGoods }">${goodsOrderDto.goodsName}</a></td>
 		<td>${goodsOrderDto.orderQuantity}</td>
 		<td>${goodsOrderDto.orderPoint}</td>
+		<td>${goodsOrderDto.orderTime}</td>
 		</tr>
 		</c:forEach>
 	</tbody>
-</table> --%>
+</table>
 
 
 
