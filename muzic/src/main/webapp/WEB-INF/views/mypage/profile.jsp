@@ -303,6 +303,28 @@
 		<fmt:formatDate value="${musicDto.musicUtime}" pattern="yyyy-MM-dd (E) hh:ss"/>
 		</td>
 	</tr>
+	</c:forEach>
+	</tbody>
+</table>
+
+<h4>주문 리스트</h4>
+<table border="1">
+	<thead>
+		<th>상품이미지</th>
+		<th>상품명</th>
+		<th>구매수량</th>
+		<th>구매포인트</th>
+		<th>주문시간</th>
+	</thead>
+	<tbody>
+	<c:forEach var="goodsOrderDto" items="${orderList}">
+	<tr>
+		<td><img src="/store/image?goodsNo=${goodsOrderDto.orderGoods}" style="width: 100px; height: 100px; object-fit: cover;"></td>
+		<td><a href="/store/detail?goodsNo=${goodsOrderDto.orderGoods }">${goodsOrderDto.goodsName}</a></td>
+		<td>${goodsOrderDto.orderQuantity}</td>
+		<td>${goodsOrderDto.orderPoint}</td>
+		<td>${goodsOrderDto.orderTime}</td>
+		</tr>
 		</c:forEach>
 	</tbody>
 
@@ -340,7 +362,6 @@
             <div class="cell mt-30 right">
                 <a href="withDraw" class="red">탈퇴하기<i class="fa-solid fa-chevron-right"></i></a>
             </div>
-
 
     </div>
 

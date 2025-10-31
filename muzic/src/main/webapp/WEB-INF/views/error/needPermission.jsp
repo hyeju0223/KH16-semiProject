@@ -4,9 +4,12 @@
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 <div class="container w-1000">
-	<div class="cell center mt-40">
-		<h1>${title}</h1>
 	</div>
+		<div class="cell center">
+		<img src="/images/error/warn.png" width="100">
+	</div>
+	<div class="cell center">
+		<h1>${title}</h1>
 	<div class="cell center mt-40" style="display: flex; gap: 10px; justify-content: center;">
 		<a href="#" class="btn btn-neutral" onclick="goBack()"style="flex-grow: 1; max-width: 150px; text-align: center;">이전 페이지</a> 
 		<a href="/member/login" class="btn btn-positive" style="flex-grow: 1; max-width: 150px; text-align: center;"><i class="fa-solid fa-right-to-bracket"></i><span style="margin-left: 0.4em">로그인</span></a>

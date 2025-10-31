@@ -1,23 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
 <link rel="stylesheet" type="text/css" href="/css/cart.css">
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">  
+<script src="/summernote/custom-summernote.js"></script>
+<style>
+/* .container {
+	border: 1px solid gray;
+	border-radius: 20px;
+	padding: 10px;
+} */
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+.table th { width: 150px; background-color: #f7f7f7; }
 
+</style>
 
-<div class="container w-100">
-	<div class="cell">
+<div class="container w-1000">
+	<div class="cell center">
 		<h2>관리자 - 상품 등록</h2>
 	</div>
-	<div class="cell">
+	<div class="cell center">
 		<form action="add" method="post" enctype="multipart/form-data">
-			<div class="cell">
-				<table class="table">
+			<div class="cell center">
+				<table class="table" style="margin: 0 auto;">
 					<tbody>
 						<tr>
 							<th style="width: 150px;">카테고리</th>
-							<td><select name="goodsCategory" class="form-input" required>
+							<td><select name="goodsCategory" required>
 									<option value="">-- 카테고리를 선택하세요 --</option>
 									<option value="의류">의류</option>
 									<option value="굿즈">굿즈</option>
@@ -32,29 +47,25 @@
 						</tr>
 						<tr>
 							<th>상품명</th>
-							<td><input type="text" name="goodsName" class="form-input"
-								style="width: 100%;"></td>
+							<td><input type="text" name="goodsName" style="width: 100%;"></td>
 						</tr>
 						<tr>
 							<th>상품 설명</th>
-							<td><textarea name="goodsDescription" class="form-input"
-									rows="5" style="width: 100%;"></textarea></td>
+							<td><textarea name="goodsDescription" class="summernote-editor"></textarea></td>
 						</tr>
 						<tr>
 							<th>포인트(가격)</th>
-							<td><input type="number" name="goodsPoint"
-								class="form-input" placeholder="0"></td>
+							<td><input type="number" name="goodsPoint" placeholder="0"></td>
 						</tr>
 						<tr>
 							<th>재고 수량</th>
 							<td><input type="number" name="goodsQuantity"
-								class="form-input" placeholder="0"></td>
+								placeholder="0"></td>
 						</tr>
-						<!-- <tr>
+						<tr>
 							<th>유효 기간</th>
-							<td><input type="date" name="goodsExpiration"
-								class="form-input"></td>
-						</tr> -->
+							<td><input type="datetime-local" name="goodsExpiration"></td>
+						</tr>
 						<tr>
 							<th>이미지</th>
 							<td><input type="file" name="attach"></td>
@@ -63,8 +74,8 @@
 				</table>
 			</div>
 
-			<div>
-				<a href="/store/list" class="btn">취소</a>
+			<div class="cell right mt-20">
+				<a href="/admin/goods/list" class="btn btn-neutral">취소</a>
 				<button type="submit" class="btn btn-positive">상품 등록하기</button>
 			</div>
 
