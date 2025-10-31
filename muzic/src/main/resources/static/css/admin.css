@@ -1,0 +1,146 @@
+/* =======================
+   MUZIC Admin – Global CSS (no :root)
+   파일: /css/admin.css
+   ======================= */
+
+/* 공통 상수(주석용)
+   bg=#f5f7fb, panel=#fff, line=#e5e7eb
+   ink700=#1f2937, ink800=#111827, ink900=#0f172a, muted=#6b7280
+   primary=#3b82f6, primary-weak=#eef2ff, primary-line=#c7d2fe
+   good=#16a34a, good-bg=#dcfce7, good-line=#bbf7d0
+   bad=#ef4444,  bad-bg=#fee2e2,  bad-line=#fecaca
+   radius=12px, radius-sm=8px
+   shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(16,24,40,.06)
+*/
+
+/* 1) Reset-lite */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:#f5f7fb; color:#111827;
+  font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans KR","Apple SD Gothic Neo",sans-serif;
+}
+a{color:inherit; text-decoration:none}
+table{width:100%; border-collapse:separate; border-spacing:0}
+th,td{padding:10px 12px; border-bottom:1px solid #e5e7eb; text-align:left; vertical-align:middle}
+
+/* 2) 레이아웃 */
+.admin-wrap{display:flex; min-height:100vh}
+.admin-main{flex:1; padding:16px 20px 40px}
+
+.topbar .brand{display:flex; align-items:center; gap:10px; font-weight:700; color:#1f2937}
+.topbar .brand .dot{width:10px; height:10px; border-radius:9999px; background:#3b82f6}
+.topbar .user{display:flex; align-items:center; gap:12px}
+.muted{color:#6b7280}
+
+/* 4) 사이드바 */
+.admin-sb{
+  width:220px; background:#0f172a; color:#cbd5e1; padding:18px 14px;
+  position:sticky; top:0; height:100vh;
+}
+.admin-sb .logo{color:#fff; font-weight:800; margin-bottom:18px}
+.admin-sb .nav a{
+  display:flex; gap:8px; align-items:center; color:#cbd5e1;
+  padding:10px; border-radius:10px;
+}
+.admin-sb .nav a.active, .admin-sb .nav a:hover{background:#1e293b; color:#fff}
+
+/* 5) 카드/섹션 */
+.card{
+  background:#ffffff; border:1px solid #e5e7eb; border-radius:12px;
+  padding:16px; box-shadow:0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(16,24,40,.06);
+}
+.page-title{font-size:20px; font-weight:800; color:#111827}
+.crumb{color:#6b7280; font-size:13px; margin:16px 0}
+
+/* 6) 필터바 */
+.filters{
+  background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px;
+  padding:14px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+}
+.chip{
+  background:#eef2ff; border:1px solid #c7d2fe;
+  padding:6px 10px; border-radius:8px; font-size:13px; color:#1f2937;
+}
+
+/* 7) 입력/셀렉트/버튼 */
+.input, .select{
+  height:36px; border:1px solid #e5e7eb; border-radius:8px;
+  padding:0 10px; background:#fff; outline:none;
+}
+.input:focus, .select:focus{
+  border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.15);
+}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  height:36px; padding:0 14px; border-radius:8px; cursor:pointer; user-select:none
+}
+.btn.key{background:#3b82f6; color:#fff; border:1px solid #3b82f6}
+
+/* 8) 테이블 */
+.table{border:1px solid #e5e7eb; border-radius:10px; overflow:hidden}
+.table thead th{background:#f9fafb; font-weight:700; color:#1f2937}
+.table tbody tr:hover{background:#f7fbff}
+.table .cell-right{text-align:right}
+
+/* 9) 배지 */
+.badge{
+  display:inline-block; padding:4px 8px; border-radius:999px;
+  font-size:12px; line-height:1; border:1px solid #e5e7eb; background:#fff; color:#1f2937
+}
+.badge.y{background:#dcfce7; color:#16a34a; border-color:#bbf7d0}
+.badge.n{background:#fee2e2; color:#ef4444; border-color:#fecaca}
+
+/* 10) 페이징 */
+.pager{display:flex; gap:6px; flex-wrap:wrap; margin-top:14px}
+.pager-center{justify-content:center}
+.pager a, .pager .nav, .pager .disabled{
+  border:1px solid #e5e7eb; border-radius:8px; padding:6px 10px; background:#fff;
+  min-width:34px; text-align:center;
+}
+.pager a.active{background:#3b82f6; color:#fff; border-color:#3b82f6}
+.pager .nav{font-weight:700}
+.pager .disabled{color:#9ca3af; background:#f9fafb; pointer-events:none}
+
+/* 11) 유틸 */
+.row{display:flex; gap:10px}
+.gap-8{gap:8px} .gap-12{gap:12px}
+.w-100{width:100%} .w-240{width:240px} .w-320{width:320px}
+
+/* 12) 반응형 */
+@media (max-width:1080px){ .admin-sb{width:200px} }
+@media (max-width:860px){
+  .admin-sb{display:none}
+  .admin-main{padding:12px}
+  th,td{padding:8px 10px}
+}
+
+/* ===== 버튼 & 입력 (정리본) ===== */
+
+/* Base */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  height:36px; padding:0 14px; border-radius:8px; cursor:pointer; user-select:none;
+  border:1px solid #e5e7eb; background:#fff; color:#111827;
+}
+
+/* Variants */
+.btn-primary{background:#3b82f6; color:#fff; border-color:#3b82f6}
+.btn-primary:hover{filter:brightness(0.98)}
+
+.btn-danger{background:#ef4444; color:#fff; border-color:#ef4444}
+.btn-danger:hover{filter:brightness(0.95)}
+
+.btn-ghost{background:#fff; color:#111827; border-color:#e5e7eb}
+.btn-ghost:hover{filter:brightness(0.98)}
+
+.btn-soft{ /* 보라 칩 버튼 */
+  background:#eef2ff; color:#1f2937; border:1px solid #c7d2fe; border-radius:8px;
+}
+
+/* Sizes */
+.btn-lg{height:42px; padding:0 16px; font-weight:600}
+.input-lg, .select.input-lg{height:42px; font-size:15px}
+
+/* Card size */
+.card-large{padding:22px 22px; border-radius:16px}

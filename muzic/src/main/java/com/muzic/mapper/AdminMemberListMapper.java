@@ -11,22 +11,20 @@ import com.muzic.vo.AdminMemberListVO;
 
 @Component
 public class AdminMemberListMapper implements RowMapper<AdminMemberListVO> {
-
     @Override
     public AdminMemberListVO mapRow(ResultSet rs, int rowNum) throws SQLException {
-        AdminMemberListVO adminMemberVo = new AdminMemberListVO();
-        adminMemberVo.setMemberId(rs.getString("member_id"));
-        adminMemberVo.setMemberPw(rs.getString("member_pw"));
-        adminMemberVo.setMemberNickname(rs.getString("member_nickname"));
-        adminMemberVo.setMemberName(rs.getString("member_name"));
-        adminMemberVo.setMemberEmail(rs.getString("member_email"));
-        adminMemberVo.setMemberMbti(rs.getString("member_mbti"));
-        adminMemberVo.setMemberBirth(rs.getString("member_birth"));
-        adminMemberVo.setMemberContact(rs.getString("member_contact"));
-        adminMemberVo.setMemberRole(rs.getString("member_role"));
-        adminMemberVo.setMemberPoint(rs.getInt("member_point"));
-        adminMemberVo.setMemberLogin(rs.getTimestamp("member_login"));
-        adminMemberVo.setBlacklistYn(rs.getString("blacklist_yn"));
-        return adminMemberVo;
+        AdminMemberListVO v = new AdminMemberListVO();
+        v.setMemberId(rs.getString("member_id"));
+        v.setMemberPw(rs.getString("member_pw"));
+        v.setMemberNickname(rs.getString("member_nickname"));
+        v.setMemberName(rs.getString("member_name"));
+        v.setMemberEmail(rs.getString("member_email"));
+        v.setMemberMbti(rs.getString("member_mbti"));
+        v.setMemberBirth(rs.getString("member_birth"));
+        v.setMemberContact(rs.getString("member_contact"));
+        v.setMemberRole(rs.getString("member_role"));
+        v.setMemberPoint(rs.getInt("member_point"));
+        v.setBlacklistYn(rs.getString("blacklist_yn"));
+        return v;
     }
 }

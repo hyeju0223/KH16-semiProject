@@ -150,7 +150,8 @@ $(function () {
   });
 
   /* ========== [8] 이메일 인증 (보내기/확인/타이머) ========== */
-  (function(){
+
+  (function () {
     const SEND_COOLDOWN_SEC = 60;
     const CERT_EXPIRE_SEC   = 300;
 
@@ -198,21 +199,29 @@ $(function () {
       certExpired=false;
     }
 
+    // ===== 요소 바인딩 =====
     const $email = $("[name=memberEmail]");
+
+    // ===== 이메일 중복 체크 (blur 시) =====
     $email.off("blur").on("blur", function(){
       const v = $email.val().trim();
       if (!v) return setState($email, null);
       if (!isEmail(v)) return setState($email, "fail");
+
       $.ajax({
         url: `${ctx}/rest/member/checkMemberEmail`,
         method: "get",
         data: { memberEmail: v },
-        success(res){ setState($email, res ? "fail2" : "success"); },
-        error(){ setState($email, "success"); }
+        dataType: "json",                       // 서버 응답: { exists: true/false }
+        success(res){
+          const dup = !!(res && (res.exists === true || res.exists === 1));
+          setState($email, dup ? "fail2" : "success");
+        },
+        error(){ setState($email, "success"); } // 장애 시 일단 진행 가능
       });
     });
 
-    /* [8-1] 인증번호 보내기 */
+    // ===== [8-1] 인증번호 보내기 =====
     $(".btn-cert-send").off("click").on("click", function(){
       const email = $email.val().trim();
       if (!isEmail(email)) { setState($email, "fail"); return; }
@@ -234,7 +243,7 @@ $(function () {
       });
     });
 
-    /* [8-2] 인증번호 확인 */
+    // ===== [8-2] 인증번호 확인 =====
     $(".btn-cert-check").off("click").on("click", function () {
       const certEmail  = $email.val().trim();
       const certNumber = $(".cert-input").val().trim();
@@ -266,16 +275,13 @@ $(function () {
           })(res);
 
           if (ok) {
-            // 타이머/입력 UI 고정
             stopCertTimer(); $("#certTimer").hide();
             $email.prop("readonly", true);
             $(".cert-input").prop("readonly", true);
             $(".btn-cert-check").prop("disabled", true);
             setState($email, "success");
             $(".cert-feedback").removeClass("error").addClass("ok").text("인증번호 확인이 완료되었습니다.").show();
-
-            // ✅ 컨트롤러가 요구하는 certNumber 히든필드에 주입
-            $('input[name="certNumber"]').val(certNumber);
+            $('input[name="certNumber"]').val(certNumber); // 컨트롤러 전달
           } else {
             setState($email, "fail");
             $(".cert-feedback").removeClass("ok").addClass("error").text("인증번호가 일치하지 않습니다.").show();
@@ -285,6 +291,8 @@ $(function () {
       });
     });
   })();
+
+
 
   /* ========== [9] 주소 검색 ========== */
   $(".btn-address-search").off("click").on("click", async function () {
