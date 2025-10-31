@@ -42,21 +42,42 @@ public class SearchCondition {
     }
 
 	//  검색용 메소드
-	  public boolean isSearch() {
-	      return column != null && keyword != null; //둘 다 null이 아니라면 true 반환
-	  }
-	  public boolean isList() {
-	      return column == null || keyword == null; //둘 중 하나라도 null이면
-	  }
+	 public boolean isSearch() {
+	     return column != null && keyword != null; //둘 다 null이 아니라면 true 반환
+	 }
+	 public boolean isList() {
+	     return column == null || keyword == null; //둘 중 하나라도 null이면
+	 }
 	  
-	  //주소에 추가 될 파라미터
-	    public String getParams() {
-	    	StringBuffer param = new StringBuffer("size=" + size);
-	        if(isSearch()) {
-	            //search()가 true라면 주소에 파라미터도 반환
-	        	param.append("&column=").append(column)
-	            .append("&keyword=").append(keyword);
-	        }
-	          return param.toString();
-	    }
+	 //주소에 추가 될 파라미터
+	 public String getParams() {
+		 StringBuffer param = new StringBuffer("size=" + size);
+	     if(isSearch()) {
+	         //search()가 true라면 주소에 파라미터도 반환
+	    	 param.append("&column=").append(column)
+	          .append("&keyword=").append(keyword);
+	      }
+	        return param.toString();
+	  }
+	 
+	 //페이지네이션 UI 구현 단순화 하기 위한 메서드
+	 //현재 페이지 블럭이 첫 번째 블럭인지 확인
+	 public boolean isFirstBlock() {
+		 return getStartPage() == 1;
+	 }
+	 
+	 //이전 페이지 블럭의 마지막 페이지 번호를 계산하여 반환
+	 public int getPrevPage() {
+		 return getStartPage() - 1;
+	 }
+	 
+	 //이전 페이지 블럭의 마지막 페이지 번호를 계산하여 반환
+	 public boolean isLastBlock() {
+		 return getEndPage() == getTotalPage();
+	 }
+	 
+	 //현재 페이지 블럭이 마지막 블럭인지 확인
+	 public int getNextPage() {
+		 return getEndPage() + 1;
+	}
 }

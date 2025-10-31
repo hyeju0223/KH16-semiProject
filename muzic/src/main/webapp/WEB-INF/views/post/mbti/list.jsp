@@ -2,45 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-    <style>
-        .table {
-		    /* 1. Corrected: Added border-collapse to fix double borders */
-		    border-collapse: collapse;
-		    border: 1px solid #000000;
-		    /* 2. Adjusted: Changed width to 100% so it fits inside the 800px container */
-		    width: 100%; 
-		}
-		
-		.container {
-		    box-shadow: 2px 2px 5px #8d8b8b; /* Added standard box-shadow values for better effect */
-		    width: 800px;
-		    margin: 0 auto; /* Correctly centers the container */
-		}
-		
-		/* 3. Corrected: Typo 'soild' changed to 'solid' */
-		th, td {
-		    text-align: center;
-		    border: 1px solid #000000;
-		    padding: 8px 36px;
-		}
-		
-		.center {
-		    /* 4. Removed align-content as it's for flex/grid. Keep text-align for text centering. */
-		    text-align: center;
-		}
-		
-		.table.table-striped > thead > tr {
-		    background-color: #e4e4e4;
-		} 
-		
-		.table.table-striped > tbody > tr:nth-child(2n) {
-		    background-color: #eeeded;
-		}
-		
-		.table-list > tbody > tr:hover {
-		    background-color: #e7e7e7;
-		}
-    </style>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/css/post.css">
+
+<style>
+
+</style>
     
 <div class="center w-1000">
 	<div class="cell center">
@@ -55,7 +22,7 @@
 				<c:when test="${sessionScope.loginMemberId != null}">
 				<h3>
 				<!-- mbti/list.jsp 파일의 글쓰기 버튼 -->
-					<a href="${pageContext.request.contextPath}/post/mbti/write" class="btn btn-neutral">글쓰기</a>
+					<a href="${pageContext.request.contextPath}/post/mbti/write" class="btn btn-navy">글쓰기</a>
 				</h3>
 			</c:when>
 			<c:otherwise>
@@ -63,8 +30,8 @@
 			</c:otherwise>
 			</c:choose>
 	</div>
-	<div class="cell">
-		<a href="/">메인으로</a>
+	<div class="right" style="color: #2d4575">
+		<a href="/" class="btn btn-navy">메인으로</a>
 	</div>
 	<div class="cell">
 		<table class="table table-border w-100">
@@ -79,27 +46,75 @@
 			</thead>
 
 
-		<tbody align="center">
-			<c:forEach var="postVO" items="${postList}" varStatus="status">
-				<tr>
-					<td>
-						<div>
-							<c:if test="${boardListVO.boardNotice == 'Y'}">
-								<span class="badge">공지</span>
-							</c:if>
-							
-							<a href="${pageContext.request.contextPath}/post/detail?postNo=${postVO.postNo}">
-    							${postVO.postTitle}
-							</a>
-						</div>
-					</td>
-						<td>${postVO.postWriter}</td>
+			<tbody align="center">
+				<c:forEach var="postVO" items="${postList}" varStatus="status">
+					<tr>
+						<td>
+							<div>
+								<c:if test="${postVO.postNotice == 'Y'}">
+	        							<i class="fa-solid fa-alarm-clock" style="color: red; margin-right: 5px;"></i>
+	        							<span style="font-weight: bold; color: red;">공지</span>
+	        							<span style="margin-right: 10px;"></span> 
+	    							</c:if>
+								
+								<a href="${pageContext.request.contextPath}/post/detail?postNo=${postVO.postNo}">
+	    							${postVO.postTitle}
+								</a>
+							</div>
+						</td>
+<!-- 						<td> -->
+<%-- 							<c:choose> --%>
+<%-- 								<c:when test="${not empty postVO.memberNickname}"> --%>
+<%-- 									${postVO.memberNickname} --%>
+<%-- 								</c:when> --%>
+<%-- 								<c:otherwise> --%>
+<!-- 									(탈퇴한 사용자) -->
+<%-- 								</c:otherwise> --%>
+<%-- 							</c:choose> --%>
+<!-- 						</td> -->
+
+						<td>
+                            <c:choose>
+                                <%-- 1. postNotice가 'Y' (공지)인 경우: 무조건 "운영진"으로 표시 --%>
+                                <c:when test="${postVO.postNotice == 'Y'}">
+                                    <span style="font-weight: bold; color: #16a085;">운영진</span>
+                                </c:when>
+                                
+                                <%-- 2. 일반 게시글이고 닉네임이 존재하는 경우 (정상 사용자) --%>
+                                <c:when test="${not empty postVO.memberNickname}">
+                                    ${postVO.memberNickname}
+                                </c:when>
+                                
+                                <%-- 3. 일반 게시글이고 닉네임이 없는 경우 (탈퇴한 사용자) --%>
+                                <c:otherwise>
+                                    (탈퇴한 사용자)
+                                </c:otherwise>
+                            </c:choose>
+						</td>
+						
 						<td>${postVO.postWriteTime}</td>
 						<td>${postVO.postLike}</td>
-<%-- 					<td>${postVO.post }</td> --%>
+	<%-- 				<td>${postVO.post }</td> --%>
 					</tr> 
 				</c:forEach>
 			</tbody>
 		</table>
+	</div>
+	<div class="mbti-pagination">
+		<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
+	</div>
+	
+	<div class="cell center mt-30 mb-50">
+		<form action="${pageContext.request.contextPath}/post/mbti/list">
+			<div class="flex-box" style="justify-content:center;">
+				<select name="column" class="field">
+					<option value="post_title" ${searchCondition.column == 'post_title' ? 'selected' : ''}>제목</option>
+					<option value="post_writer" ${searchCondition.column == 'post_writer' ? 'selected' : ''}>ID</option>
+				<option value="member_nickname" ${searchCondition.column == 'member_nickname' ? 'selected' : ''}>닉네임</option>
+				</select>
+				<input type="text" name="keyword" value="${searchCondition.keyword}" class="field ms-10">
+				<button type="submit" class="btn btn-navy ms-10">검색</button>
+			</div>
+		</form>
 	</div>
 </div>

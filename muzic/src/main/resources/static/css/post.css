@@ -1,0 +1,281 @@
+/* ==========================================================
+   📄 post.css - 자유게시판 전용 스타일
+   commons.css 기반 + 상품 스토어 디자인 톤(#9396D5)
+   ========================================================== */
+
+/* ==========================================================
+   🔹 공통
+   ========================================================== */
+body {
+    font-family: 'SUIT', sans-serif;
+    background-color: #fafafa;
+    color: #333;
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.w-1000 {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* ==========================================================
+   🔹 제목 및 설명
+   ========================================================== */
+.cell.center h2 {
+    font-weight: 700;
+    font-size: 26px;
+    color: #333;
+    margin-top: 40px;
+}
+
+.cell.center p {
+    font-size: 15px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+/* ==========================================================
+   🔹 버튼 영역
+   ========================================================== */
+.btn {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+/* 회색 중립 버튼 */
+.btn-neutral {
+    background-color: #9396D5;
+    color: #fff;
+    border: none;
+}
+.btn-neutral:hover {
+    background-color: #7f81c8;
+}
+
+/* 검색 버튼 (기존 .btn-positive 유지) */
+.btn-positive {
+    background-color: #9396D5;
+    color: #fff;
+    border: none;
+}
+.btn-positive:hover {
+    background-color: #7f81c8;
+}
+
+/* 🟢 추가 필요: 메인으로 버튼 */
+.cell.right a[href="/"] {
+    display: inline-block;
+    background-color: #9396D5;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+.cell.right a[href="/"]:hover {
+    background-color: #7f81c8;
+}
+
+/* ==========================================================
+   🔹 게시판 테이블 스타일
+   ========================================================== */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+/* 테이블 헤더 */
+.table thead {
+    background-color: #f9f9f9;
+    border-bottom: 2px solid #ddd;
+}
+
+.table th {
+    font-weight: 600;
+    padding: 14px 12px;
+    color: #555;
+}
+
+/* 테이블 내용 */
+.table td {
+    padding: 14px 12px;
+    color: #333;
+}
+
+.table-border tbody tr {
+    border-bottom: 1px solid #eee;
+}
+
+.table-border tbody tr:hover {
+    background-color: #fafafa;
+    transition: background-color 0.15s;
+}
+
+/* 링크 스타일 */
+.table a {
+    color: #333;
+    text-decoration: none;
+}
+.table a:hover {
+    color: #9396D5;
+}
+
+/* 공지 아이콘 스타일 정돈 */
+.fa-alarm-clock {
+    color: red;
+    margin-right: 5px;
+}
+
+/* 작성자 색상 강조 */
+td span[style*="#16a085"] {
+    color: #16a085;
+    font-weight: 600;
+}
+
+/* ==========================================================
+   🔹 검색 영역 (하단)
+   ========================================================== */
+.flex-box {
+    display: flex;
+    align-items: center;
+}
+
+.field {
+    padding: 7px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.field:focus {
+    outline: none;
+    border-color: #9396D5;
+    box-shadow: 0 0 0 2px rgba(147,150,213,0.2);
+}
+
+/* select + input + button 간격 */
+.ms-10 {
+    margin-left: 10px;
+}
+
+.mt-30 {
+    margin-top: 30px;
+}
+
+.mb-50 {
+    margin-bottom: 50px;
+}
+
+/* ==========================================================
+   🔹 페이지네이션 (include로 들어온 pagination.jsp 대응)
+   ========================================================== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background-color: #f1f1f1;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.pagination a:hover {
+    background-color: #e0e0e0;
+}
+
+.pagination .active {
+    background-color: #9396D5;
+    color: #fff;
+}
+
+/* ==========================================================
+   🔹 반응형
+   ========================================================== */
+@media (max-width: 768px) {
+    .table th, .table td {
+        font-size: 13px;
+        padding: 10px 8px;
+    }
+
+    .field {
+        width: 120px;
+    }
+}
+
+/* ==========================================================
+   🔹 버튼 공통 (자유 + MBTI 통합)
+   ========================================================== */
+.btn, .btn-positive, .btn-neutral, .btn-navy {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #9396D5; /* 보라색 통일 */
+    color: #fff;
+    border: none;
+    transition: 0.2s;
+}
+
+.btn:hover, .btn-positive:hover, .btn-neutral:hover, .btn-navy:hover {
+    background-color: #7f81c8; /* hover 색상도 통일 */
+}
+
+/* ==========================================================
+   🔹 페이지네이터 공통 (자유 + MBTI 통합)
+   ========================================================== */
+.free-pagination a.on,
+.mbti-pagination a.on {
+    background-color: #9396D5; /* 보라색 통일 */
+    color: #fff;
+}
+
+.free-pagination a,
+.mbti-pagination a {
+    background-color: #f1f1f1;
+    color: #333;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    margin: 0 2px;
+    transition: background-color 0.2s;
+}
+
+.free-pagination a:hover,
+.mbti-pagination a:hover {
+    background-color: #7f81c8; /* hover 색상 통일 */
+}
+
+
+.red {
+	color: red;
+}

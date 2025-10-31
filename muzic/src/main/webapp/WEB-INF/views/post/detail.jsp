@@ -85,7 +85,36 @@
                     success : function(response) {
                         $(".comments-list-area").empty();
 
-                        for(var i = 0; i < response.length; i++) {
+//                         for(var i = 0; i < response.length; i++) {
+//                             var comments = response[i];
+
+//                             var origin = $("#comments-view-template").text();
+//                             var html = $.parseHTML(origin);
+
+//                             $(html).find(".comments-writer").text(comments.commentWriter)
+
+//                             if(comments.writer == true) {
+//                                 $(html).find(".comments-writer").append("<span >${sessionScope.loginMemberNickname}</span>")
+//                             }
+
+//                             $(html).find(".comments-content").text(comments.commentContent);
+
+//                             var wtime = moment(comments.commentWtime).fromNow();
+//                             $(html).find(".comments-time").text(wtime);
+
+//                             $(html).find(".comment-like-icon").attr("data-comment-no", comments.commentNo);
+//                             $(html).find(".comment-like-count").text(comments.commentLike);
+                            
+//                             $(html).find(".fa-pen-to-square").attr("data-pk", comments.commentNo);
+// 						    $(html).find(".fa-eraser").attr("data-pk", comments.commentNo);
+
+//                             if(comments.owner == false) {
+//                                 $(html).find(".button-area").remove();
+//                             }
+
+//                             $(".comments-list-area").append(html);
+
+						for(var i = 0; i < response.length; i++) {
                             var comments = response[i];
 
                             var origin = $("#comments-view-template").text();
@@ -102,6 +131,9 @@
                             var wtime = moment(comments.commentWtime).fromNow();
                             $(html).find(".comments-time").text(wtime);
 
+                            $(html).find(".comment-like-icon").attr("data-comment-no", comments.commentNo);
+                            $(html).find(".comment-like-count").text(comments.commentLike);
+                            
                             $(html).find(".fa-pen-to-square").attr("data-pk", comments.commentNo);
 						    $(html).find(".fa-eraser").attr("data-pk", comments.commentNo);
 
@@ -114,12 +146,57 @@
                     }
                });
             }
+            
+			// 댓글 좋아요/취소 액션
+            $(".comments-list-area").on("click", ".comment-like-icon", function(){
+				var $icon = $(this);
+				// 로그인 여부는 서버에서 체크하므로 클라이언트에서는 바로 요청
+				var commentNo = $icon.data("comment-no");
+                
+				if (!commentNo) {
+                    console.error("댓글 번호가 누락되었습니다.");
+                    return;
+                }
+				
+				$.ajax({
+					url: "/rest/comments/action",
+					method: "post",
+					data: { commentNo: commentNo },
+					success: function(response) {
+						// response.like (boolean)와 response.count (int)를 사용
+						var $count = $icon.next(".comment-like-count");
+                        
+						$count.text(response.count);
+
+						if(response.like) {
+							$icon.removeClass("fa-regular").addClass("fa-solid");
+						}
+						else {
+							$icon.removeClass("fa-solid").addClass("fa-regular");
+						}
+						},
+					error: function(xhr) {
+						if(xhr.status === 403) { 
+							alert("로그인 후 이용 가능합니다.");
+						}
+						else {
+							console.error("좋아요 처리 실패:", xhr.responseText);
+						}
+					}
+				});
+			});
+            
             //댓글 삭제
             $(".comments-list-area").on("click", ".fa-eraser", function(){
             	var choice = window.confirm("댓글을 삭제하시겠습니까?");
             	if(choice == false) return;
             	
-            	var commentNo = $(this).data("pk");
+            	var commentNo = $(this).data("commentNo");
+            	
+            	if (!commentNo) {
+                    console.error("댓글 번호가 누락되었습니다.");
+                    return;
+                }
             	
             	$.ajax({
             		url: "/rest/comments/delete",
@@ -139,7 +216,12 @@
             	var origin = $("#comments-edit-template").text();
             	var html = $.parseHTML(origin);
             	
-            	var commentNo = $(this).data("pk");
+            	var commentNo = $(this).data("commentNo");
+            	if (!commentNo) {
+                    console.error("댓글 번호가 누락되었습니다.");
+                    return;
+                }
+            	
             	var commentContent = $(this).closest(".comments-area").find(".comments-content").text().trim();
             	
             	$(html).find(".fa-check").attr("data-pk", commentNo);
@@ -157,7 +239,7 @@
             });
             //댓글 수정 완료
             $(".comments-list-area").on("click", ".fa-check", function(){
-            	var commentNo = $(this).data("pk");
+            	var commentNo = $(this).data("commentNo");
             	var commentContent = $(this).closest(".comments-edit-area").find(".comments-editor").val();
             	
             	$.ajax({
@@ -264,6 +346,12 @@
     #post-like {
         cursor: pointer;
     }
+    
+    .comment-like-icon {
+        cursor: pointer;
+        color: red; /* 댓글 좋아요 아이콘 색상 */
+        margin-right: 5px;
+    }
 </style>
 
 <script type="text/template" id="comments-view-template">
@@ -271,6 +359,17 @@
 		<div class="comments-body-area">
 			<h3 class="comments-writer"></h3>
 			<pre class="comments-content">내용</pre>
+
+			<!-- 댓글 좋아요 영역 -->
+            <div class="comments-meta-area">
+                <span style="color:red; margin-right: 15px;">
+                    <!-- data-comment-no는 JS에서 동적으로 설정됩니다. -->
+                    <i class="fa-regular fa-heart comment-like-icon"></i> 
+                    <span class="comment-like-count">0</span>
+                </span>
+                <span class="comments-time">yyyy-MM-dd</span>
+            </div>
+
 			<div class="comments-time">yyyy-MM-dd</div>
 			<div class="button-area">
 				<i class="fa-regular fa-pen-to-square"></i>
@@ -296,7 +395,7 @@
             탈퇴한사용자
         </c:when>
         <c:otherwise>
-            <a href="/member/detail?memberId=${memberDto.memberId}">
+            <a href="mypage/profile?memberId=${memberDto.memberId}">
                 ${memberDto.memberNickname}
             </a>  
             (${memberDto.memberRole})
@@ -314,14 +413,26 @@
 </div>
 <hr>
 
-<c:if test="${musicUserVO != null}">  <div class="music-info-box">
-    <h3>첨부된 음악</h3>
-    <p>
-        <span style="font-weight: bold;">제목:</span> ${musicUserVO.musicTitle}  <span style="margin: 0 10px;">|</span>
-        <span style="font-weight: bold;">아티스트:</span> ${musicUserVO.musicArtist} </p>
-    <p>
-        <span style="font-weight: bold;">앨범:</span> ${musicUserVO.musicAlbum} </p>
-</div>
+<c:if test="${musicUserVO != null}">
+    <c:url var="detailLink" value="/music/detail">
+        <c:param name="musicNo" value="${musicUserVO.musicNo}" />
+    </c:url>
+
+    <div class="music-info-box">
+    	<h3>첨부된 음악</h3>
+    		<p>
+    		    <span style="font-weight: bold;">제목:</span> ${musicUserVO.musicTitle}  <span style="margin: 0 10px;">|</span>
+    		    <span style="font-weight: bold;">아티스트:</span> ${musicUserVO.musicArtist} <span style="margin: 0 10px;">|</span>
+    		    <span style="font-weight: bold;">앨범:</span> ${musicUserVO.musicAlbum} <span style="margin: 0 10px;">|</span>
+    		</p>
+	</div>
+    
+    <div style="text-align: right; margin-top: 10px; margin-bottom: 10px;">
+        <a href="${detailLink}" style="font-weight: bold; color: #2d3436; text-decoration: none;">
+            음악 들으러 가기 >>>>
+        </a>
+    </div>
+
 <hr>
 </c:if>
 

@@ -16,8 +16,9 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 	private PreventAdminInterceptor preventAdminInterceptor;
 	@Autowired
 	private PostOwnerInterceptor postOwnerInterceptor;
+	@Autowired
+	private PostReadInterceptor postReadInterceptor;
 
-	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) { //인터셉터 등록메소드
 		//registry.addInterceptor(인터셉터객체).addPathPatterns(적용시킬주소);
@@ -42,5 +43,10 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 //		registry.addInterceptor(postOwnerInterceptor)
 //					.addPathPatterns("/post/edit", "/post/delete")
 //					.order(4);
+		
+		//조회수 중복 방지
+		registry.addInterceptor(postReadInterceptor)
+				.addPathPatterns("/post/detail")
+				.order(2);
 	}
 }
