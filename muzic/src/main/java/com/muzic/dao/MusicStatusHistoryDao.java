@@ -5,16 +5,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.muzic.dto.MusicStatusHistoryDto;
-import com.muzic.mapper.MusicStatusHistoryMapper;
 
 @Repository
 public class MusicStatusHistoryDao {
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
-	@Autowired
-	private MusicStatusHistoryMapper musicStatusHistoryMapper;
 	
 	public int sequence() {
 		String sql = "select music_status_history_seq.nextval from dual";

@@ -25,13 +25,13 @@ public class MusicRestController {
 	private MusicService musicService;
 	
 	@GetMapping("/check")
-	public MusicLikeVO check(HttpSession session, @RequestParam int musicNo) {
+	public MusicLikeVO check(@RequestParam int musicNo, HttpSession session) {
 		String loginMemberId = (String)session.getAttribute("loginMemberId");
 		return musicLikeService.checkLikeStatus(loginMemberId, musicNo);
 	}
 	
 	@GetMapping("/toggle")
-	public MusicLikeVO toggle(HttpSession session, @RequestParam int musicNo) {
+	public MusicLikeVO toggle(@RequestParam int musicNo, HttpSession session) {
 		String loginMemberId = (String)session.getAttribute("loginMemberId");
 		return musicLikeService.toggleLike(loginMemberId, musicNo);
 	}

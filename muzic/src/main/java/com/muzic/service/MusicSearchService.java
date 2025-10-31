@@ -11,13 +11,16 @@ import com.muzic.dao.MusicSearchDao;
 import com.muzic.util.HangulChosungUtil;
 import com.muzic.util.HangulEnglishUtil;
 import com.muzic.util.SearchUtil;
-import com.muzic.vo.MusicUserVO;
+import com.muzic.vo.MusicSearchVO;
 
 @Service
 public class MusicSearchService {
 
     @Autowired
     private MusicSearchDao musicSearchDao;
+    
+    @Autowired
+    private MusicHelperService musicHelperService;
 
     // 허용 정렬값
     private static final Set<String> ALLOWED_SORT =
@@ -65,7 +68,7 @@ public class MusicSearchService {
     }
 
     // 통합 검색 (메인 검색)
-    public List<MusicUserVO> search(SearchCondition searchCondition) {
+    public List<MusicSearchVO> search(SearchCondition searchCondition) {
         if (!prepareCondition(searchCondition)) return List.of(); // 검색 실행여부 확인
 
         String keyword = searchCondition.getKeyword();
@@ -83,9 +86,12 @@ public class MusicSearchService {
                 searchCondition.setKeyword(HangulChosungUtil.getSearch(originalKeyword)); // 초성 변환 검색어 세팅
             }
 
-            List<MusicUserVO> result = performSearch(searchCondition, sortType); // 검색 실행
-            searchCondition.setKeyword(originalKeyword); // 검색어 원복(3개의 컬럼을 순회해야하므로 원복 필요)
-            if (!result.isEmpty()) return result; // 결과 있으면 바로 반환
+            List<MusicSearchVO> result = performSearch(searchCondition, sortType); // 검색 실행
+            searchCondition.setKeyword(originalKeyword); // 검색어 원복(3개의 컬럼을 순회해야하므로 원복 필요) // 원본 검색어가 뭔지 fe 표시할때 필요
+            if (!result.isEmpty()) {
+            	musicHelperService.setMusicAttachmentNo(result);
+            	return result; // 결과 있으면 바로 반환
+            }
         }
 
         // 2차 영타 입력 시 한글로 변환 후 재검색
@@ -105,9 +111,12 @@ public class MusicSearchService {
                         searchCondition.setKeyword(HangulChosungUtil.getSearch(originalKeyword)); // 초성 변환
                     }
 
-                    List<MusicUserVO> result = performSearch(searchCondition, sortType);
+                    List<MusicSearchVO> result = performSearch(searchCondition, sortType);
                     searchCondition.setKeyword(originalKeyword); // 검색어 복원
-                    if (!result.isEmpty()) return result; // 검색어 있을 때까지 컬럼 순회
+                    if (!result.isEmpty()) { // 검색어 있을 때까지 컬럼 순회
+                    	musicHelperService.setMusicAttachmentNo(result);
+                    	return result; // 결과 있으면 바로 반환
+                    }
                 }
             }
         }
@@ -115,7 +124,7 @@ public class MusicSearchService {
     }
     
     // 단일 컬럼 전용 검색 (미리보기용)
-    public List<MusicUserVO> searchByColumnOnly(SearchCondition searchCondition) {
+    public List<MusicSearchVO> searchByColumnOnly(SearchCondition searchCondition) {
         if (!prepareCondition(searchCondition)) return List.of();
 
         String keyword = searchCondition.getKeyword();
@@ -135,9 +144,12 @@ public class MusicSearchService {
             searchCondition.setKeyword(HangulChosungUtil.getSearch(originalKeyword)); // 초성 변환
         }
 
-        List<MusicUserVO> result = performSearch(searchCondition, sortType); // 탐색 순회 x(레스트 컨트롤러에서 순회 담당)
+        List<MusicSearchVO> result = performSearch(searchCondition, sortType); // 탐색 순회 x(레스트 컨트롤러에서 순회 담당)
         searchCondition.setKeyword(originalKeyword); // 원본 키워드 복원
-        if (!result.isEmpty()) return result; // 빈 리스트가 아니라면 종료
+        if (!result.isEmpty()) {  // 빈 리스트가 아니라면 종료
+        	musicHelperService.setMusicAttachmentNo(result);
+        	return result;
+        }
 
         // 2차 영타 → 한글 변환 재검색
         if (SearchUtil.isWithoutHangul(keyword)) { // 한글이 아예 없다면
@@ -161,7 +173,10 @@ public class MusicSearchService {
                 result = performSearch(searchCondition, sortType); // 검색 시작
                 searchCondition.setKeyword(converted); // 변환된 검색어로 searchCondition 세팅(해당 코드 없어도 무관)
 
-                if (!result.isEmpty()) return result; // 조회결과가 있다면 리스트 반환
+                if (!result.isEmpty()) { // 조회결과가 있다면 리스트 반환
+                	musicHelperService.setMusicAttachmentNo(result);
+                	return result;
+                } 
             }
         }
         return List.of(); // 없다면 빈 리스트 반환
@@ -169,14 +184,14 @@ public class MusicSearchService {
 
 
     // 실제 검색 수행 (컬럼 기반 초성 여부 판별)
-    private List<MusicUserVO> performSearch(SearchCondition searchCondition, String sortType) {
+    private List<MusicSearchVO> performSearch(SearchCondition searchCondition, String sortType) {
         boolean isSearchColumn = searchCondition.getColumn().endsWith("_search"); // _search 컬럼이면 초성검색
-        List<MusicUserVO> result = runSearch(searchCondition, isSearchColumn, sortType);
+        List<MusicSearchVO> result = runSearch(searchCondition, isSearchColumn, sortType);
         return (result == null) ? List.of() : result;
     }
 
     // DAO 호출 분기
-    private List<MusicUserVO> runSearch(SearchCondition searchCondition, boolean isSearchColumn, String sortType) {
+    private List<MusicSearchVO> runSearch(SearchCondition searchCondition, boolean isSearchColumn, String sortType) {
         switch (sortType) {
             case "like":
                 return isSearchColumn

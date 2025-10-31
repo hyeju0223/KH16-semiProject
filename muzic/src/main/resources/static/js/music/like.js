@@ -1,38 +1,40 @@
-$(function() {
+$(function () {
 
-    // 좋아요 버튼 클릭
-    $(".btn-like").on("click", function() {
-        const $btn = $(this);
-        const musicNo = $btn.data("music-no");
+    // 로그인 아닌 경우 JS 실행 안함
+    if (window.isLogin !== "true") return;
 
-        $.ajax({
-            url: "/rest/music/toggle",
-            method: "GET",
-            data: { musicNo: musicNo },
-            success: function(result) {
-                if (result && result.liked) {
-                    $btn.addClass("liked").text("❤️");
-                } else {
-                    $btn.removeClass("liked").text("🤍");
-                }
+    // 공통 UI 렌더 함수
+    function updateUI(icon, countTag, isLike, cnt) {
+        icon.toggleClass("fa-solid liked", isLike)
+            .toggleClass("fa-regular", !isLike);
+        countTag.text(cnt);
+    }
 
-                // 좋아요 수 실시간 갱신
-                $btn.closest(".music-item").find(".like-count").text(result.likeCount);
-            },
-            error: function() {
-                alert("로그인이 필요합니다.");
-            }
+    $(".detail-like, .list-like").each(function () {
+        var btn = $(this);
+
+        // 비활성 버튼이면 무시
+        if (btn.hasClass("disabled-like")) return;
+
+        var musicNo = btn.data("music-no");
+        var icon = btn.find("i");
+        var countTag = btn.find(".like-count");
+
+        // ✅ 초기 일시 숨김 (UI 깜빡임 방지)
+        icon.css("opacity", "0.5");
+
+        // ✅ 초기 상태
+        $.get("/rest/music/check?musicNo=" + musicNo, function (res) {
+            updateUI(icon, countTag, res.like, res.likeCount);
+            icon.css("opacity", "1");
         });
-    });
 
-    // 재생 버튼 클릭 시 재생수 증가
-    $(".btn-play").on("click", function() {
-        const musicNo = $(this).data("music-no");
-
-        $.ajax({
-            url: "/rest/music/play",
-            method: "GET",
-            data: { musicNo: musicNo }
+        // ✅ 좋아요 토글
+        btn.on("click", function (e) {
+            e.stopPropagation();
+            $.get("/rest/music/toggle?musicNo=" + musicNo, function (res) {
+                updateUI(icon, countTag, res.like, res.likeCount);
+            });
         });
     });
 

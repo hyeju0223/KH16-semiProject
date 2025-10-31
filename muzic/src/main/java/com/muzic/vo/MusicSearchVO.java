@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
-public class MusicUploaderVO {
+public class MusicSearchVO {
 
     private int musicNo;               
     private String musicTitle;         

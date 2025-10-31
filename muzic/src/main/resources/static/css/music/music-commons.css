@@ -1,0 +1,187 @@
+/* ================================
+   📌 Muzic Global Music UI Style
+   감성 + 모던 K-Music 서비스 스타일
+   * 페이지 배경은 건드리지 않음
+================================ */
+
+/* ✅ 글로벌 폰트 */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Gowun+Dodum&display=swap');
+
+body {
+    font-family: "Poppins", "Gowun Dodum", sans-serif !important;
+    color: #222;
+}
+
+/* ✅ 포인트 컬러 */
+:root {
+    --muzic-main: #9396D5;
+    --muzic-main-hover: #7c7fd8;
+    --muzic-sub: #6b6b6b;
+    --muzic-text-dark: #222;
+    --muzic-text-light: #555;
+}
+
+/* ✅ 공통 제목 */
+.mz-page-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--muzic-main);
+}
+
+/* ✅ 공용 필드 */
+.mz-field, .mz-input {
+    border: 1px solid #b5b5d2 !important;
+    border-radius: 8px !important;
+    font-size: 15px;
+    padding: 10px;
+    outline: none;
+    color: var(--muzic-text-dark);
+}
+
+.mz-field:focus, .mz-input:focus {
+    border-color: var(--muzic-main) !important;
+    box-shadow: 0 0 4px rgba(147,150,213,0.5);
+}
+
+/* ✅ 공용 버튼 */
+.mz-btn-main, .mz-submit-btn {
+    background: var(--muzic-main);
+    border: none;
+    padding: 12px 0;
+    border-radius: 10px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+.mz-btn-main:hover, .mz-submit-btn:hover {
+    background: var(--muzic-main-hover);
+    transform: translateY(-2px);
+}
+
+/* ✅ 공용 카드 */
+.music-card, .mz-card {
+    background: #fff;
+    border: 1px solid #ecebfd;
+    border-radius: 12px;
+    padding: 14px;
+    color: var(--muzic-text-dark);
+    transition: .25s;
+}
+.music-card:hover, .mz-card:hover {
+    box-shadow: 0 6px 14px rgba(147,150,213,0.18);
+}
+
+/* ✅ 텍스트 요소 */
+.song-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--muzic-text-dark);
+}
+
+.song-artist {
+    font-size: 14px;
+    color: var(--muzic-text-light);
+}
+
+/* ✅ 좋아요 */
+.like-btn {
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.like-btn.liked {
+    color: #ff4d8e;
+    transform: scale(1.15);
+}
+
+/* ✅ 재생 버튼 공통 */
+.play-btn {
+    width: 42px;
+    height: 42px;
+    background: var(--muzic-main);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: .2s;
+}
+.play-btn:hover {
+    background: var(--muzic-main-hover);
+}
+
+/* ✅ 정렬바 */
+.music-sort-bar a {
+    color: var(--muzic-sub);
+    margin-right: 20px;
+    padding-bottom: 4px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: .15s;
+}
+.music-sort-bar a.on,
+.music-sort-bar a.active {
+    color: var(--muzic-main);
+    font-weight: 700;
+    border-bottom: 2px solid var(--muzic-main);
+}
+
+.mz-title {
+    font-size: 32px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #9396D5, #7b7ee0);
+    color: transparent;
+    letter-spacing: -0.3px;
+    -webkit-background-clip: text;
+    font-family: "Poppins", "Gowun Dodum", sans-serif !important;
+}
+
+.mz-sub {
+    font-size: 15px;
+    color: #666;
+    opacity: 0.85;
+    font-family: "Poppins", "Gowun Dodum", sans-serif !important;
+}
+
+.page-header-line {
+    width: 70px;
+    height: 4px;
+    background: linear-gradient(90deg, #9396D5, #7b7ee0);
+    border-radius: 4px;
+    margin-top: 8px;
+    margin-bottom: 24px;
+}
+/* ===== Hero Title Animation ===== */
+.mz-title {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeUp 0.6s ease-out forwards;
+}
+
+.mz-sub {
+    opacity: 0;
+    transform: translateY(6px);
+    animation: fadeUp 0.6s ease-out forwards;
+    animation-delay: 0.15s;
+}
+
+.page-header-line {
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: barGrow 0.7s ease-out forwards;
+    animation-delay: 0.28s;
+}
+
+/* Keyframes */
+@keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes barGrow {
+    0% { transform: scaleX(0); }
+    100% { transform: scaleX(1); }
+}

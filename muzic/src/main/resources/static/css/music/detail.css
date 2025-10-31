@@ -1,129 +1,126 @@
-.music-card {
-  border-radius: 14px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-  overflow: hidden;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 15px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.music-detail-card {
+    width: 480px;
+    margin: 40px auto;
+    padding: 40px;
+    border-radius: 26px;
+    background: linear-gradient(180deg, #9396D5 0%, #ffffff 40%);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    text-align: center;
 }
 
-.music-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+/* Cover + Play */
+.music-cover-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* 💿 커버 이미지 */
-.music-cover {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1/1;
-  overflow: hidden;
-  border-bottom: 1px solid #eee;
+.music-cover-img {
+    width: 260px;
+    height: 260px;
+    border-radius: 16px;
+    object-fit: cover;
+    pointer-events: none;
 }
 
-.cover-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.music-play-btn {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+}
+.music-play-btn i {
+    font-size: 32px;
+    color: white;
 }
 
-/* ▶ 중앙 재생 버튼 */
-.play-btn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(255,255,255,0.9);
-  border-radius: 50%;
-  width: 70px;
-  height: 70px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.play-btn:hover {
-  background: #9396D5;
-  color: white;
-}
-
-.play-btn i {
-  font-size: 28px;
-}
-
-/* 🎧 정보 영역 */
-.music-info {
-  text-align: center;
-  padding: 15px;
-}
-
-.music-title, 
-.music-artist, 
-.music-album {
-  font-size: 16px;
-  margin-bottom: 6px;
-}
-
+/* Text */
 .music-title {
-  font-weight: 600;
-  font-size: 18px;
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 25px;
 }
-
-.music-title i,
-.music-artist i,
-.music-album i {
-  margin-right: 6px;
-  color: #9396D5;
+.music-artist {
+    font-size: 18px;
+    color: #666;
 }
-
-/* 📊 메타 정보 (시간, 좋아요 등) */
 .music-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 15px;
-  padding: 0 15px;
-  margin-top: 8px;
+    font-size: 14px;
+    margin: 4px 0;
+    color: #777;
 }
 
-/* 🕒 재생시간 */
-.music-time {
-  color: #555;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+/* Stats */
+.music-stats {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    font-size: 18px;
+    margin: 18px 0;
 }
 
-/* ❤️ 좋아요 */
-.music-like {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  color: #9396D5;
-  transition: color 0.2s ease;
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #555;
 }
 
-.music-like:hover i {
-  color: #d63031;
+/* Audio Player */
+.player-ui {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
 }
 
-/* ❤️ 활성 하트 색상 */
-.music-like i.fa-solid.red {
-  color: #d63031;
+#seek-bar {
+    flex: 1;
 }
 
-  .play-btn {
-    width: 60px;
-    height: 60px;
-  }
+/* 전체 페이지 레이아웃 wrapper */
+.music-detail-page {
+    max-width: 900px;
+    margin: 0 auto;
+    margin-top: 30px;
+    padding-bottom: 60px;
+}
 
-  .music-title {
-    font-size: 16px;
-  }
+/* 검색바와 카드 간격 */
+.music-detail-page .search-bar-wrap {
+    margin-bottom: 20px;
+}
+
+/* 디테일 카드가 센터로 */
+.music-detail-card {
+    margin: 0 auto;
+}
+
+/* 🎵 Genre Hashtags */
+.music-genres {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    padding: 0 10px;
+}
+
+.genre-tag {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6f72d7;
+    background: rgba(147,150,213,0.12);
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(147,150,213,0.25);
+    display: inline-block;
+    line-height: 1.2;
+}

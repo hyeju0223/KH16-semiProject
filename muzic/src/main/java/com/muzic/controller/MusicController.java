@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.muzic.condition.SearchCondition;
-import com.muzic.domain.AttachmentCategory;
-import com.muzic.dto.MusicDto;
+import com.muzic.dao.MusicGenreDao;
 import com.muzic.dto.MusicFormDto;
-import com.muzic.service.AttachmentService;
 import com.muzic.service.MusicService;
+import com.muzic.vo.MusicUserVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -25,13 +24,14 @@ import jakarta.servlet.http.HttpSession;
 public class MusicController {
 
 	@Autowired
-	private MusicService musicService;
+	private MusicGenreDao musicGenreDao;
 	
 	@Autowired
-	private AttachmentService attachmentService;
+	private MusicService musicService;
 	
 	@GetMapping("/add")
-	public String add() {
+	public String add(Model model) {
+		model.addAttribute("genreList", musicGenreDao.getCachedGenres());
 		return "/WEB-INF/views/music/add.jsp";
 	}
 	
@@ -49,28 +49,31 @@ public class MusicController {
 	}
 	
 	@GetMapping("/list")
-	public String list(Model model, @ModelAttribute SearchCondition searchCondition) {
+	public String list(Model model, HttpSession session, 
+			@ModelAttribute SearchCondition searchCondition) {
 		model.addAttribute("musicUserVO", musicService.findUserMusicList(searchCondition));
 		return "/WEB-INF/views/music/list.jsp";
 	}
 
-	// 음원 히스토리는 db에서 cascade로 자동 삭제
-	// 음원-장르 조인 테이블은 통계를 위해서 null로 해놨고 db에서 자동 보존
-	// 서버에서 처리 필요 x
 	@GetMapping("/detail")
-	public String detail (Model model, @RequestParam int musicNo) {
-		MusicDto musicDto = musicService.selectOneMusicDto(musicNo);
-		int coverImageNo =
-				attachmentService.getAttachmentNoByParent(musicNo, AttachmentCategory.COVER.getCategoryName());
-		int musicFileNo = 
-				attachmentService.getAttachmentNoByParent(musicNo, AttachmentCategory.MUSIC.getCategoryName());
-		model.addAttribute("musicDto", musicDto);
-		model.addAttribute("coverImageNo",coverImageNo);
-		model.addAttribute("musicFileNo",musicFileNo);
+	public String detail (Model model, HttpSession session, 
+			@RequestParam int musicNo) {
+		MusicUserVO musicUserVO = musicService.findDetail(musicNo);
+//		int coverImageNo =
+//				attachmentService.getAttachmentNoByParent(musicNo, AttachmentCategory.COVER.getCategoryName());
+//		int musicFileNo = 
+//				attachmentService.getAttachmentNoByParent(musicNo, AttachmentCategory.MUSIC.getCategoryName());
+//		model.addAttribute("coverImageNo",coverImageNo);
+//		model.addAttribute("musicFileNo",musicFileNo);
+		model.addAttribute("musicUserVO", musicUserVO);
+
 		
 		return "/WEB-INF/views/music/detail.jsp";
 	}
 	
+	// 음원 히스토리는 db에서 cascade로 자동 삭제
+	// 음원-장르 조인 테이블은 통계를 위해서 null로 해놨고 db에서 자동 보존
+	// 서버에서 처리 필요 x
 	@PostMapping("/delete")
 	public String delete(@RequestParam int musicNo, HttpSession session) {
 		String loginMemberId = (String) session.getAttribute("loginMemberId");
@@ -81,10 +84,10 @@ public class MusicController {
 	@GetMapping("/file")
 	public String file(@RequestParam int attachmentNo) {
 		try {
-			 if (attachmentNo == -1) return "redirect:/images/error/no-image.png";
+			 if (attachmentNo <= 0) return "redirect:/images/error/no-image.png";
 			 return "redirect:/attachment/download?attachmentNo="+attachmentNo;
 		} catch (Exception e) {
-			return "redirect:/images/error/no-image.png";
+			return "redirect:/images/error/no-image.pnSg";
 		}
 	}
 	
