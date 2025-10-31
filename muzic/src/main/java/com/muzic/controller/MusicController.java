@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.muzic.condition.SearchCondition;
 import com.muzic.dao.MusicGenreDao;
-import com.muzic.domain.AttachmentCategory;
-import com.muzic.dto.MusicDto;
 import com.muzic.dto.MusicFormDto;
-import com.muzic.service.AttachmentService;
 import com.muzic.service.MusicService;
+import com.muzic.vo.MusicUserVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -30,9 +28,6 @@ public class MusicController {
 	
 	@Autowired
 	private MusicService musicService;
-	
-	@Autowired
-	private AttachmentService attachmentService;
 	
 	@GetMapping("/add")
 	public String add(Model model) {
@@ -54,21 +49,24 @@ public class MusicController {
 	}
 	
 	@GetMapping("/list")
-	public String list(Model model, @ModelAttribute SearchCondition searchCondition) {
+	public String list(Model model, HttpSession session, 
+			@ModelAttribute SearchCondition searchCondition) {
 		model.addAttribute("musicUserVO", musicService.findUserMusicList(searchCondition));
 		return "/WEB-INF/views/music/list.jsp";
 	}
 
 	@GetMapping("/detail")
-	public String detail (Model model, @RequestParam int musicNo) {
-		MusicDto musicDto = musicService.selectOneMusicDto(musicNo);
-		int coverImageNo =
-				attachmentService.getAttachmentNoByParent(musicNo, AttachmentCategory.COVER.getCategoryName());
-		int musicFileNo = 
-				attachmentService.getAttachmentNoByParent(musicNo, AttachmentCategory.MUSIC.getCategoryName());
-		model.addAttribute("musicDto", musicDto);
-		model.addAttribute("coverImageNo",coverImageNo);
-		model.addAttribute("musicFileNo",musicFileNo);
+	public String detail (Model model, HttpSession session, 
+			@RequestParam int musicNo) {
+		MusicUserVO musicUserVO = musicService.findDetail(musicNo);
+//		int coverImageNo =
+//				attachmentService.getAttachmentNoByParent(musicNo, AttachmentCategory.COVER.getCategoryName());
+//		int musicFileNo = 
+//				attachmentService.getAttachmentNoByParent(musicNo, AttachmentCategory.MUSIC.getCategoryName());
+//		model.addAttribute("coverImageNo",coverImageNo);
+//		model.addAttribute("musicFileNo",musicFileNo);
+		model.addAttribute("musicUserVO", musicUserVO);
+
 		
 		return "/WEB-INF/views/music/detail.jsp";
 	}
@@ -86,7 +84,7 @@ public class MusicController {
 	@GetMapping("/file")
 	public String file(@RequestParam int attachmentNo) {
 		try {
-			 if (attachmentNo == -1) return "redirect:/images/error/no-image.png";
+			 if (attachmentNo <= 0) return "redirect:/images/error/no-image.png";
 			 return "redirect:/attachment/download?attachmentNo="+attachmentNo;
 		} catch (Exception e) {
 			return "redirect:/images/error/no-image.pnSg";

@@ -20,7 +20,7 @@
                 <c:forEach var="g" items="${genreList}">
                     <label class="genre-tag">
                         <input type="checkbox" name="musicGenreSet" value="${g}">
-                        <span>${g}</span>
+                        <span>#${g}</span>
                     </label>
                 </c:forEach>
             </div>

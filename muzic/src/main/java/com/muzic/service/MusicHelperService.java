@@ -16,7 +16,7 @@ import com.muzic.dto.MusicFormDto;
 import com.muzic.dto.MusicStatusHistoryDto;
 import com.muzic.error.InvalidContentException;
 import com.muzic.util.HangulChosungUtil;
-import com.muzic.vo.MusicUserVO;
+import com.muzic.vo.MusicSearchVO;
 
 @Service
 public class MusicHelperService {
@@ -114,8 +114,8 @@ public class MusicHelperService {
     	saveAttachments(musicFormDto, musicNo);
     }
     
-    public void setMusicAttachmentNo(List<MusicUserVO> list) {
-        for (MusicUserVO vo : list) {
+    public void setMusicAttachmentNo(List<MusicSearchVO> list) {
+        for (MusicSearchVO vo : list) {
             int coverNo = attachmentService.getAttachmentNoByParent(vo.getMusicNo(), "COVER");
             int musicFileNo = attachmentService.getAttachmentNoByParent(vo.getMusicNo(), "MUSIC");
             vo.setCoverAttachmentNo(coverNo);

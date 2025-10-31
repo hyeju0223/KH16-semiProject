@@ -62,6 +62,12 @@ public class MusicGenreDao {
         return cachedGenres.containsAll(musicGenres);
     }
     
+    public Set<String> findGenresByMusicNo(int musicNo) {
+        String sql = "select map_genre_name from map_music_genre where map_music_no = ? order by map_genre_name";
+        List<String> list = jdbcTemplate.queryForList(sql, String.class, musicNo);
+        return new HashSet<>(list);
+    }
+    
     // 필요없음(areAllGenresValid로 전부 검사하는게 중요)
 //    public boolean isExistGenre(String genreName) {
 //        // 해당 장르가 장르목록에 존재하는지

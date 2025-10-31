@@ -1,36 +1,50 @@
-$(function() {
+$(function () {
 
-	var audio = $("#audio-player")[0];
-	var $playBtn = $("#play-btn");
-	var $duration = $(".duration-box");
+    var audio = $("#music-player").get(0);
+    var playBtn = $(".music-play-btn");
+    var icon = playBtn.find("i");
 
-	/** 🕓 오디오 메타데이터 로드 시 재생시간 표시 */
-	audio.onloadedmetadata = function() {
-		var totalSec = Math.floor(audio.duration);
-		var min = Math.floor(totalSec / 60);
-		var sec = String(totalSec % 60).padStart(2, "0");
-		$duration.text(`${min}:${sec}`);
-	};
+    var seek = $("#seek-bar");
+    var cur = $("#current-time");
+    var tot = $("#total-time");
 
-	/** ▶️⏸ 플레이 / 일시정지 버튼 */
-	$playBtn.on("click", function() {
-		if (audio.paused) {
-			audio.play();
-			$(this).html('<i class="fa-solid fa-pause"></i>');
-		} else {
-			audio.pause();
-			$(this).html('<i class="fa-solid fa-play"></i>');
-		}
-	});
+    function fmt(sec) {
+        if (isNaN(sec)) return "--:--";
+        var m = Math.floor(sec / 60);
+        var s = Math.floor(sec % 60);
+        return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+    }
 
-	/** 🎧 다른 곳 클릭하면 일시정지 (선택사항) */
-	$(document).on("click", function(e) {
-		if (!$(e.target).closest(".album-box").length) {
-			if (!audio.paused) {
-				audio.pause();
-				$playBtn.html('<i class="fa-solid fa-play"></i>');
-			}
-		}
-	});
+    // ▶ Play / Pause
+    playBtn.on("click", function () {
+        if (audio.paused) {
+            audio.play();
+            icon.fadeOut(120, function () {
+                icon.removeClass("fa-circle-play").addClass("fa-circle-pause");
+            }).fadeIn(120);
+        } else {
+            audio.pause();
+            icon.fadeOut(120, function () {
+                icon.removeClass("fa-circle-pause").addClass("fa-circle-play");
+            }).fadeIn(120);
+        }
+    });
+
+    audio.addEventListener("ended", function () {
+        icon.removeClass("fa-circle-pause").addClass("fa-circle-play");
+    });
+
+    audio.onloadedmetadata = function () {
+        tot.text(fmt(audio.duration));
+    };
+
+    audio.ontimeupdate = function () {
+        seek.val((audio.currentTime / audio.duration) * 100);
+        cur.text(fmt(audio.currentTime));
+    };
+
+    seek.on("input", function () {
+        audio.currentTime = (seek.val() / 100) * audio.duration;
+    });
 
 });

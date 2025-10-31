@@ -11,7 +11,7 @@ import com.muzic.dao.MusicSearchDao;
 import com.muzic.util.HangulChosungUtil;
 import com.muzic.util.HangulEnglishUtil;
 import com.muzic.util.SearchUtil;
-import com.muzic.vo.MusicUserVO;
+import com.muzic.vo.MusicSearchVO;
 
 @Service
 public class MusicSearchService {
@@ -68,7 +68,7 @@ public class MusicSearchService {
     }
 
     // 통합 검색 (메인 검색)
-    public List<MusicUserVO> search(SearchCondition searchCondition) {
+    public List<MusicSearchVO> search(SearchCondition searchCondition) {
         if (!prepareCondition(searchCondition)) return List.of(); // 검색 실행여부 확인
 
         String keyword = searchCondition.getKeyword();
@@ -86,8 +86,8 @@ public class MusicSearchService {
                 searchCondition.setKeyword(HangulChosungUtil.getSearch(originalKeyword)); // 초성 변환 검색어 세팅
             }
 
-            List<MusicUserVO> result = performSearch(searchCondition, sortType); // 검색 실행
-            searchCondition.setKeyword(originalKeyword); // 검색어 원복(3개의 컬럼을 순회해야하므로 원복 필요)
+            List<MusicSearchVO> result = performSearch(searchCondition, sortType); // 검색 실행
+            searchCondition.setKeyword(originalKeyword); // 검색어 원복(3개의 컬럼을 순회해야하므로 원복 필요) // 원본 검색어가 뭔지 fe 표시할때 필요
             if (!result.isEmpty()) {
             	musicHelperService.setMusicAttachmentNo(result);
             	return result; // 결과 있으면 바로 반환
@@ -111,7 +111,7 @@ public class MusicSearchService {
                         searchCondition.setKeyword(HangulChosungUtil.getSearch(originalKeyword)); // 초성 변환
                     }
 
-                    List<MusicUserVO> result = performSearch(searchCondition, sortType);
+                    List<MusicSearchVO> result = performSearch(searchCondition, sortType);
                     searchCondition.setKeyword(originalKeyword); // 검색어 복원
                     if (!result.isEmpty()) { // 검색어 있을 때까지 컬럼 순회
                     	musicHelperService.setMusicAttachmentNo(result);
@@ -124,7 +124,7 @@ public class MusicSearchService {
     }
     
     // 단일 컬럼 전용 검색 (미리보기용)
-    public List<MusicUserVO> searchByColumnOnly(SearchCondition searchCondition) {
+    public List<MusicSearchVO> searchByColumnOnly(SearchCondition searchCondition) {
         if (!prepareCondition(searchCondition)) return List.of();
 
         String keyword = searchCondition.getKeyword();
@@ -144,7 +144,7 @@ public class MusicSearchService {
             searchCondition.setKeyword(HangulChosungUtil.getSearch(originalKeyword)); // 초성 변환
         }
 
-        List<MusicUserVO> result = performSearch(searchCondition, sortType); // 탐색 순회 x(레스트 컨트롤러에서 순회 담당)
+        List<MusicSearchVO> result = performSearch(searchCondition, sortType); // 탐색 순회 x(레스트 컨트롤러에서 순회 담당)
         searchCondition.setKeyword(originalKeyword); // 원본 키워드 복원
         if (!result.isEmpty()) {  // 빈 리스트가 아니라면 종료
         	musicHelperService.setMusicAttachmentNo(result);
@@ -184,14 +184,14 @@ public class MusicSearchService {
 
 
     // 실제 검색 수행 (컬럼 기반 초성 여부 판별)
-    private List<MusicUserVO> performSearch(SearchCondition searchCondition, String sortType) {
+    private List<MusicSearchVO> performSearch(SearchCondition searchCondition, String sortType) {
         boolean isSearchColumn = searchCondition.getColumn().endsWith("_search"); // _search 컬럼이면 초성검색
-        List<MusicUserVO> result = runSearch(searchCondition, isSearchColumn, sortType);
+        List<MusicSearchVO> result = runSearch(searchCondition, isSearchColumn, sortType);
         return (result == null) ? List.of() : result;
     }
 
     // DAO 호출 분기
-    private List<MusicUserVO> runSearch(SearchCondition searchCondition, boolean isSearchColumn, String sortType) {
+    private List<MusicSearchVO> runSearch(SearchCondition searchCondition, boolean isSearchColumn, String sortType) {
         switch (sortType) {
             case "like":
                 return isSearchColumn

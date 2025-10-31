@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.muzic.condition.SearchCondition;
 import com.muzic.service.MusicSearchService;
-import com.muzic.vo.MusicUserVO;
+import com.muzic.vo.MusicSearchVO;
 
 @Controller
 @RequestMapping("/music/search")
@@ -25,13 +25,13 @@ public class MusicSearchController {
         // 우선순위 설정
         List<String> columnPriority = List.of("music_title", "music_artist", "music_album");
 
-        List<MusicUserVO> musicUserVO = List.of(); // 검색 실행시 초기화용 리스트
+        List<MusicSearchVO> musicUserVO = List.of(); // 검색 실행시 초기화용 리스트
         String selectedColumn = null; // 검색 실행시 초기화용 컬럼
 
         // 우선순위 탐색
         for (String column : columnPriority) {
         	searchCondition.setColumn(column); // 순회하면서 컬럼 변경
-            List<MusicUserVO> tempList = musicSearchService.search(searchCondition);
+            List<MusicSearchVO> tempList = musicSearchService.search(searchCondition);
             if (!tempList.isEmpty()) {
             	musicUserVO = tempList;
                 selectedColumn = column;

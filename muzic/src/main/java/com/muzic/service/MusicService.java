@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.muzic.condition.SearchCondition;
 import com.muzic.dao.MusicDao;
+import com.muzic.dao.MusicGenreDao;
 import com.muzic.dao.MusicViewDao;
 import com.muzic.domain.MemberRole;
 import com.muzic.domain.MusicStatus;
@@ -35,6 +36,9 @@ public class MusicService {
 	
 	@Autowired
 	private MusicHelperService musicHelperService;
+	
+	@Autowired
+	private MusicGenreDao musicGenreDao;
 	
 	private static final Set<String> ALLOWED_SORT = 
 			Set.of("latest", "like", "play");
@@ -147,5 +151,13 @@ public class MusicService {
     	if(musicDto == null) throw new TargetNotFoundException("존재하지 않는 음원입니다.");
     	return musicDto;
     }
+    
+    public MusicUserVO findDetail(int musicNo) {
+        MusicUserVO musicUserVO = musicViewDao.selectOneMusicUserVO(musicNo);
+        if(musicUserVO == null) throw new TargetNotFoundException("존재하지 않는 음원입니다.");
+        musicUserVO.setMusicGenres(musicGenreDao.findGenresByMusicNo(musicNo));
+        return musicUserVO;
+    }
+    
 }
     

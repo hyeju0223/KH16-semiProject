@@ -13,6 +13,10 @@
     padding: 14px;
     cursor: pointer;
     transition: .24s ease;
+
+    /* ✅ 내용 고정 레이아웃 */
+    display: flex;
+    flex-direction: column;
 }
 
 .music-card:hover {
@@ -75,41 +79,38 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    /* ✅ 높이 고정 */
+    height: 20px;
 }
 
 .artist {
     font-size: 13px;
     color: #777;
     margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    /* ✅ 높이 고정 */
+    height: 18px;
 }
 
 /* ===== Stats ===== */
 .music-stats {
     display: flex;
-    gap: 14px;
+    justify-content: space-between; 
+    align-items: center;
     font-size: 13px;
     font-weight: 500;
     color: #6d6f90;
+    margin-top: auto; /* ✅ 항상 하단 고정 */
 }
 
-.music-stats i {
-    color: #9396D5;
-    margin-right: 4px;
-}
-
-/* ===== Like Animation ===== */
-.like-area {
-    cursor: pointer;
-    transition: .2s;
-}
-
-.like-area.liked i {
-    color: #ff4d8e;
-    animation: heartPop .25s ease-in-out;
-}
-
-@keyframes heartPop {
-    50% { transform: scale(1.3); }
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 /* ===== Sort Bar ===== */
@@ -136,37 +137,4 @@
     font-weight: 700;
     color: #5b5ecf;
     border-bottom: 2px solid #5b5ecf;
-}
-.like-area {
-    cursor: pointer;
-    position: relative;
-}
-
-/* hover 시 컬러 변화 + scale hint */
-.like-area:hover i {
-    color: #ff4d8e;
-    transform: scale(1.15);
-}
-
-/* 손가락 커서 */
-.like-area:hover {
-    filter: brightness(1.15);
-}
-
-/* 눌렀을 때 ripple 효과 */
-.like-area.liked::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 22px;
-    height: 22px;
-    background: rgba(255, 77, 142, .35);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    animation: likeRipple .4s ease-out forwards;
-}
-
-@keyframes likeRipple {
-    to { transform: translate(-50%, -50%) scale(2.8); opacity: 0; }
 }

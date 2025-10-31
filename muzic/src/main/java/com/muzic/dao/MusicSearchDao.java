@@ -7,8 +7,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.muzic.condition.SearchCondition;
-import com.muzic.mapper.MusicUserVOMapper;
-import com.muzic.vo.MusicUserVO;
+import com.muzic.mapper.MusicSearchVOMapper;
+import com.muzic.vo.MusicSearchVO;
 
 @Repository
 public class MusicSearchDao {
@@ -17,10 +17,10 @@ public class MusicSearchDao {
 	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
-	private MusicUserVOMapper musicUserVOMapper;
+	private MusicSearchVOMapper musicSearchVOMapper;
 	
 	 // 정확도순 (초성)
-    public List<MusicUserVO> searchByChosungAccuracy(SearchCondition searchCondition) {
+    public List<MusicSearchVO> searchByChosungAccuracy(SearchCondition searchCondition) {
         String sql = "select * from (" 
             + " select rownum rn, tmp.* from (" 
             + " select m.music_no, m.music_title, m.music_artist, m.music_album, "
@@ -42,11 +42,11 @@ public class MusicSearchDao {
             searchCondition.getKeyword(), searchCondition.getKeyword(),
             searchCondition.getStart(), searchCondition.getEnd()
         };
-        return jdbcTemplate.query(sql, musicUserVOMapper, params);
+        return jdbcTemplate.query(sql, musicSearchVOMapper, params);
     }
 
     // 좋아요순 (초성)
-    public List<MusicUserVO> searchByChosungLike(SearchCondition searchCondition) {
+    public List<MusicSearchVO> searchByChosungLike(SearchCondition searchCondition) {
         String sql = "select * from ( select rownum rn, tmp.* from ("
             + " select m.music_no, m.music_title, m.music_artist, m.music_album, "
             + " u.member_nickname as uploader_nickname, m.music_play, m.music_like, m.music_utime "
@@ -58,11 +58,11 @@ public class MusicSearchDao {
 
         sql = sql.replace("!@", searchCondition.getColumn());
         Object[] params = { searchCondition.getKeyword(), searchCondition.getStart(), searchCondition.getEnd() };
-        return jdbcTemplate.query(sql, musicUserVOMapper, params);
+        return jdbcTemplate.query(sql, musicSearchVOMapper, params);
     }
 
     // 조회순 (초성)
-    public List<MusicUserVO> searchByChosungPlay(SearchCondition searchCondition) {
+    public List<MusicSearchVO> searchByChosungPlay(SearchCondition searchCondition) {
         String sql = "select * from ( select rownum rn, tmp.* from ("
             + " select m.music_no, m.music_title, m.music_artist, m.music_album, "
             + " u.member_nickname as uploader_nickname, m.music_play, m.music_like, m.music_utime "
@@ -74,11 +74,11 @@ public class MusicSearchDao {
 
         sql = sql.replace("!@", searchCondition.getColumn());
         Object[] params = { searchCondition.getKeyword(), searchCondition.getStart(), searchCondition.getEnd() };
-        return jdbcTemplate.query(sql, musicUserVOMapper, params);
+        return jdbcTemplate.query(sql, musicSearchVOMapper, params);
     }
 
     // 최신순 (초성)
-    public List<MusicUserVO> searchByChosungLatest(SearchCondition searchCondition) {
+    public List<MusicSearchVO> searchByChosungLatest(SearchCondition searchCondition) {
         String sql = "select * from ( select rownum rn, tmp.* from ("
             + " select m.music_no, m.music_title, m.music_artist, m.music_album, "
             + " u.member_nickname as uploader_nickname, m.music_play, m.music_like, m.music_utime "
@@ -90,11 +90,11 @@ public class MusicSearchDao {
 
         sql = sql.replace("!@", searchCondition.getColumn());
         Object[] params = { searchCondition.getKeyword(), searchCondition.getStart(), searchCondition.getEnd() };
-        return jdbcTemplate.query(sql, musicUserVOMapper, params);
+        return jdbcTemplate.query(sql, musicSearchVOMapper, params);
     }
     
     // 정확도순 원본 컬럼
-    public List<MusicUserVO> searchByAccuracy(SearchCondition searchCondition) {
+    public List<MusicSearchVO> searchByAccuracy(SearchCondition searchCondition) {
         String sql = "select * from ( select rownum rn, tmp.* from ("
             + " select m.music_no, m.music_title, m.music_artist, m.music_album, "
             + " u.member_nickname as uploader_nickname, m.music_play, m.music_like, m.music_utime, "
@@ -115,11 +115,11 @@ public class MusicSearchDao {
             searchCondition.getKeyword(), searchCondition.getKeyword(),
             searchCondition.getStart(), searchCondition.getEnd()
         };
-        return jdbcTemplate.query(sql, musicUserVOMapper, params);
+        return jdbcTemplate.query(sql, musicSearchVOMapper, params);
     }
 
     // 좋아요순 원본 컬럼
-    public List<MusicUserVO> searchByLike(SearchCondition searchCondition) {
+    public List<MusicSearchVO> searchByLike(SearchCondition searchCondition) {
         String sql = "select * from ( select rownum rn, tmp.* from ("
             + " select m.music_no, m.music_title, m.music_artist, m.music_album, "
             + " u.member_nickname as uploader_nickname, m.music_play, m.music_like, m.music_utime "
@@ -131,11 +131,11 @@ public class MusicSearchDao {
 
         sql = sql.replace("!@", searchCondition.getColumn());
         Object[] params = { searchCondition.getKeyword(), searchCondition.getStart(), searchCondition.getEnd() };
-        return jdbcTemplate.query(sql, musicUserVOMapper, params);
+        return jdbcTemplate.query(sql, musicSearchVOMapper, params);
     }
     
     // 재생순 원본 컬럼
-    public List<MusicUserVO> searchByPlay(SearchCondition searchCondition) {
+    public List<MusicSearchVO> searchByPlay(SearchCondition searchCondition) {
         String sql = "select * from ( select rownum rn, tmp.* from ("
             + " select m.music_no, m.music_title, m.music_artist, m.music_album, "
             + " u.member_nickname as uploader_nickname, m.music_play, m.music_like, m.music_utime "
@@ -147,11 +147,11 @@ public class MusicSearchDao {
 
         sql = sql.replace("!@", searchCondition.getColumn());
         Object[] params = { searchCondition.getKeyword(), searchCondition.getStart(), searchCondition.getEnd() };
-        return jdbcTemplate.query(sql, musicUserVOMapper, params);
+        return jdbcTemplate.query(sql, musicSearchVOMapper, params);
     }
     
     // 최신순 원본 컬럼
-    public List<MusicUserVO> searchByLatest(SearchCondition searchCondition) {
+    public List<MusicSearchVO> searchByLatest(SearchCondition searchCondition) {
         String sql = "select * from ( select rownum rn, tmp.* from ("
             + " select m.music_no, m.music_title, m.music_artist, m.music_album, "
             + " u.member_nickname as uploader_nickname, m.music_play, m.music_like, m.music_utime "
@@ -163,6 +163,6 @@ public class MusicSearchDao {
 
         sql = sql.replace("!@", searchCondition.getColumn());
         Object[] params = { searchCondition.getKeyword(), searchCondition.getStart(), searchCondition.getEnd() };
-        return jdbcTemplate.query(sql, musicUserVOMapper, params);
+        return jdbcTemplate.query(sql, musicSearchVOMapper, params);
     }
 }
