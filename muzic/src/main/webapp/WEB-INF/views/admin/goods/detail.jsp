@@ -21,15 +21,7 @@
 	margin-bottom: 10px;
 }
 
-/* 🟢 [추가] 수량 버튼 디자인 (input-qty는 cart.css에 있다고 가정) */
-.quantity-selector {
-	display: flex;
-	align-items: center;
-	border: 1px solid #dee2e6;
-	border-radius: 4px;
-	overflow: hidden;
-	height: 36px; /* 높이 설정 */
-}
+
 
 .btn-qty {
 	background: none; /* 배경 제거 */
@@ -38,16 +30,6 @@
 	height: 100%;
 	font-size: 1.2em;
 	cursor: pointer;
-}
-
-.btn-qty-down, .btn-qty-up {
-	/* 수량 버튼 배경색은 이미지에 따라 없애거나 약하게 */
-	background: #f8f9fa;
-}
-/* 크롬에서 수량버튼의 스피너 안보이게 */
-input[type="number"]::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
 }
 
 .input-qty {
@@ -59,22 +41,7 @@ input[type="number"]::-webkit-inner-spin-button {
 	padding: 0;
 }
 
-/* 🟢 [추가] 버튼 스타일 (이미지처럼 배경색 조정) */
-.btn-positive { /* 바로구매 버튼 */
-	background-color: #7b68ee; /* 보라색 계열 */
-	color: white;
-	border: none;
-	padding: 10px 20px;
-	font-size: 1em;
-}
 
-.btn-neutral { /* 장바구니 버튼 */
-	background-color: #cccccc; /* 회색 계열 */
-	color: #333;
-	border: none;
-	padding: 10px 20px;
-	font-size: 1em;
-}
 </style>
 
 <div class="container w-1000">
@@ -102,17 +69,22 @@ input[type="number"]::-webkit-inner-spin-button {
 				point
 			</p>
 
-			<form method="post"
-				style="display: flex; flex-direction: column; gap: 20px;">
+			<div style="display: flex; gap: 20px;">
 
 				<div style="display: flex; align-items: center; justify-content: flex-start; gap: 20px;">
 					<div style="font-size: 1em; color: ${goodsDto.goodsQuantity == 0 ? 'black' : 'green'};"> 재고: ${goodsDto.goodsQuantity}개</div>
+					<c:if test="${goodsDto.goodsExpiration != null}">
+        <div style="font-size: 1em; color: #555;"> 
+            유효 기간: 
+            ${goodsDto.formattedGoodsExpiration}
+        </div>
+    </c:if>
 				</div>
 
 			
 
 				<input type="hidden" name="goodsNo" value="${goodsDto.goodsNo}">
-			</form>
+			</div>
 		</div>
 	</div>
 	<div class="cell product-description-section"
@@ -122,7 +94,8 @@ input[type="number"]::-webkit-inner-spin-button {
 	</div>
 
 	<div class="cell right" style="margin-top: 30px;">
+	<a href="delete?goodsNo=${goodsDto.goodsNo}" class="btn btn-negative" onclick="return confirm('상품을 삭제하시겠습니까?');">삭제</a>
 		<a href="list"><button type="button" class="btn btn-neutral">목록</button></a>
-	<a href="edit"><button type="button" class="btn btn-positive">수정하기</button></a>
+	<a href="edit?goodsNo=${goodsDto.goodsNo}"><button type="button" class="btn btn-positive">수정하기</button></a>
 	</div>
 </div>

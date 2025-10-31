@@ -34,17 +34,18 @@ public class GoodsService {
 	@Transactional
 	public boolean delete(int goodsNo) {
 
+		
+		//상품 삭제해도 주문내역에는 상품이미지가 보여야하기 때문에 이미지 안지우기로
 		// 1. 첨부 파일 정보 조회 및 파일 삭제 (Goods 카테고리 사용)
-		String categoryValue = AttachmentCategory.GOODS.getCategoryName();
-		int attachmentNo = attachmentService.getAttachmentNoByParent(goodsNo, categoryValue);
+//		String categoryValue = AttachmentCategory.GOODS.getCategoryName();
+//		int attachmentNo = attachmentService.getAttachmentNoByParent(goodsNo, categoryValue);
 
 		// 첨부 파일이 존재하면
-		if (attachmentNo != -1) {
-			attachmentService.delete(attachmentNo);
-		}
+//		if (attachmentNo != -1) {
+//			attachmentService.delete(attachmentNo);
+//		}
 
 		// 2. 굿즈 정보 삭제 (DAO 사용)
-		// 🚨 jdbcTemplate 대신 goodsDao.delete()를 호출합니다.
 		boolean result = goodsDao.delete(goodsNo);
 		return result;
 	}

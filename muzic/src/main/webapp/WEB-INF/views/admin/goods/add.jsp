@@ -1,16 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
 <link rel="stylesheet" type="text/css" href="/css/cart.css">
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">  
+<script src="/summernote/custom-summernote.js"></script>
 <style>
-.container {
+/* .container {
 	border: 1px solid gray;
-}
+	border-radius: 20px;
+	padding: 10px;
+} */
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+.table th { width: 150px; background-color: #f7f7f7; }
+
 </style>
 
-<div class="container w-500">
+<div class="container w-1000">
 	<div class="cell center">
 		<h2>관리자 - 상품 등록</h2>
 	</div>
@@ -40,8 +51,7 @@
 						</tr>
 						<tr>
 							<th>상품 설명</th>
-							<td><textarea name="goodsDescription" rows="5"
-									style="width: 100%;"></textarea></td>
+							<td><textarea name="goodsDescription" class="summernote-editor"></textarea></td>
 						</tr>
 						<tr>
 							<th>포인트(가격)</th>
@@ -64,8 +74,8 @@
 				</table>
 			</div>
 
-			<div>
-				<a href="/store/list" class="btn">취소</a>
+			<div class="cell right mt-20">
+				<a href="/admin/goods/list" class="btn btn-neutral">취소</a>
 				<button type="submit" class="btn btn-positive">상품 등록하기</button>
 			</div>
 

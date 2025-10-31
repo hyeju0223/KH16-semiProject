@@ -40,7 +40,7 @@ public class GoodsDao {
 
 	// 전체 상품 조회
 	public List<GoodsDto> selectList() {
-		String sql = "select * from goods order by goods_no desc";
+		String sql = "select * from goods where goods_is_deleted = 'N' order by goods_no desc";
 		return jdbcTemplate.query(sql, goodsMapper);
 	}
 
@@ -54,7 +54,7 @@ public class GoodsDao {
 			return List.of();
 		}
 
-		String sql = "select * from goods where INSTR(#1, ?) > 0 order by #1, goods_no desc";
+		String sql = "select * from goods where goods_is_deleted = 'N' AND INSTR(#1, ?) > 0 order by #1, goods_no desc";
 
 		sql = sql.replace("#1", column);
 
@@ -65,7 +65,7 @@ public class GoodsDao {
 
 	// 단일 상품 조회
 	public GoodsDto selectOne(int goodsNo) {
-		String sql = "select * from goods where goods_no = ?";
+		String sql = "select * from goods where goods_no = ? AND goods_is_deleted = 'N'";
 		Object[] params = { goodsNo };
 		List<GoodsDto> list = jdbcTemplate.query(sql, goodsMapper, params);
 		return list.isEmpty() ? null : list.get(0);
@@ -73,20 +73,20 @@ public class GoodsDao {
 
 	// 카테고리별 상품 조회
 	public List<GoodsDto> selectByCategory(String goodsCategory) {
-		String sql = "select * from goods where goods_category=? order by goods_no asc";
+		String sql = "select * from goods where goods_category=? AND goods_is_deleted = 'N' order by goods_no asc";
 		Object[] params = { goodsCategory };
 		return jdbcTemplate.query(sql, goodsMapper, params);
 	}
 
 	// 상품 재고 수량 업데이트
 	public int updateQuantity(int goodsNo, int newQuantity) {
-		String sql = "UPDATE goods SET goods_quantity = ? WHERE goods_no = ?";
+		String sql = "UPDATE goods SET goods_quantity = ? WHERE goods_no = ? AND goods_is_deleted = 'N'";
 		Object[] params = { newQuantity, goodsNo };
 		return jdbcTemplate.update(sql, params);
 	}
 
 	public int selectPrice(int goodsNo) {
-		String sql = "select goods_point from goods where goods_no=?";
+		String sql = "select goods_point from goods where goods_no=? AND goods_is_deleted = 'N'";
 		Object[] params = { goodsNo };
 		return jdbcTemplate.queryForObject(sql, Integer.class, params);
 	}
@@ -99,13 +99,13 @@ public class GoodsDao {
 		if (goodsCategory != null && !goodsCategory.isEmpty()) {
 			if (pageVO.search() && allowList.contains(pageVO.getColumn())) {
 				// 1-1. 카테고리 + 검색
-				String sql = "SELECT COUNT(*) FROM GOODS WHERE goods_category = ? AND INSTR(#1, ?) > 0";
+				String sql = "SELECT COUNT(*) FROM GOODS WHERE goods_category = ? AND INSTR(#1, ?) > 0 AND goods_is_deleted = 'N'";
 				sql = sql.replace("#1", pageVO.getColumn());
 				Object[] params = { goodsCategory, pageVO.getKeyword() };
 				return jdbcTemplate.queryForObject(sql, int.class, params);
 			} else {
 				// 1-2. 카테고리만
-				String sql = "SELECT COUNT(*) FROM GOODS WHERE goods_category = ?";
+				String sql = "SELECT COUNT(*) FROM GOODS WHERE goods_category = ? AND goods_is_deleted = 'N'";
 				Object[] params = { goodsCategory };
 				return jdbcTemplate.queryForObject(sql, int.class, params);
 			}
@@ -114,13 +114,13 @@ public class GoodsDao {
 		else {
 			if (pageVO.search() && allowList.contains(pageVO.getColumn())) {
 				// 2-1. 검색만
-				String sql = "SELECT COUNT(*) FROM GOODS WHERE INSTR(#1, ?) > 0";
+				String sql = "SELECT COUNT(*) FROM GOODS WHERE INSTR(#1, ?) > 0 AND goods_is_deleted = 'N'";
 				sql = sql.replace("#1", pageVO.getColumn());
 				Object[] params = { pageVO.getKeyword() };
 				return jdbcTemplate.queryForObject(sql, int.class, params);
 			} else {
 				// 2-2. 전체 목록
-				String sql = "SELECT COUNT(*) FROM GOODS";
+				String sql = "SELECT COUNT(*) FROM GOODS where goods_is_deleted = 'N'";
 				return jdbcTemplate.queryForObject(sql, int.class);
 			}
 		}
@@ -148,7 +148,7 @@ public class GoodsDao {
 				// 1-1. 카테고리 + 검색
 				String sql = "SELECT * FROM ( " + "    SELECT ROWNUM AS RNUM, TMP.* FROM ( "
 						+ "        SELECT goods_no, goods_name, goods_description, goods_point, goods_quantity, goods_category, goods_expiration, goods_registration_time, goods_edit_time "
-						+ "        FROM GOODS " + "        WHERE goods_category = ? AND INSTR(#1, ?) > 0 "
+						+ "        FROM GOODS " + "        WHERE goods_category = ? AND INSTR(#1, ?) > 0 AND goods_is_deleted = 'N' "
 						+ "        ORDER BY " + orderByClause + "    ) TMP" + ") WHERE RNUM BETWEEN ? AND ?";
 
 				sql = sql.replace("#1", pageVO.getColumn());
@@ -159,7 +159,7 @@ public class GoodsDao {
 				// 1-2. 카테고리만
 				String sql = "SELECT * FROM ( " + "    SELECT ROWNUM AS RNUM, TMP.* FROM ( "
 						+ "        SELECT goods_no, goods_name, goods_description, goods_point, goods_quantity, goods_category, goods_expiration, goods_registration_time, goods_edit_time "
-						+ "        FROM GOODS " + "        WHERE goods_category = ? " + "        ORDER BY "
+						+ "        FROM GOODS " + "        WHERE goods_category = ? AND goods_is_deleted = 'N' " + "        ORDER BY "
 						+ orderByClause + "    ) TMP" + ") WHERE RNUM BETWEEN ? AND ?";
 
 				Object[] params = { goodsCategory, pageVO.getStr(), pageVO.getEnd() };
@@ -174,7 +174,7 @@ public class GoodsDao {
 				// 2-1. 검색만
 				String sql = "SELECT * FROM ( " + "    SELECT ROWNUM AS RNUM, TMP.* FROM ( "
 						+ "        SELECT goods_no, goods_name, goods_description, goods_point, goods_quantity, goods_category, goods_expiration, goods_registration_time, goods_edit_time "
-						+ "        FROM GOODS " + "        WHERE INSTR(#1, ?) > 0 " + "        ORDER BY "
+						+ "        FROM GOODS " + "        WHERE INSTR(#1, ?) > 0 AND goods_is_deleted = 'N' " + "        ORDER BY "
 						+ orderByClause + "    ) TMP" + ") WHERE RNUM BETWEEN ? AND ?";
 
 				sql = sql.replace("#1", pageVO.getColumn());
@@ -185,7 +185,7 @@ public class GoodsDao {
 				// 2-2. 전체 목록
 				String sql = "SELECT * FROM ( " + "    SELECT ROWNUM AS RNUM, TMP.* FROM ( "
 						+ "        SELECT goods_no, goods_name, goods_description, goods_point, goods_quantity, goods_category, goods_expiration, goods_registration_time, goods_edit_time "
-						+ "        FROM GOODS " + "        ORDER BY " + orderByClause + "    ) TMP"
+						+ "        FROM GOODS where goods_is_deleted = 'N'" + "        ORDER BY " + orderByClause + "    ) TMP"
 						+ ") WHERE RNUM BETWEEN ? AND ?";
 
 				Object[] params = { pageVO.getStr(), pageVO.getEnd() };
@@ -203,7 +203,7 @@ public class GoodsDao {
 
 
 	public boolean delete(int goodsNo) {
-        String sql = "DELETE FROM goods WHERE goods_no = ?";
+        String sql = "UPDATE goods SET goods_is_deleted = 'Y' WHERE goods_no = ?";
         Object[] params = {goodsNo};
         return jdbcTemplate.update(sql, params) > 0; 
     }

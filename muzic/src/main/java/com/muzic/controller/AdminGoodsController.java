@@ -33,9 +33,7 @@ public class AdminGoodsController {
 	public String list(Model model,
 			@ModelAttribute PageVO pageVO,
 			@RequestParam(required=false) String goodsCategory,
-			@RequestParam(required=false, defaultValue = "regdate-desc") String sort) {
-//		List<GoodsDto> goodsList = goodsDao.selectList();
-		
+			@RequestParam(required=false, defaultValue = "regdate_desc") String sort) {
 		int count = goodsDao.countGoods(pageVO, goodsCategory);
 		pageVO.setAllData(count);
 		
@@ -104,6 +102,6 @@ public class AdminGoodsController {
 	@PostMapping("/edit")
 	public String edit(@ModelAttribute GoodsDto goodsDto, @RequestParam MultipartFile attach) throws IOException {
 		goodsService.edit(goodsDto, attach);
-		return "redirect:list"; // 수정 완료 후 목록 페이지로 리다이렉트
+		return "redirect:detail?goodsNo=" + goodsDto.getGoodsNo();
 	}
 }

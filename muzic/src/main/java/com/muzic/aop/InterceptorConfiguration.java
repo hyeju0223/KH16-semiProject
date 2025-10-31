@@ -24,12 +24,12 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 		
 		//미로그인
 		registry.addInterceptor(loginInterceptor)	
-					.addPathPatterns("/mypage/**", "/post/**","/post/free/**", "/post/mbti/**", "/store/cart/**", "/admin/**")
-					.excludePathPatterns("/post/free/list")
+					.addPathPatterns("/mypage/**", "/post/**","/post/free/**", "/post/mbti/**", "/store/cart/**", "/admin/**", "/music/**")
+					.excludePathPatterns("/post/free/list","/music/list","/music/detail")
 					.order(1);
 		
 //		관리자, 게시판 관련 일단 주석처리
-//		//관리자용 인터셉터
+		//관리자용 인터셉터
 //		registry.addInterceptor(adminInterceptor)
 //					.addPathPatterns("/admin/**")
 //					.order(2);
