@@ -150,7 +150,7 @@ $(function () {
   });
 
   /* ========== [8] 이메일 인증 (보내기/확인/타이머) ========== */
-  /* ========== [8] 이메일 인증 (보내기/확인/타이머) ========== */
+
   (function () {
     const SEND_COOLDOWN_SEC = 60;
     const CERT_EXPIRE_SEC   = 300;
@@ -291,6 +291,8 @@ $(function () {
       });
     });
   })();
+
+
 
   /* ========== [9] 주소 검색 ========== */
   $(".btn-address-search").off("click").on("click", async function () {

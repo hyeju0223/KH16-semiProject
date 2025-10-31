@@ -7,18 +7,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.muzic.dto.MemberDto;
-import com.muzic.mapper.MemberMapper;            // ✅ 기존 공용 매퍼 재사용
-import com.muzic.mapper.AdminMemberListMapper;  // 리스트(VO) 전용
+import com.muzic.mapper.MemberMapper;
+import com.muzic.mapper.AdminMemberListMapper;
 import com.muzic.vo.AdminMemberListVO;
 
 @Repository
 public class AdminMemberDao {
 
     @Autowired private JdbcTemplate jdbcTemplate;
-    @Autowired private AdminMemberListMapper listMapper; // 목록 전용(VO: blacklist_yn 포함)
-    @Autowired private MemberMapper memberMapper;        // ✅ 단건/수정용 DTO 매퍼 재사용
+    @Autowired private AdminMemberListMapper listMapper;
+    @Autowired private MemberMapper memberMapper;
 
-    // 검색 컬럼 화이트리스트
     private static final Map<String, String> COL = Map.of(
         "id", "m.member_id",
         "email", "m.member_email",
@@ -27,7 +26,6 @@ public class AdminMemberDao {
         "all", ""
     );
 
-    // [list] count
     public int count(String type, String keyword) {
         StringBuilder sql = new StringBuilder("select count(*) from member m where 1=1 ");
         List<Object> p = new ArrayList<>();
@@ -35,7 +33,7 @@ public class AdminMemberDao {
         return jdbcTemplate.queryForObject(sql.toString(), Integer.class, p.toArray());
     }
 
-    // [list] 최신가입순 + Oracle rownum 페이징
+    // ✅ member_login 제거된 목록 조회
     public List<AdminMemberListVO> selectList(String type, String keyword, int begin, int end) {
         StringBuilder inner = new StringBuilder();
         List<Object> p = new ArrayList<>();
@@ -44,9 +42,10 @@ public class AdminMemberDao {
             select
               m.member_id, m.member_pw, m.member_nickname, m.member_name,
               m.member_email, m.member_mbti, m.member_birth, m.member_contact,
-              m.member_role, m.member_point, m.member_login,
+              m.member_role, m.member_point,
               case when exists (
-                select 1 from blacklist b
+                select 1
+                from blacklist b
                 where b.blacklist_member = m.member_id
                   and b.blacklist_status = 'Y'
               ) then 'Y' else 'N' end as blacklist_yn
@@ -69,14 +68,12 @@ public class AdminMemberDao {
         return jdbcTemplate.query(paging, listMapper, p.toArray());
     }
 
-    // [detail/edit] 단건 조회 — ✅ MemberMapper 재사용
     public MemberDto selectOne(String memberId) {
         String sql = "select * from member where member_id = ?";
         List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, memberId);
         return list.isEmpty() ? null : list.get(0);
     }
 
-    // [edit] 관리자 수정(등급/포인트 포함)
     public boolean updateByAdmin(MemberDto m) {
         String sql = """
             update member set
@@ -94,13 +91,11 @@ public class AdminMemberDao {
         return jdbcTemplate.update(sql, p) > 0;
     }
 
-    // [drop] 하드 삭제
     public boolean drop(String memberId) {
         String sql = "delete from member where member_id=?";
         return jdbcTemplate.update(sql, memberId) > 0;
     }
 
-    // 공통 검색절
     private void applySearch(StringBuilder sql, List<Object> p, String type, String keyword) {
         String t = (type == null) ? "all" : type.toLowerCase();
         String k = (keyword == null) ? "" : keyword.trim();
