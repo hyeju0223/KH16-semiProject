@@ -13,7 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.muzic.dao.CalendarDao;
+import com.muzic.dao.MemberDao;
 import com.muzic.dto.CalendarDto;
+import com.muzic.dto.MemberDto;
+import com.muzic.error.TargetNotFoundException;
+import com.muzic.service.CalendarPointService;
+
+import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin
 @RestController
@@ -22,6 +28,10 @@ public class CalendarRestController {
 	
 	@Autowired
 	private CalendarDao calendarDao;
+	@Autowired
+	private MemberDao memberDao;
+	@Autowired
+//	private CalendarPointService calendarPointService;
 	
 	//일정 조회
 	@PostMapping("/home")
@@ -54,6 +64,15 @@ public class CalendarRestController {
 		
 		
 	}
+	
+//	//출석체크 선물
+//	@PostMapping("/gift")
+//	public String gift(HttpSession session) {
+//		
+////		return calendarPointService.giftPoint(session);
+//		
+//		
+//	}
 	
 
 }

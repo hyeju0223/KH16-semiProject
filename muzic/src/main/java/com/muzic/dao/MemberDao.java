@@ -150,4 +150,10 @@ public class MemberDao {
 				memberDto.getMemberAddress2(), memberDto.getMemberId()};
 		return jdbcTemplate.update(sql,params) > 0;
 	}
+
+	public boolean addPoint(int point, String memberId) {
+		String sql = "update member set member_point=member_point+? where member_id=?";
+		Object[] params = {point, memberId};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
 }

@@ -1,5 +1,6 @@
 package com.muzic.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,17 @@ public class CalendarDao {
 			return null;
 		}
 	}
+	
+	//출석체크 개수조회
+	public int selectTotalAttendance(String memberId, String dateToChar) {
+	
+		String sql = "select count(calendar_attendance) from calendar where calendar_member=? "
+				+ "and calendar_attendance = 'Y' "
+				+ "and to_char(calendar_day, ?)";
+		Object[] params = {memberId, dateToChar};
+		return jdbcTemplate.queryForObject(sql,Integer.class, params);			
+	}
+
 
 	//일정 삭제
 	public boolean delete(int calendarNo) {

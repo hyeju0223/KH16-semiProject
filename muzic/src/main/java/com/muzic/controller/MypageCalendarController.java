@@ -44,6 +44,7 @@ public class MypageCalendarController {
 		
 		//캘린더 정보 모델로 전송
 		model.addAttribute("calendarList",calendarList);
+		model.addAttribute("memberDto", findDto);
 		
 		return "/WEB-INF/views/mypage/calendar/home.jsp";
 	}
