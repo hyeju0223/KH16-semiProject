@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<link rel="stylesheet" type="text/css" href="/css/post.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
@@ -16,13 +16,17 @@
 
 <form autocomplete="off" action="${pageContext.request.contextPath}/post/write" method="post">
 
+<input type="hidden" name="postType" value="${empty postDto.postMbti ? 'free' : 'mbti'}">
 
+<c:if test="${not empty postDto.postMbti}">
+    <input type="hidden" name="postMbti" value="${postDto.postMbti}">
+</c:if>
 
 <div class="container w-800">
-    <div class="cell">
+    <div class="cell center">
         <h1>게시글 작성</h1>
     </div>            
-    <div class="cell">
+    <div class="cell center">
         <p>인격 어쩌구.... 말 이쁘게 쓰기🎅🎅<p>
     </div>
     
@@ -35,7 +39,7 @@
     
     <div class="cell">
         <label>제목 <span class="red">*</span></label>
-        <input type="text" name="postTitle" required class="field w-100">
+        <input type="text" name="postTitle" required class="field" style="width: 100%">
     </div>
 
 	<div class="cell">

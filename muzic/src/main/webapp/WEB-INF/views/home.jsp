@@ -835,4 +835,5 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
 </body>
 
 </html>
-</html>
+
+<link rel="icon" href="/favicon.ico">

@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.muzic.dao.CommentsDao;
+import com.muzic.dao.CommentsLikeDao;
 import com.muzic.dao.PostDao;
 import com.muzic.dto.CommentsDto;
 import com.muzic.dto.PostDto;
 import com.muzic.error.NeedPermissionException;
 import com.muzic.error.TargetNotFoundException;
 import com.muzic.vo.CommentsVO;
+import com.muzic.vo.LikeVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -29,11 +31,11 @@ public class CommentsRestComtroller {
 
 	@Autowired
 	private CommentsDao commentsDao;
-	
 	@Autowired
 	private PostDao postDao;
+	@Autowired
+	private CommentsLikeDao commentsLikeDao;
 	
-//	@PostMapping("/list")
 	@GetMapping("/list")
 	public List<CommentsVO> list(@RequestParam int commentPost, HttpSession session) {
 		String loginId = (String)session.getAttribute("loginMemberId");
@@ -118,4 +120,39 @@ public class CommentsRestComtroller {
 		commentsDao.update(commentsDto);
 	}
 	
+	@GetMapping("/check")
+	public LikeVO check(HttpSession session, @RequestParam int postNo) {
+		String memberId = (String) session.getAttribute("loginMemberId");
+		boolean result = commentsLikeDao.check(memberId, postNo);
+		int count = commentsLikeDao.countCommentNo(postNo);
+		
+		LikeVO likeVO = new LikeVO();
+		
+		likeVO.setLike(result);
+		likeVO.setCount(count);
+		
+		return likeVO;
+	}
+	
+	@PostMapping("/action")
+	public LikeVO action(HttpSession session, @RequestParam int commentNo) {
+		String memberId = (String) session.getAttribute("loginMemberId");
+		
+		LikeVO likeVO = new LikeVO();
+		
+		if(commentsLikeDao.check(memberId, commentNo)) {
+			commentsLikeDao.delete(memberId, commentNo);
+			likeVO.setLike(false);
+		}
+		else {
+			commentsLikeDao.insert(memberId, commentNo);
+			likeVO.setLike(true);
+		}
+		
+		int count = commentsLikeDao.countCommentNo(commentNo);
+		commentsDao.updateCommentsLike(commentNo, count);
+		likeVO.setCount(count);
+		
+		return likeVO;
+	}
 }

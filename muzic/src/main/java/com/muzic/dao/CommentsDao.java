@@ -67,4 +67,19 @@ public class CommentsDao {
 		List<CommentsDto> commentsList = jdbcTemplate.query(sql, commentsMapper, params);
 		return commentsList.isEmpty() ? null : commentsList.get(0);
 	}
+	
+	//좋아요 설정
+	public boolean updateCommentsLike(int commentsNo, int count) {
+		String sql = "update comments set comment_like = ? where comment_no = ?";
+		Object[] params = {count, commentsNo};
+		
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+	public boolean updateCommentsLike(int commentsNo) {
+		String sql = "update comments set comment_no = "
+				+ "(select count(*) from comment_like where comment_no = ?) "
+				+ "where comment_no = ?";
+		Object[] params = {commentsNo, commentsNo};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
 }

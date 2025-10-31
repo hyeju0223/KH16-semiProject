@@ -11,7 +11,6 @@ import com.muzic.condition.SearchCondition;
 import com.muzic.dto.PostDto;
 import com.muzic.mapper.PostListMapper;
 import com.muzic.mapper.PostMapper;
-import com.muzic.vo.PageVO;
 import com.muzic.vo.PostVO;
 
 @Repository
@@ -31,15 +30,15 @@ public class PostDao {
 	}
 	
 	public List<PostVO> selectListNotice(SearchCondition searchCondition) {
-		//공지사항 검색용 매핑
+		//공지사항 조회 매핑
 		if(searchCondition.isList()) {
-			String sql = "select * from board_list "
+			String sql = "select * from post_list "
 					+ "where post_notice = 'Y' order by post_no desc";
 			return jdbcTemplate.query(sql,  postListMapper);
 		}
 		
 		String sql = "select * from post_list where post_notice = 'Y' "
-				+ "and instr(#1, ?) orber by post_no desc";
+				+ "and instr(#1, ?) order by post_no desc";
 		sql = sql.replace("#1", searchCondition.getColumn());
 		
 		Object[] params = {searchCondition.getKeyword()};
@@ -81,7 +80,7 @@ public class PostDao {
 				  			+ "select " + columnList + " "
 				  			+ fromClause
 				  			+ " where P.post_mbti IS NULL OR P.post_mbti = '' "
-				  			+ "order by P.post_no desc"
+				  			+ "order by P.post_notice desc, P.post_no desc "
 				  		+ ") TMP"
 				  + ") where rn between ? and ?";
 			
@@ -95,9 +94,9 @@ public class PostDao {
 				    	+ "select rownum rn, TMP.* from ("
 				  			+ "select " + columnList + " "
 				  			+ fromClause
-				  			+ " where P.post_mbti IS NULL OR P.post_mbti = '' "
-				  			+ "and instr(#1, ?) > 0 "
-				  			+ "order by P.post_no desc"
+				  			+ " where (P.post_mbti is null or P.post_mbti = '') "
+				  			+ " and instr(#1, ?) > 0 "
+				  			+ "order by P.post_notice desc, P.post_no desc "
 				  		+ ") TMP"
 				  + ") where rn between ? and ?";
 			
@@ -120,7 +119,7 @@ public class PostDao {
                         + "select " + columnList + " "
                         + fromClause
                         + " where P.post_mbti = ? " // MBTI 조건
-                        + " order by P.post_no desc"
+                        + " order by P.post_notice desc, P.post_no desc "
                     + ") TMP"
                 + ") where rn between ? and ?";
         
@@ -151,7 +150,7 @@ public class PostDao {
                         + fromClause
                         + " where P.post_mbti = ? "
                         + search
-                        + " order by P.post_no desc"
+                        + " order by P.post_notice desc, P.post_no desc "
                     + ") TMP"
                 + ") where rn between ? and ?";
 
@@ -236,10 +235,17 @@ public class PostDao {
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	public boolean updatePostLike(int postNo) {
-		String sql = "update post set post_no = "
+		String sql = "update post set post_like = "
 				+ "(select count(*) from post_like where post_no = ?) "
 				+ "where post_no = ?";
 		Object[] params = {postNo, postNo};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+	
+	//조회수
+	public boolean postRead(int postNo) {
+		String sql = "update post set post_read = post_read + 1 where post_no=?";
+		Object[] params = {postNo};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 }
