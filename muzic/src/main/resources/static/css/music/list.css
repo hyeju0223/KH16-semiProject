@@ -14,7 +14,7 @@
     cursor: pointer;
     transition: .24s ease;
 
-    /* ✅ 내용 고정 레이아웃 */
+    /* 내용 고정 레이아웃 */
     display: flex;
     flex-direction: column;
 }
@@ -80,7 +80,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 
-    /* ✅ 높이 고정 */
+    /* 높이 고정 */
     height: 20px;
 }
 
@@ -92,7 +92,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 
-    /* ✅ 높이 고정 */
+    /* 높이 고정 */
     height: 18px;
 }
 
@@ -104,7 +104,7 @@
     font-size: 13px;
     font-weight: 500;
     color: #6d6f90;
-    margin-top: auto; /* ✅ 항상 하단 고정 */
+    margin-top: auto; /* 항상 하단 고정 */
 }
 
 .stat {
@@ -118,6 +118,7 @@
     display: flex;
     gap: 24px;
     margin-bottom: 28px;
+    justify-content:flex-end; 
 }
 
 .music-sort-bar a {
@@ -137,4 +138,52 @@
     font-weight: 700;
     color: #5b5ecf;
     border-bottom: 2px solid #5b5ecf;
+}
+
+/* 탭 컨테이너 */
+.mz-search-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 60px;  
+    margin-bottom: 26px;
+    padding-bottom: 10px;
+
+    /* 아래 경계선 — 위 영역과 분리 */
+    border-bottom: 1px solid rgba(147,150,213,0.25);
+}
+
+/* 탭 기본 */
+.mz-search-tabs a {
+    position: relative;
+    font-size: 15px;
+    font-weight: 500;
+    color: #7d7d9c;
+    padding: 6px 10px;
+    transition: .25s ease;
+}
+
+/* hover */
+.mz-search-tabs a:hover {
+    color: #5b5ecf;
+}
+
+/* 선택된 탭만 밑줄 */
+.mz-search-tabs a.on::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%);
+    
+    width: 50%;    
+    height: 2px;
+    background: #5b5ecf;
+    border-radius: 2px;
+}
+
+.mz-search-count {
+    font-size: 16px;
+    font-weight: 600;
+    color: #9396D5;
+    text-align: right;
 }

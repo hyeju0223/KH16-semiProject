@@ -103,7 +103,7 @@
     margin: 0 auto;
 }
 
-/* 🎵 Genre Hashtags */
+/* 음악 해시태그 */
 .music-genres {
     margin-top: 14px;
     display: flex;
@@ -123,4 +123,44 @@
     border: 1px solid rgba(147,150,213,0.25);
     display: inline-block;
     line-height: 1.2;
+}
+
+/* ---  올린사람의 동작 버튼  -- */
+.music-owner-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.mz-btn-edit,
+.mz-btn-delete {
+    flex: 1;
+    padding: 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    transition: .2s ease-in-out;
+    font-family: 'Poppins', 'Gowun Dodum', sans-serif;
+}
+
+.mz-btn-edit {
+    background-color: #9FA8FF; 
+    color: white;
+}
+
+.mz-btn-edit:hover {
+    background-color: #8791ff;
+    transform: translateY(-2px);
+}
+
+.mz-btn-delete {
+    background-color: #FF8EC8; 
+    color: white;
+}
+
+.mz-btn-delete:hover {
+    background-color: #ff6fb7;
+    transform: translateY(-2px);
 }

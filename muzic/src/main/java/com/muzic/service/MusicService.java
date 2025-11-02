@@ -10,13 +10,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.muzic.condition.SearchCondition;
+import com.muzic.dao.MemberDao;
 import com.muzic.dao.MusicDao;
 import com.muzic.dao.MusicGenreDao;
 import com.muzic.dao.MusicViewDao;
+import com.muzic.dao.PlayLogDao;
 import com.muzic.domain.MemberRole;
 import com.muzic.domain.MusicStatus;
+import com.muzic.dto.MemberDto;
 import com.muzic.dto.MusicDto;
 import com.muzic.dto.MusicFormDto;
+import com.muzic.dto.PlayLogDto;
 import com.muzic.error.AlreadyRequestedException;
 import com.muzic.error.NeedPermissionException;
 import com.muzic.error.NotOwnerException;
@@ -27,6 +31,9 @@ import com.muzic.vo.MusicUserVO;
 
 @Service
 public class MusicService {
+	
+	@Autowired
+	private MemberDao memberDao;
 	
 	@Autowired
 	private MusicDao musicDao;
@@ -40,13 +47,20 @@ public class MusicService {
 	@Autowired
 	private MusicGenreDao musicGenreDao;
 	
+	@Autowired
+	private PlayLogDao playLogDao;
+	
 	private static final Set<String> ALLOWED_SORT = 
-			Set.of("latest", "like", "play");
+			Set.of("latest", "like", "play", "title");
 	
 	// 음원 등록
     @Transactional
     public int registerMusic(MusicFormDto musicFormDto, String memberId, String memberRole) 
     		throws IOException { // int 반환 이유는 등록 후 혹시 방금 음원 등록한 글로 갈 수 있으니 등록한 음원 번호 반환(아마 관리자)
+    	
+    	MemberDto memberDto = memberDao.selectOne(memberId);
+    	if(memberDto == null) 
+    		throw new NeedPermissionException("회원만 음원을 등록할 수 있습니다.");
     	
     	musicHelperService.validateGenres(musicFormDto.getMusicGenreSet());
     	musicHelperService.validateMusicFile(musicFormDto.getMusicFile());
@@ -73,12 +87,14 @@ public class MusicService {
     	if(!memberRole.equals(MemberRole.ADMIN.getRoleName()))
     		throw new NeedPermissionException("음원 삭제는 관리자만 가능합니다.");
     	MusicDto musicDto = musicDao.selectOne(musicNo);
-    	if(musicDto == null) throw new TargetNotFoundException("존재하지 않는 음원 입니다.");
+    	if(musicDto == null) 
+    		throw new TargetNotFoundException("존재하지 않는 음원 입니다.");
     	musicHelperService.deleteAttachments(musicNo);
     	musicDao.delete(musicNo);
     }
     
     // 음원 삭제요청(사용자)
+    @Transactional
     public void requestDeleteMusic(String memberId, int musicNo) {
     	MusicDto musicDto = musicDao.selectOne(musicNo);
     	if (musicDto == null)
@@ -100,7 +116,7 @@ public class MusicService {
     		throw new TargetNotFoundException("존재하지 않는 음원입니다.");
     	
     	boolean isAdmin = memberRole.equals(MemberRole.ADMIN.getRoleName());
-        String musicStatus = isAdmin ? MusicStatus.APPROVED.getStatusName() : MusicStatus.PENDING.getStatusName();
+        String musicStatus = isAdmin ? MusicStatus.APPROVED.getStatusName() : MusicStatus.EDIT_REQUEST.getStatusName();
         String comment = isAdmin ? "수정 승인완료" : "수정 승인대기";
         
     	if(!isAdmin && !originMusicDto.getMusicUploader().equals(memberId))
@@ -120,9 +136,10 @@ public class MusicService {
     
     // 음원 목록
     public List<MusicUserVO> findUserMusicList(SearchCondition searchCondition){
+    	searchCondition.setAllData(musicViewDao.countAllUserVO());
     	String sort = searchCondition.getSortType();
 		
-    	if (sort == null) sort = "latest";
+    	if (sort == null || !ALLOWED_SORT.contains(sort)) sort = "latest";
 
 		if(searchCondition.isList() && ALLOWED_SORT.contains(sort)) {
 			switch(sort) {
@@ -142,19 +159,40 @@ public class MusicService {
     }
     
     // 음원 재생시 재생수 증가
-    public void updateMusicPlay (int musicNo) {
-    	musicDao.updatePlayCount(musicNo);
+    @Transactional
+    public void updateMusicPlay (String mbti, String memberId, int musicNo) {
+    	MusicDto musicDto = musicDao.selectOne(musicNo);
+    	if(musicDto == null) 
+    		throw new TargetNotFoundException("존재하지 않는 음원입니다.");
+    	MemberDto memberDto = memberDao.selectOne(memberId);
+    	if(memberDto == null) {
+    		musicDao.updatePlayCount(musicNo);
+    		return;
+    	}
+    	PlayLogDto playLogDto = 
+    			PlayLogDto
+    			.builder()
+    			.playLogMusic(musicNo)
+    			.playLogMember(memberId)
+    			.playLogMbti(mbti)
+    			.build();
+    	playLogDao.insert(playLogDto);
+    	musicDao.updatePlayCount(playLogDto.getPlayLogMusic());
     }
     
+    // 음원 DTO 조회
     public MusicDto selectOneMusicDto(int musicNo) {
     	MusicDto musicDto = musicDao.selectOne(musicNo);
-    	if(musicDto == null) throw new TargetNotFoundException("존재하지 않는 음원입니다.");
+    	if(musicDto == null) 
+    		throw new TargetNotFoundException("존재하지 않는 음원입니다.");
     	return musicDto;
     }
     
+    // 승인음원 View 조회 
     public MusicUserVO findDetail(int musicNo) {
         MusicUserVO musicUserVO = musicViewDao.selectOneMusicUserVO(musicNo);
-        if(musicUserVO == null) throw new TargetNotFoundException("존재하지 않는 음원입니다.");
+        if(musicUserVO == null) 
+        	throw new TargetNotFoundException("존재하지 않는 음원입니다.");
         musicUserVO.setMusicGenres(musicGenreDao.findGenresByMusicNo(musicNo));
         return musicUserVO;
     }

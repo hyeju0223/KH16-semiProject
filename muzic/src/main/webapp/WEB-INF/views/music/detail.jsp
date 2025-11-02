@@ -13,15 +13,50 @@
 
 <script>
 	window.isLogin = "${sessionScope.loginMemberId != null ? 'true' : 'false'}";
+
+	$(document).ready(function() {
+
+		var musicNo = $(".music-detail-card").data("music-no");
+		var audio = document.getElementById("music-player");
+
+		var playedOnce = false; // 페이지 진입마다 초기화
+
+		audio.addEventListener("play", function() {
+
+			if (playedOnce) return;
+			playedOnce = true;
+
+			$.ajax({
+			    url: "/rest/music/play",
+			    method: "POST",
+			    data: { musicNo: musicNo },
+			    success: function (isFirstPlay) {
+
+			        // 서버에서 true 준 경우만 +1
+			        if (isFirstPlay == true) { // 문자열 true 도 허용
+			            var $cnt = $(".play-count");
+			            var cur = parseInt($cnt.text(), 10) || 0;
+			            $cnt.text(cur + 1);
+			        }
+			    }
+			});
+		});
+	});
+	function requestDelete() {
+	    if(confirm("정말 삭제 요청하시겠습니까?")) {
+	        document.getElementById('deleteForm').submit();
+	    }
+	}
 </script>
 
 <div class="music-detail-page">
 
-	<jsp:include page="/WEB-INF/views/music/search-bar.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/music/template/search-bar.jsp"></jsp:include>
 
 	<div class="music-detail-card" data-music-no="${musicUserVO.musicNo}">
 		<div class="music-cover-wrap">
 			<img src="/music/file?attachmentNo=${musicUserVO.coverAttachmentNo}"
+			onerror="this.onerror=null; this.src='/images/error/music-no-image.png';"
 				class="music-cover-img">
 
 			<div class="music-play-btn">
@@ -35,7 +70,7 @@
 		<p class="music-meta">Album: ${musicUserVO.musicAlbum}</p>
 		<p class="music-meta">Uploaded by: ${musicUserVO.uploaderNickname}</p>
 
-		<!-- 🎼 Genres -->
+		<!-- 장르 -->
 		<div class="music-genres">
 			<c:forEach var="g" items="${musicUserVO.musicGenres}">
 				<span class="genre-tag">#${g}</span>
@@ -44,16 +79,16 @@
 
 		<div class="music-stats">
 
-			<!-- ❤️ Like -->
+			<!-- 좋아요 -->
 			<span
 				class="stat-item like-area detail-like
     				${sessionScope.loginMemberId == null ? 'disabled-like' : ''}"
 				data-music-no="${musicUserVO.musicNo}"> <i
 				class="fa-regular fa-heart like-btn"></i> <span class="like-count">${musicUserVO.musicLike}</span>
 			</span>
-			<!-- 🎧 Plays -->
+			<!-- 재생수 -->
 			<span class="stat-item"> <i class="fa-solid fa-headphones"></i>
-				<span>${musicUserVO.musicPlay}</span>
+				<span class="play-count">${musicUserVO.musicPlay}</span>
 			</span>
 
 		</div>
@@ -68,6 +103,22 @@
 				id="seek-bar" value="0" min="0" max="100"> <span
 				id="total-time">--:--</span>
 		</div>
+		<!-- 수정 / 삭제 버튼 -->
+		<c:if
+			test="${sessionScope.loginMemberId != null 
+        && sessionScope.loginMemberId == uploaderId}">
+			<div class="music-owner-actions mt-30">
+				<button class="mz-btn-edit me-50"
+					onclick="location.href='/music/edit?musicNo=${musicUserVO.musicNo}'">
+					✏️ 수정하기</button>
+				<button class="mz-btn-delete" 
+					onclick="requestDelete()">🚫 삭제요청</button>
+			</div>
+			 <!-- POST 요청 폼 -->
+	        <form id="deleteForm" action="/music/delete-request" method="post" style="display:none;">
+	            <input type="hidden" name="musicNo" value="${musicUserVO.musicNo}">
+	        </form>
+		</c:if>
 	</div>
 </div>
 

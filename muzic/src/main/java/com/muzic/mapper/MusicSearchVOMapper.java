@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.muzic.vo.MusicSearchVO;
 
+// 음원 파일정보 없이 DB에서 매핑하는 VOMapper(직접 정보 세터로 저장 필요)
 @Component
 public class MusicSearchVOMapper implements RowMapper<MusicSearchVO> {
 

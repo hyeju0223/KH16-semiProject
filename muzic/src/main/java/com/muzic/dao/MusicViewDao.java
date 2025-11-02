@@ -1,12 +1,14 @@
 package com.muzic.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.muzic.condition.SearchCondition;
+import com.muzic.error.InvalidContentException;
 import com.muzic.mapper.MusicUploaderVOMapper;
 import com.muzic.mapper.MusicUserVOMapper;
 import com.muzic.vo.MusicUploaderVO;
@@ -100,5 +102,11 @@ public class MusicViewDao {
 				};
 		return jdbcTemplate.query(sql, musicUploaderVOMapper, params);
 	}
-
+	
+	// 리스트 데이터 수 조회
+	public int countAllUserVO() {
+		String sql = "select count(*) from music_user_view";
+	    return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	
 }

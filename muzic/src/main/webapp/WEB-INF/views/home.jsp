@@ -633,6 +633,7 @@ loginMemberNickname</td><td>${sessionScope.loginMemberNickname}
       <div class="menu-text"><a href="/post/free/list" class="teg">커뮤니티</a></div>
       <div class="menu-text" style="font-weight: 500; font-size: 37px;"><a href="/post/mbti/list" class="teg">MBTI</a></div>
       <div class="menu-text"><a href="music/add" class="teg">음원등록</a></div>
+      <div class="menu-text"><a href="music/list" class="teg">음원목록</a></div>
       <div class="menu-text"><a href="/store/list"" class="teg">스토어</a></div>
       <div class="menu-block w-300"></div>
       <div class="menu-text"><a href="#" class="teg">이벤트</a></div>

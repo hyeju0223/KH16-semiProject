@@ -15,13 +15,13 @@
                     <a class="on">${i}</a>
                 </c:when>
                 <c:otherwise>
-                    <a href="${currentURL == null ? 'list' : currentURL}?page=${i}&${searchCondition.params}">${i}</a>
+                    <a href="${currentURL == null ? 'list' : currentURL}?page=${i}&${searchCondition.allParams}">${i}</a>
                 </c:otherwise>
             </c:choose>
         </c:forEach>
 
         <c:if test="${!searchCondition.lastBlock}">
-            <a href="${currentURL == null ? 'list' : currentURL}?page=${searchCondition.nextPage}&${searchCondition.params}">&gt;</a>
+            <a href="${currentURL == null ? 'list' : currentURL}?page=${searchCondition.nextPage}&${searchCondition.allParams}">&gt;</a>
         </c:if>
     </div>
 </c:if>

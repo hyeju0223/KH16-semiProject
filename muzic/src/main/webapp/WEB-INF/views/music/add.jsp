@@ -3,7 +3,7 @@
 
 <link rel="stylesheet" href="/css/commons.css">
 <link rel="stylesheet" href="/css/music/music-commons.css">
-<link rel="stylesheet" href="/css/music/add.css">
+<link rel="stylesheet" href="/css/music/music-form.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <div class="container w-800 mt-40">
@@ -13,7 +13,7 @@
 
     <form action="add" method="post" enctype="multipart/form-data" id="musicAddForm">
 
-        <!-- ✅ 장르 영역 먼저 -->
+        <!-- 장르 영역 -->
         <div class="genre-box mb-30">
             <div class="genre-box-title">🎵 장르 선택 <span class="red">*</span></div>
             <div class="genre-box-wrap">
@@ -29,7 +29,7 @@
 
         <div class="upload-flex">
 
-            <!-- ✅ Cover Upload -->
+            <!-- 앨범 커버 -->
             <div class="cover-upload" id="coverDropArea">
                 <img id="coverPreview" class="cover-preview" style="display:none;">
                 <div class="cover-placeholder" id="coverPlaceholder">
@@ -40,7 +40,7 @@
                 <button type="button" id="coverResetBtn" class="cover-reset-btn"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- ✅ Fields -->
+            <!-- 정보 입력 -->
             <div class="upload-fields">
                 <label class="upload-label">곡 제목<span class="red">*</span></label>
                 <input type="text" class="field mz-input" name="musicTitle" required placeholder="곡 제목">
@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <!-- ✅ Music File -->
+        <!-- 음악 파일-->
         <div class="audio-upload-box" id="audioDropArea">
             <i class="fa-solid fa-music"></i>
             <span id="audioText">음악 파일을 업로드하세요<span class="red">*</span></span>
@@ -69,4 +69,4 @@
     </form>
 </div>
 
-<script src="/js/music/add.js"></script>
+<script src="/js/music/music-form.js"></script>

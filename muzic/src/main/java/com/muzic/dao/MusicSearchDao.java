@@ -1,6 +1,7 @@
 package com.muzic.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -165,4 +166,18 @@ public class MusicSearchDao {
         Object[] params = { searchCondition.getKeyword(), searchCondition.getStart(), searchCondition.getEnd() };
         return jdbcTemplate.query(sql, musicSearchVOMapper, params);
     }
+    
+    // 검색 결과 데이터 수 조회
+    public int countMusicSearchResults(SearchCondition searchCondition) { 
+    	// 원본 컬럼 목록 
+    	Set<String> baseColumns = Set.of("music_title", "music_artist", "music_album"); 
+    	// 검색 대상이 VIEW 기반인지 TABLE 기반인지 구분 
+    	String baseTable = baseColumns.contains(searchCondition.getColumn()) ? "music_user_view" : "music"; 
+    	String sql = "select count(*) from " + baseTable + 
+    			" where instr(replace(lower(!@), ' ', ''), replace(lower(?), ' ', '')) > 0"; 
+    	sql = sql.replace("!@", searchCondition.getColumn()); 
+    	Object[] params = {searchCondition.getKeyword()}; 
+    	return jdbcTemplate.queryForObject(sql, int.class, params); 
+    }
+    
 }

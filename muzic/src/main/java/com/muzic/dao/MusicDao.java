@@ -57,7 +57,8 @@ public class MusicDao {
 	    Object[] params = {
 	        musicDto.getMusicTitle(), musicDto.getMusicTitleChosung(), musicDto.getMusicArtist(),  
 	        musicDto.getMusicArtistChosung(), musicDto.getMusicTitleSearch(),  musicDto.getMusicArtistSearch(),
-	        musicDto.getMusicAlbum(),  musicDto.getMusicStatus(), musicDto.getMusicNo()
+	        musicDto.getMusicAlbum(),  musicDto.getMusicStatus(), musicDto.getMusicAlbumChosung(), 
+	        musicDto.getMusicAlbumSearch(), musicDto.getMusicNo()
 	    };
 		return jdbcTemplate.update(sql, params) > 0;
 	}

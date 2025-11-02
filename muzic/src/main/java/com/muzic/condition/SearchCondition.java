@@ -29,8 +29,9 @@ public class SearchCondition {
         return strPage;
     }
     public int getEndPage() {
-        int endPage = ((page-1) / blockNum) * blockNum + blockNum; //블럭 종료 번호
-        return endPage;
+        int endPage = ((page-1) / blockNum) * blockNum + blockNum;
+        int totalPage = getTotalPage();
+        return Math.min(endPage, totalPage);
     }
 
   //DB에서 띄울 게시글 범위 계산
@@ -59,6 +60,18 @@ public class SearchCondition {
 	      }
 	        return param.toString();
 	  }
+	 
+	 public String getAllParams() {
+		    StringBuilder param = new StringBuilder("size=" + size);
+		    if (sortType != null) {
+		        param.append("&sortType=").append(sortType);
+		    }
+		    if (isSearch()) {
+		        param.append("&column=").append(column)
+		             .append("&keyword=").append(keyword);
+		    }
+		    return param.toString();
+		}
 	 
 	 //페이지네이션 UI 구현 단순화 하기 위한 메서드
 	 //현재 페이지 블럭이 첫 번째 블럭인지 확인

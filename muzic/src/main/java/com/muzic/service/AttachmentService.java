@@ -23,6 +23,7 @@ public class AttachmentService {
 	private AttachmentDao attachmentDao;
 	
 	private File home = new File(System.getProperty("user.home")); // 사용자의 기본폴더 // 실제 파일이 아니라 경로를 보관하고 있는 인스턴스(파일처리 가능 인스턴스)
+	
 	private static final String UPLOAD_PATH =  "muzic_uploads/"; // 하드코딩 방지 및 업로드경로바꾸고 싶을때 상수필드만 바꾸게
 	
 	// member(profile)에서 이미지 저장할 때
@@ -142,8 +143,8 @@ public class AttachmentService {
 	    return attachmentDao.findAttachmentNoByParent(parentSeq, category);
 	}
 	
-	public int getAttachmentNoByParent(String parentSeq, String category) {
-	    return attachmentDao.findAttachmentNoByMemberId(parentSeq, category);
+	public int getAttachmentNoByMemberId(String memberId, String category) {
+	    return attachmentDao.findAttachmentNoByMemberId(memberId, category);
 	}
 	
 	public AttachmentDto getAttachment(int attachmentNo) {
