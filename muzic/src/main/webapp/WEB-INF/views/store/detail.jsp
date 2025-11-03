@@ -76,16 +76,15 @@ input[type="number"]::-webkit-inner-spin-button {
 	font-size: 1em;
 }
 </style>
-
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="container w-1000">
 
-	<div class="cell right">
+	<!-- <div class="cell right">
 		<a href="cart/list"> <i class="fa-solid fa-cart-shopping"></i>
 		</a>
-	</div>
+	</div> -->
 
-	<div class="cell product-detail-main"
-		style="display: flex; gap: 60px; margin-bottom: 50px;">
+	<div class="cell product-detail-main mt-30" style="display: flex; gap: 60px; margin-bottom: 50px;">
 
 		<div style="flex-shrink: 0; width: 35%;">
 			<div class="category-tag">${goodsDto.goodsCategory}</div>
@@ -154,7 +153,7 @@ input[type="number"]::-webkit-inner-spin-button {
 		<a href="list"><button type="button" class="btn btn-neutral">목록</button></a>
 	</div>
 </div>
-
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="/js/cart-quantity.js"></script>

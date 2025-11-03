@@ -54,4 +54,21 @@ public class MemberPointLogDao {
 		Object[] params = {memberId};
 		return jdbcTemplate.query(sql, memberPointLogMapper, params);
 	}
+	
+	public void insertByPurchase(String memberId, int changeAmount, String reason, int orderNo) {
+        int pointLogNo = sequence(); // 👈 확정된 시퀀스 사용
+        
+        String sql = "insert into member_point_log("
+                + "point_log_no, point_log_member, point_log_change,"
+                + "point_log_reason, point_log_related_order" // 주문 번호 컬럼 포함
+                + ") values (?,?,?,?,?)";
+        Object[] params = {
+                pointLogNo,
+                memberId, 
+                changeAmount,
+                reason,
+                orderNo 
+                };
+        jdbcTemplate.update(sql, params);
+    }
 }

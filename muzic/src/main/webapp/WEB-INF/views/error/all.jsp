@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="container w-1000">
 	<div class="cell center">
 		<img src="/images/error/500.png" width="500">
@@ -16,3 +17,4 @@
 			style="width: 150px; text-align: center;">홈으로</a>
 	</div>
 </div>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

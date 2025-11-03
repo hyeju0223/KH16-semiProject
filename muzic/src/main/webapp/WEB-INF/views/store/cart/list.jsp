@@ -54,11 +54,16 @@
 }
 
 </style>
-
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="container w-1000">
 	<c:choose>
 		<c:when test="${cartList == null || cartList.size() == 0}">
+		<div class="cell center">
+		<img src="/image/cart/emptyCart.png"; width="300px">
+		</div>
+			<div class="cell center">
 			<h2>장바구니에 담긴 상품이 없습니다.</h2>
+			</div>
 		</c:when>
 		<c:otherwise>
 		<div class="cell">
@@ -144,6 +149,7 @@
 		<a href="../list"><button type="button" class="btn btn-neutral">계속 쇼핑하기</button></a>
 	</div>
 </div>
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <!-- jQuery-->
 <script
@@ -262,7 +268,24 @@
 				traditional : true,//배열 전송 시 필요
 				success : function() {
 					location.href = "/store/buyFinish"
-				}
+				},// ⭐️ 에러 처리 로직 추가
+                error: function(xhr) {
+                    var errorMessage = "구매 처리 중 알 수 없는 오류가 발생했습니다.";
+                    
+                    if (xhr.status === 400) {
+                        // OperationFailedException (400 Bad Request) 처리
+                        // xhr.responseText 또는 xhr.statusText에 구체적인 메시지가 포함될 수 있습니다.
+                        errorMessage = xhr.responseText || xhr.statusText;
+                        if (errorMessage.includes("작업 실패")) {
+                            // Service에서 던진 구체적인 메시지를 사용자에게 보여줍니다.
+                            // 예: "포인트 잔액이 부족하여 상품을 구매할 수 없습니다."
+                            alert(xhr.responseText || "잔액 부족 또는 요청 오류."); 
+                            return; // alert 후 함수 종료
+                        }
+                    } 
+                    // 그 외의 모든 오류 (500 Internal Server Error 등)
+                    alert("구매 실패: " + errorMessage); 
+                }
 			});
 		});
 		// 선택 삭제

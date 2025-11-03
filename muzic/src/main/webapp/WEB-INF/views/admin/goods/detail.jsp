@@ -43,13 +43,13 @@
 
 
 </style>
-
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="container w-1000">
 
-	<div class="cell right">
+	<!-- <div class="cell right">
 		<a href="cart/list"> <i class="fa-solid fa-cart-shopping"></i>
 		</a>
-	</div>
+	</div> -->
 
 	<div class="cell product-detail-main"
 		style="display: flex; gap: 60px; margin-bottom: 50px;">
@@ -94,8 +94,9 @@
 	</div>
 
 	<div class="cell right" style="margin-top: 30px;">
-	<a href="delete?goodsNo=${goodsDto.goodsNo}" class="btn btn-negative" onclick="return confirm('상품을 삭제하시겠습니까?');">삭제</a>
 		<a href="list"><button type="button" class="btn btn-neutral">목록</button></a>
+	<a href="delete?goodsNo=${goodsDto.goodsNo}" class="btn btn-negative" onclick="return confirm('상품을 삭제하시겠습니까?');">삭제</a>
 	<a href="edit?goodsNo=${goodsDto.goodsNo}"><button type="button" class="btn btn-positive">수정하기</button></a>
 	</div>
 </div>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

@@ -3,6 +3,7 @@
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+	<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="container w-1000">
 	</div>
 		<div class="cell center">
@@ -15,6 +16,7 @@
 		<a href="/member/login" class="btn btn-positive" style="flex-grow: 1; max-width: 150px; text-align: center;"><i class="fa-solid fa-right-to-bracket"></i><span style="margin-left: 0.4em">로그인</span></a>
 	</div>
 </div>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>

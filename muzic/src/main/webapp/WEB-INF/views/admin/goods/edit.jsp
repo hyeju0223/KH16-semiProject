@@ -2,21 +2,21 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-	<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">  
-<script src="/summernote/custom-summernote.js"></script>
 <style>
 /* 테이블 스타일은 add.jsp와 유사하게 구성 */
 .table { width: 100%; border-collapse: collapse; }
 .table th, .table td { padding: 10px; border: 1px solid #ddd; text-align: left; }
 .table th { width: 150px; background-color: #f7f7f7; }
 </style>
-
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">  
+<script src="/summernote/custom-summernote.js"></script>
 <div class="container w-1000">
 	<div class="cell center">
 		<h2>관리자 - 상품 수정</h2>
@@ -100,3 +100,4 @@
 	</form>
 
 </div>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

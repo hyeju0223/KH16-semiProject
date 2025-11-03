@@ -49,13 +49,13 @@ public class TestErrorController {
 	// 6. NotOwnerException 테스트
 	@GetMapping("/not-owner")
 	public void testNotOwner() {
-		throw new NotOwnerException("개발자 테스트: 해당 리소스의 소유자가 아닙니다.");
+		throw new NotOwnerException("해당 리소스의 소유자가 아닙니다.");
 	}
 
 	// 7. OperationFailedException 테스트
 	@GetMapping("/operation-failed")
 	public void testOperationFailed() {
-		throw new OperationFailedException("개발자 테스트: 작업 수행 중 예상치 못한 오류가 발생했습니다.");
+		throw new OperationFailedException("음원 정보 수정에 실패했습니다.");
 	}
 
 	@GetMapping("/not-found")

@@ -3,7 +3,10 @@ package com.muzic.restcontroller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.muzic.dto.GoodsCartDto;
 import com.muzic.dto.GoodsDto;
 import com.muzic.error.NeedPermissionException;
+import com.muzic.error.OperationFailedException;
 import com.muzic.service.GoodsCartService;
 
 import jakarta.servlet.http.HttpSession;
@@ -44,6 +48,13 @@ public class GoodsCartRestController {
 		goodsCartService.buySelectedGoods(loginMemberId, goodsNos);
 	}
 
+	// ⭐️ OperationFailedException 처리 핸들러 추가
+	@ExceptionHandler(OperationFailedException.class)
+	public ResponseEntity<String> handleOperationFailedException(OperationFailedException e) {
+		// HTTP 400 Bad Request 상태 코드와 예외 메시지를 반환
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	}
+
 	// 장바구니 수량 변경
 	@PostMapping("/update")
 	public void update(HttpSession session, @ModelAttribute GoodsCartDto goodsCartDto) {
@@ -59,8 +70,8 @@ public class GoodsCartRestController {
 	public void add(HttpSession session, @ModelAttribute GoodsDto goodsDto) {
 		String loginMemberId = (String) session.getAttribute("loginMemberId");
 		if (loginMemberId == null) {
-	        throw new NeedPermissionException("로그인이 필요합니다.");
-	    }
+			throw new NeedPermissionException("로그인이 필요합니다.");
+		}
 		goodsCartService.addGoodsToCart(loginMemberId, goodsDto);
 	}
 

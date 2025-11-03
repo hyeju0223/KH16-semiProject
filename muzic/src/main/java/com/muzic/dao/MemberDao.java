@@ -3,11 +3,13 @@ package com.muzic.dao;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.muzic.dto.MemberDto;
+import com.muzic.error.TargetNotFoundException;
 import com.muzic.mapper.MemberMapper;
 
 
@@ -158,6 +160,19 @@ public class MemberDao {
 				memberDto.getMemberAddress2(), memberDto.getMemberId()};
 		return jdbcTemplate.update(sql,params) > 0;
 	}
+	
+
+	    // 회원의 현재 포인트 잔액 조회 (추가)
+	public int getMemberPoints(String memberId) {
+	    String sql = "select member_point from member where member_id = ?";
+	    
+	    try {
+	        return jdbcTemplate.queryForObject(sql, Integer.class, memberId);
+	    } catch (EmptyResultDataAccessException e) {
+	        throw new TargetNotFoundException("존재하지 않는 회원입니다.");
+	    }
+	}
+	    
 
 	//포인트 추가
 	public boolean addPoint(int point, String memberId) {

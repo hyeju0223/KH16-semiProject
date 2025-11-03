@@ -32,16 +32,14 @@
     align-items: center; /* ⭐ 파이프 문자 정렬 핵심 */
 }
 </style>
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="container w-1000">
-	<div class="cell center">
-		<a href="/store/list"><h1>STORE</h1></a>
-	</div>
-	<a href="../">메인으로</a>
-	<div class="cell right">
+	<!-- <a href="../">메인으로</a> -->
+	<!-- <div class="cell right">
 		<a href="cart/list"> <i class="fa-solid fa-cart-shopping"></i>
 		</a>
-	</div>
-	<div class="cell category-filter">
+	</div> -->
+	<div class="cell category-filter mt-30">
 		<a href="list"
 			class="btn-category ${empty param.goodsCategory ? 'active' : ''}">전체</a>
 
@@ -119,7 +117,7 @@
 			<tbody>
 				<c:forEach var="goods" items="${goodsList}">
 					<tr>
-						<td><img src="image?goodsNo=${goods.goodsNo}"
+						<td style="padding: 40px"><img src="image?goodsNo=${goods.goodsNo}"
 							style="width: 100px; height: 100px; object-fit: cover;"></td>
 						<td class="left"><a href="detail?goodsNo=${goods.goodsNo}"
 							style="font-size: 1.25em">${goods.goodsName}</a><br><br><fmt:formatNumber value="${goods.goodsPoint}" pattern="#,##0" />point<br></td>
@@ -203,6 +201,7 @@
 	</div>
 <div>
 </div>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="/js/cart-quantity.js"></script>

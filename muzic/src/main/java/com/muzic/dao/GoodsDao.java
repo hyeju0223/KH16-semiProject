@@ -215,12 +215,12 @@ public class GoodsDao {
 	               + "WHERE goods_no=?";
 	    Object[] params = {
 	        goodsDto.getGoodsName(),
-	        goodsDto.getGoodsDescription(), // DTO에 description 필드가 있다고 가정
+	        goodsDto.getGoodsDescription(),
 	        goodsDto.getGoodsPoint(),
 	        goodsDto.getGoodsQuantity(),
 	        goodsDto.getGoodsCategory(),
-	        goodsDto.getGoodsExpiration(), // DTO에 expiration 필드가 있다고 가정 (Timestamp 타입)
-	        goodsDto.getGoodsNo() // WHERE 조건
+	        goodsDto.getGoodsExpiration(),
+	        goodsDto.getGoodsNo()
 	    };
 	    return jdbcTemplate.update(sql, params) > 0;
 	}

@@ -44,12 +44,11 @@
     align-items: center; 
 }
  </style>
-    
+    <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="container w-1000">
 	<div class="cell center">
 		<h1>관리자 - 상품목록</h1>
 	</div>
-	<a href="/">메인으로</a>
     
     <div class="cell right" style="margin-bottom: 15px; margin-top: 15px;">
         <a href="add" class="btn btn-positive">상품 등록</a>
@@ -192,3 +191,4 @@
 		</div>
 	</c:if>
 	</div>
+	<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

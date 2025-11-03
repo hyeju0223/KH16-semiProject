@@ -1,14 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <link rel="stylesheet" type="text/css" href="/css/commons.css">
 <link rel="stylesheet" type="text/css" href="/css/cart.css">
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">  
-<script src="/summernote/custom-summernote.js"></script>
 <style>
 /* .container {
 	border: 1px solid gray;
@@ -20,7 +16,11 @@
 .table th { width: 150px; background-color: #f7f7f7; }
 
 </style>
-
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">  
+<script src="/summernote/custom-summernote.js"></script>
 <div class="container w-1000">
 	<div class="cell center">
 		<h2>관리자 - 상품 등록</h2>
@@ -83,3 +83,4 @@
 	</div>
 
 </div>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
