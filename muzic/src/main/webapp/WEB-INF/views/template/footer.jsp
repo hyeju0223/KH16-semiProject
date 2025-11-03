@@ -6,13 +6,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-    .swiper {
-      width: 100%;
-    }
-
-    .logo {
-      height: 50px;
-    }
 </style>
 </head>
 <body>
