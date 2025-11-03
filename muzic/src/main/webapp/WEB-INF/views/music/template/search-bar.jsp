@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <link rel="stylesheet" href="/css/music/search-bar.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <div class="mz-search-container">
     <form action="/music/search/list" method="get" class="mz-search-box" autocomplete="off">
@@ -21,8 +22,4 @@
     </form>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="/js/music/search-bar.js"></script>
-
-<link rel="stylesheet" href="/css/music/search-bar.css">
-

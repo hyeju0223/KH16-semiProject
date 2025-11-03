@@ -1,4 +1,4 @@
-/* 🔍 검색 박스 전체 */
+/* 검색 박스 전체 */
 .mz-search-box {
     position: relative;
     width: 100%;
@@ -52,26 +52,52 @@
     box-shadow: 0 6px 18px rgba(147,150,213,0.2);
     z-index: 1000;
     display: none;
-    padding: 12px 0;
+    
+    padding: 0;
+    overflow: hidden;
 }
 
 /* 리스트 */
 .mz-preview-item {
-    padding: 8px 15px;
+    padding: 8px 10px;
     cursor: pointer;
-    font-size: 14px;
-    transition: .15s;
+    border-radius: 6px;
+    transition: all 0.15s ease;
 }
 
 .mz-preview-item:hover {
-    background: rgba(147,150,213,0.08);
+    background: #E7E4FF;
+    color: #5B5ED2; 
+    font-weight: 600;
+    transform: translateX(4px); /* 살짝 오른쪽 이동 */
 }
 
 /* 섹션 제목 */
 .mz-preview-title {
-    font-size: 13px;
+    background: var(--muzic-main);
+    color: #E8E5FA; 
+    
     font-weight: 700;
-    color: #666;
-    padding: 6px 15px;
-    opacity: .9;
+    font-size: 13px;
+
+    padding: 6px 10px;
+    border-radius: 6px;
+
+    margin-top: 10px;
+    margin-bottom: 4px;
+
+    /* 살짝 그림자 넣어서 블록 느낌 */
+    box-shadow: 0 2px 6px rgba(147,150,213,0.3);
+}
+
+.mz-preview-empty {
+    text-align: center;
+    padding: 20px 10px;
+    font-size: 14px;
+    color: #7A7CCF;
+    font-weight: 500;
+    line-height: 1.5;
+    background: #F4F3FF;
+    border-radius: 8px;
+    margin-top: 10px;
 }

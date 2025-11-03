@@ -114,6 +114,7 @@ public class MusicHelperService {
     	saveAttachments(musicFormDto, musicNo);
     }
     
+    // 승인 음원 View에서 직접 파일 정보 가져오기 위해 세팅
     public void setMusicAttachmentNo(List<MusicSearchVO> list) {
         for (MusicSearchVO vo : list) {
             int coverNo = attachmentService.getAttachmentNoByParent(vo.getMusicNo(), "COVER");

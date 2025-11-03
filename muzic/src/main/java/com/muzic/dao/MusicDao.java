@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.muzic.condition.SearchCondition;
 import com.muzic.dto.MusicDto;
 import com.muzic.mapper.MusicMapper;
 
@@ -57,7 +58,8 @@ public class MusicDao {
 	    Object[] params = {
 	        musicDto.getMusicTitle(), musicDto.getMusicTitleChosung(), musicDto.getMusicArtist(),  
 	        musicDto.getMusicArtistChosung(), musicDto.getMusicTitleSearch(),  musicDto.getMusicArtistSearch(),
-	        musicDto.getMusicAlbum(),  musicDto.getMusicStatus(), musicDto.getMusicNo()
+	        musicDto.getMusicAlbum(),  musicDto.getMusicStatus(), musicDto.getMusicAlbumChosung(), 
+	        musicDto.getMusicAlbumSearch(), musicDto.getMusicNo()
 	    };
 		return jdbcTemplate.update(sql, params) > 0;
 	}
@@ -138,6 +140,87 @@ public class MusicDao {
 		String sql = "select * from music order by music_like desc, music_play desc";
 		return jdbcTemplate.query(sql, musicMapper);
 	}
+	
+	public List<MusicDto> selectByStatus(String status) {
+        String sql = "select * from music where music_status = ? order by music_utime asc";
+        return jdbcTemplate.query(sql, musicMapper, status);
+    }
+	
+	public List<MusicDto> adminListAll(SearchCondition searchCondition) {
+	    String sql = "select * from ("
+	            + "select rownum rn, Tmp.* from ("
+	            + " select * from music order by music_no desc"
+	            + ") Tmp"
+	            + ") where rn between ? and ?";
+	    Object[] params = { searchCondition.getStart(), searchCondition.getEnd() };
+	    return jdbcTemplate.query(sql, musicMapper, params);
+	}
+
+	public List<MusicDto> adminListByStatus(SearchCondition searchCondition, String status) {
+	    String sql = "select * from ("
+	            + "select rownum rn, tmp.* from ("
+	            + " select * from music where music_status = ? order by music_no desc"
+	            + ") tmp"
+	            + ") where rn between ? and ?";
+	    Object[] params = { status, searchCondition.getStart(), searchCondition.getEnd() };
+	    return jdbcTemplate.query(sql, musicMapper, params);
+	}
+	
+	public List<MusicDto> adminSearchAll(SearchCondition searchCondition) {
+	    String sql = "select * from ("
+	            + "select rownum rn, tmp.* from ("
+	            + " select * from music where instr(lower(!@), lower(?)) > 0 "
+	            + " order by music_no desc"
+	            + ") tmp"
+	            + ") where rn between ? and ?";
+	    sql = sql.replace("!@", searchCondition.getColumn());
+	    Object[] params = { searchCondition.getKeyword(), searchCondition.getStart(), searchCondition.getEnd()
+	    };
+	    return jdbcTemplate.query(sql, musicMapper, params);
+	}
+	
+	public List<MusicDto> adminSearchByStatus(SearchCondition searchCondition, String status) {
+	    String sql = "select * from ("
+	            + "select rownum rn, tmp.* from ("
+	            + " select * from music"
+	            + " where music_status = ?"
+	            + " and instr(lower(#1), lower(?)) > 0 "
+	            + " order by music_no desc"
+	            + ") tmp"
+	            + ") where rn between ? and ?";
+	    sql = sql.replace("#1", searchCondition.getColumn());
+	    Object[] params = { status, searchCondition.getKeyword(), searchCondition.getStart(), searchCondition.getEnd()
+	    };
+	    return jdbcTemplate.query(sql, musicMapper, params);
+	}
+	
+	public int adminCountAll() {
+	    String sql = "select count(*) from music";
+	    return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	
+	public int adminCountAllSearch(SearchCondition searchCondition) {
+	    String sql = "select count(*) from music "
+	            + "where instr(lower(!@), lower(?)) > 0";
+	    sql = sql.replace("!@", searchCondition.getColumn());
+	    Object[] params = { searchCondition.getKeyword() };
+	    return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
+	
+	public int adminCountByStatus(String status) {
+	    String sql = "select count(*) from music where music_status = ?";
+	    return jdbcTemplate.queryForObject(sql, int.class, status);
+	}
+	
+	public int adminCountByStatusSearch(SearchCondition searchCondition, String status) {
+	    String sql = "select count(*) from music"
+	            + " where music_status = ?"
+	            + " and instr(lower(!@), lower(?)) > 0";
+	    sql = sql.replace("!@", searchCondition.getColumn());
+	    Object[] params = { status, searchCondition.getKeyword() };
+	    return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
+
 }
 	
 

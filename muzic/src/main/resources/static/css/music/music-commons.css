@@ -1,10 +1,4 @@
-/* ================================
-   📌 Muzic Global Music UI Style
-   감성 + 모던 K-Music 서비스 스타일
-   * 페이지 배경은 건드리지 않음
-================================ */
-
-/* ✅ 글로벌 폰트 */
+/*  글로벌 폰트 */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Gowun+Dodum&display=swap');
 
 body {
@@ -12,7 +6,7 @@ body {
     color: #222;
 }
 
-/* ✅ 포인트 컬러 */
+/* 포인트 컬러 */
 :root {
     --muzic-main: #9396D5;
     --muzic-main-hover: #7c7fd8;
@@ -21,14 +15,14 @@ body {
     --muzic-text-light: #555;
 }
 
-/* ✅ 공통 제목 */
+/* 공통 제목 */
 .mz-page-title {
     font-size: 26px;
     font-weight: 700;
     color: var(--muzic-main);
 }
 
-/* ✅ 공용 필드 */
+/* 공용 필드 */
 .mz-field, .mz-input {
     border: 1px solid #b5b5d2 !important;
     border-radius: 8px !important;
@@ -43,7 +37,7 @@ body {
     box-shadow: 0 0 4px rgba(147,150,213,0.5);
 }
 
-/* ✅ 공용 버튼 */
+/* 공용 버튼 */
 .mz-btn-main, .mz-submit-btn {
     background: var(--muzic-main);
     border: none;
@@ -60,7 +54,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* ✅ 공용 카드 */
+/* 공용 카드 */
 .music-card, .mz-card {
     background: #fff;
     border: 1px solid #ecebfd;
@@ -73,7 +67,7 @@ body {
     box-shadow: 0 6px 14px rgba(147,150,213,0.18);
 }
 
-/* ✅ 텍스트 요소 */
+/* 텍스트 요소 */
 .song-title {
     font-size: 15px;
     font-weight: 600;
@@ -85,18 +79,7 @@ body {
     color: var(--muzic-text-light);
 }
 
-/* ✅ 좋아요 */
-.like-btn {
-    font-size: 18px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.like-btn.liked {
-    color: #ff4d8e;
-    transform: scale(1.15);
-}
-
-/* ✅ 재생 버튼 공통 */
+/* 재생 버튼 공통 */
 .play-btn {
     width: 42px;
     height: 42px;
@@ -113,7 +96,7 @@ body {
     background: var(--muzic-main-hover);
 }
 
-/* ✅ 정렬바 */
+/* 정렬바 */
 .music-sort-bar a {
     color: var(--muzic-sub);
     margin-right: 20px;
@@ -147,14 +130,14 @@ body {
 }
 
 .page-header-line {
-    width: 70px;
+    width: 20%;
     height: 4px;
     background: linear-gradient(90deg, #9396D5, #7b7ee0);
     border-radius: 4px;
     margin-top: 8px;
     margin-bottom: 24px;
 }
-/* ===== Hero Title Animation ===== */
+/* --- 타이틀 애니메이션 --- */
 .mz-title {
     opacity: 0;
     transform: translateY(8px);
@@ -184,4 +167,70 @@ body {
 @keyframes barGrow {
     0% { transform: scaleX(0); }
     100% { transform: scaleX(1); }
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 50px;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background-color: #f1f1f1;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.pagination a:hover {
+    background-color: #e0e0e0;
+}
+
+.pagination .active {
+    background-color: #9396D5;
+    color: #fff;
+}
+
+.btn, .btn-positive, .btn-neutral, .btn-navy {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #9396D5; 
+    color: #fff;
+    border: none;
+    transition: 0.2s;
+}
+
+.btn:hover, .btn-positive:hover, .btn-neutral:hover, .btn-navy:hover {
+    background-color: #7f81c8; 
+}
+
+.pagination a.on,
+.pagination a.on {
+    background-color: #9396D5; 
+    color: #fff;
+}
+
+.pagination a,
+.pagination a {
+    background-color: #f1f1f1;
+    color: #333;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    margin: 0 10px;
+    transition: background-color 0.2s;
+}
+
+.pagination a:hover,
+.pagination a:hover {
+    background-color: #7f81c8; 
 }

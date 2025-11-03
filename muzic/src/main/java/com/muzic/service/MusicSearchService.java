@@ -21,7 +21,7 @@ public class MusicSearchService {
     
     @Autowired
     private MusicHelperService musicHelperService;
-
+    
     // 허용 정렬값
     private static final Set<String> ALLOWED_SORT =
             Set.of("latest", "like", "play", "accuracy");
@@ -90,6 +90,7 @@ public class MusicSearchService {
             searchCondition.setKeyword(originalKeyword); // 검색어 원복(3개의 컬럼을 순회해야하므로 원복 필요) // 원본 검색어가 뭔지 fe 표시할때 필요
             if (!result.isEmpty()) {
             	musicHelperService.setMusicAttachmentNo(result);
+            	searchCondition.setAllData(musicSearchDao.countMusicSearchResults(searchCondition));
             	return result; // 결과 있으면 바로 반환
             }
         }
@@ -115,18 +116,21 @@ public class MusicSearchService {
                     searchCondition.setKeyword(originalKeyword); // 검색어 복원
                     if (!result.isEmpty()) { // 검색어 있을 때까지 컬럼 순회
                     	musicHelperService.setMusicAttachmentNo(result);
+                    	searchCondition.setAllData(musicSearchDao.countMusicSearchResults(searchCondition));
                     	return result; // 결과 있으면 바로 반환
                     }
                 }
             }
         }
+        searchCondition.setAllData(0);
         return List.of(); // 여기까지 없다면 빈 리스트 반환
     }
     
-    // 단일 컬럼 전용 검색 (미리보기용)
+    // 단일 컬럼 전용 검색 (미리보기 및 컬럼 지정 검색 실행)
     public List<MusicSearchVO> searchByColumnOnly(SearchCondition searchCondition) {
         if (!prepareCondition(searchCondition)) return List.of();
-
+        if (!BASE_COLUMNS.contains(searchCondition.getColumn())) return List.of();
+        	
         String keyword = searchCondition.getKeyword();
         String sortType = searchCondition.getSortType();
         boolean isBaseColumn = SearchUtil.isOriginalColumnInput(keyword);
@@ -148,6 +152,7 @@ public class MusicSearchService {
         searchCondition.setKeyword(originalKeyword); // 원본 키워드 복원
         if (!result.isEmpty()) {  // 빈 리스트가 아니라면 종료
         	musicHelperService.setMusicAttachmentNo(result);
+        	searchCondition.setAllData(musicSearchDao.countMusicSearchResults(searchCondition));
         	return result;
         }
 
@@ -175,22 +180,24 @@ public class MusicSearchService {
 
                 if (!result.isEmpty()) { // 조회결과가 있다면 리스트 반환
                 	musicHelperService.setMusicAttachmentNo(result);
+                	searchCondition.setAllData(musicSearchDao.countMusicSearchResults(searchCondition));
                 	return result;
                 } 
             }
         }
+        searchCondition.setAllData(0);
         return List.of(); // 없다면 빈 리스트 반환
     }
 
 
-    // 실제 검색 수행 (컬럼 기반 초성 여부 판별)
+    // 실제 검색 수행 메소드 호출 (컬럼 기반 초성 여부 판별)
     private List<MusicSearchVO> performSearch(SearchCondition searchCondition, String sortType) {
         boolean isSearchColumn = searchCondition.getColumn().endsWith("_search"); // _search 컬럼이면 초성검색
         List<MusicSearchVO> result = runSearch(searchCondition, isSearchColumn, sortType);
         return (result == null) ? List.of() : result;
     }
 
-    // DAO 호출 분기
+    // DAO 호출 분기에 따른 검색 실행
     private List<MusicSearchVO> runSearch(SearchCondition searchCondition, boolean isSearchColumn, String sortType) {
         switch (sortType) {
             case "like":

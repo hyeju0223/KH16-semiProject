@@ -20,19 +20,19 @@ $(function () {
         var icon = btn.find("i");
         var countTag = btn.find(".like-count");
 
-        // ✅ 초기 일시 숨김 (UI 깜빡임 방지)
+        // 초기 일시 숨김 (UI 깜빡임 방지)
         icon.css("opacity", "0.5");
 
-        // ✅ 초기 상태
+        // 초기 상태
         $.get("/rest/music/check?musicNo=" + musicNo, function (res) {
             updateUI(icon, countTag, res.like, res.likeCount);
             icon.css("opacity", "1");
         });
 
-        // ✅ 좋아요 토글
+        // 좋아요 토글
         btn.on("click", function (e) {
             e.stopPropagation();
-            $.get("/rest/music/toggle?musicNo=" + musicNo, function (res) {
+            $.post("/rest/music/toggle?musicNo=" + musicNo, function (res) {
                 updateUI(icon, countTag, res.like, res.likeCount);
             });
         });

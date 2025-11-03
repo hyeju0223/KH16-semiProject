@@ -36,14 +36,14 @@ public class MusicSearchRestController {
 
         // 각 컬럼별로 3개씩 검색
         for (String column : columns) {
-            SearchCondition condition = new SearchCondition();
-            condition.setKeyword(keyword);
-            condition.setSortType(sort);
-            condition.setColumn(column);
-            condition.setPage(1);
-            condition.setSize(3); // 미리보기용
+            SearchCondition searchCondition = new SearchCondition();
+            searchCondition.setKeyword(keyword);
+            searchCondition.setSortType(sort);
+            searchCondition.setColumn(column);
+            searchCondition.setPage(1);
+            searchCondition.setSize(3); // 미리보기용
 
-            List<MusicSearchVO> list = musicSearchService.searchByColumnOnly(condition);
+            List<MusicSearchVO> list = musicSearchService.searchByColumnOnly(searchCondition);
             // 결과가 존재하는 컬럼만 Map에 추가
             if (list != null && !list.isEmpty()) {
                 result.put(column, list);

@@ -23,6 +23,8 @@
     <!-- 기존 메뉴 -->
     <a class="${fn:contains(uri,'/admin/member') ? 'active' : ''}"
        href="<c:url value='/admin/member/list'/>"><span class="ico">👤</span>회원</a>
+    <a class="${fn:contains(uri,'/admin/music') ? 'active' : ''}"
+       href="<c:url value='/admin/music/list'/>"><span class="ico">🎵</span>음원</a>
     <a class="${fn:contains(uri,'/admin/goods') ? 'active' : ''}"
        href="<c:url value='/admin/goods/list'/>"><span class="ico">🛒</span>상품</a>
     <a class="${fn:contains(uri,'/admin/game') ? 'active' : ''}"
