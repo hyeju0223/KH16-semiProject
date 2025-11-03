@@ -1,0 +1,299 @@
+/* ===========================
+   공통 레이아웃
+=========================== */
+.admin-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.admin-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #5E63EA;
+    margin-bottom: 25px;
+}
+
+/* ===========================
+   상태 필터 탭
+=========================== */
+.admin-status-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.admin-status-tabs .tab {
+    padding: 10px 16px;
+    background: #eff1ff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6167d8;
+    border: 1px solid #d8dbff;
+    transition: .2s;
+    text-decoration: none;
+}
+
+.admin-status-tabs .tab:hover {
+    background: #d4d8ff;
+}
+
+.admin-status-tabs .tab.active {
+    background: #5E63EA;
+    color: #fff;
+    border-color: #5E63EA;
+}
+
+/* ===========================
+   검색박스
+=========================== */
+.admin-search-box {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+    padding: 14px;
+    background: #f6f7ff;
+    border: 1px solid #d7dbff;
+    border-radius: 10px;
+}
+
+.admin-search-select {
+    padding: 10px 12px;
+    border: 1px solid #c9cffd;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 14px;
+    width: 130px;
+    cursor: pointer;
+}
+
+.admin-search-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #c9cffd;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.admin-search-input:focus {
+    border-color: #5E63EA;
+    box-shadow: 0 0 0 3px rgba(94,99,234,.2);
+}
+
+.admin-search-btn {
+    padding: 12px 20px;
+    background: #5E63EA;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.admin-search-btn:hover {
+    background: #4a51d8;
+    transform: translateY(-1px);
+}
+
+/* ===========================
+   테이블
+=========================== */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 14px 10px;
+    text-align: center;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-table th {
+    background: #eef1ff;
+    font-weight: 700;
+}
+
+.admin-table tr:hover td {
+    background: #f7f9ff;
+}
+
+/* ===========================
+   상태 뱃지
+=========================== */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.status-대기 { background: #fff2c6; color: #b67b00; }
+.status-승인 { background: #caffd9; color: #0f7a2b; }
+.status-반려 { background: #ffd1d1; color: #d13434; }
+.status-삭제요청 { background: #ffbcbc; color: #9e0000; }
+.status-수정요청 { background: #d6e4ff; color: #0048b0; }
+
+/* ===========================
+   버튼
+=========================== */
+.admin-btn {
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-detail {
+    background: #5E63EA;
+    color: #fff;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.btn-detail:hover {
+    background: #484fdb;
+}
+
+/* ===========================
+   페이징
+=========================== */
+.admin-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    gap: 6px;
+}
+
+.admin-pagination .page-btn {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d4ff;
+    color: #5E63EA;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: .2s;
+}
+
+.admin-pagination .page-btn:hover {
+    background: #ecefff;
+}
+
+.admin-pagination .page-btn.active {
+    background: #5E63EA;
+    color: #fff;
+    border-color: #5E63EA;
+}
+
+/* ==========================
+   Admin Music Detail Page
+   Polished UI + subtle animation
+========================== */
+
+.admin-detail-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 25px 30px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+    margin-bottom: 30px;
+    animation: fadeIn 0.4s ease;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eef0ff;
+    transition: background 0.2s;
+}
+
+.detail-row:hover {
+    background: #f8f9ff;
+}
+
+.detail-label {
+    font-weight: 700;
+    color: #4f54e8;
+    width: 130px;
+}
+
+.detail-value {
+    flex: 1;
+    text-align: right;
+    color: #2b2b2b;
+    font-weight: 500;
+}
+
+/* Action Section */
+.admin-action-box {
+    background: #f8f9ff;
+    padding: 18px;
+    border: 1px solid #dfe3ff;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.4s ease;
+}
+
+.admin-textarea {
+    width: 100%;
+    height: 85px;
+    border-radius: 8px;
+    border: 1px solid #cfd5ff;
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    resize: none;
+    transition: box-shadow .2s, border-color .2s;
+}
+
+.admin-textarea:focus {
+    border-color: #5E63EA;
+    box-shadow: 0 0 0 3px rgba(94,99,234,.2);
+}
+
+/* Buttons */
+.admin-btn {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.btn-success { background: #2ecc71; color: #fff; }
+.btn-success:hover { background: #27b864; transform: translateY(-2px); }
+
+.btn-reject { background: #e74c3c; color: #fff; }
+.btn-reject:hover { background: #d03f30; transform: translateY(-2px); }
+
+.btn-info { background: #3498db; color: #fff; }
+.btn-info:hover { background: #2c89c7; transform: translateY(-2px); }
+
+.btn-danger { background: #8e44ad; color: #fff; }
+.btn-danger:hover { background: #7a3897; transform: translateY(-2px); }
+
+/* Subtle animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}

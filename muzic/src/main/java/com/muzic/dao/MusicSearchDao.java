@@ -171,13 +171,17 @@ public class MusicSearchDao {
     public int countMusicSearchResults(SearchCondition searchCondition) { 
     	// 원본 컬럼 목록 
     	Set<String> baseColumns = Set.of("music_title", "music_artist", "music_album"); 
-    	// 검색 대상이 VIEW 기반인지 TABLE 기반인지 구분 
-    	String baseTable = baseColumns.contains(searchCondition.getColumn()) ? "music_user_view" : "music"; 
-    	String sql = "select count(*) from " + baseTable + 
-    			" where instr(replace(lower(!@), ' ', ''), replace(lower(?), ' ', '')) > 0"; 
-    	sql = sql.replace("!@", searchCondition.getColumn()); 
-    	Object[] params = {searchCondition.getKeyword()}; 
-    	return jdbcTemplate.queryForObject(sql, int.class, params); 
+    	 // 검색 대상이 VIEW 기반인지 TABLE 기반인지 구분 
+        boolean useView = baseColumns.contains(searchCondition.getColumn());
+        String baseTable = useView ? "music_user_view" : "music";
+        
+        String sql = "select count(*) from " + baseTable + 
+                " where " + (useView ? "" : "music_status = '승인' and ") +
+                "instr(replace(lower(!@), ' ', ''), replace(lower(?), ' ', '')) > 0"; 
+        sql = sql.replace("!@", searchCondition.getColumn()); 
+        Object[] params = {searchCondition.getKeyword()}; 
+        
+        return jdbcTemplate.queryForObject(sql, int.class, params);
     }
     
 }
