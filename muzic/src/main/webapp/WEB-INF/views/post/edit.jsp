@@ -1,19 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<title>게시글 수정</title>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+
+<jsp:include page="/WEB-INF/views/template/header-1.jsp" />
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">  
 <script src="/summernote/custom-summernote.js"></script>
 
+<link rel="stylesheet" type="text/css" href="/css/post.css">
+<style>
+
+</style>
+
 <script>
 
 </script>
 
-    <div class="cell center">
+<div class="w-1000">
+
+    <div class="cell">
         <h1>게시글 수정</h1>
     </div>
 
@@ -30,11 +41,13 @@
 
         <div class="cell">
             <label>제목 <span class="red">*</span></label>
-            <input type="text" name="postTitle" value="${postDto.postTitle}" required class="field w-100">
+            <input type="text" name="postTitle" value="${postDto.postTitle}" required class="field" style="margin: 10px; width: 100%;">
         </div>
         
-	<textarea name="postContent" class="summernote-editor">${postDto.postContent}</textarea>
-	<br><br>
+		<div class="cell">
+        	<label>내용 <span class="red">*</span></label>
+        	<textarea name="postContent" class="summernote-editor"></textarea>
+    	</div>
         
 	<div class="cell">
         <label>음악 선택</label>
@@ -58,3 +71,6 @@
             <button class="btn btn-positive">수정하기</button>
         </div>
     </form>
+</div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp" />

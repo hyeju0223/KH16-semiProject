@@ -14,6 +14,7 @@ public class PostLikeDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+	//게시글 좋아요 설정
 	public void insert(String memberId, int postNo) {
 		String sql = "insert into map_post_like(map_member_id, map_post_no) "
 				+ "values (?, ?)";
@@ -22,12 +23,14 @@ public class PostLikeDao {
 		jdbcTemplate.update(sql, params);
 	}
 	
+	// 게시글 좋아요 삭제
 	public boolean delete(String memberId, int postNo) {
 		String sql = "delete from map_post_like where map_member_id=? and map_post_no=?";
 		Object[] params = {memberId, postNo};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
+	//게시글에 좋아요 눌렀는지 체크
 	public boolean check(String loginId, int postNo) {
 		if(loginId == null) {
 			throw new NeedPermissionException("로그인 후 이용이 가능합니다");
@@ -39,6 +42,7 @@ public class PostLikeDao {
 		return jdbcTemplate.queryForObject(sql, int.class, params) > 0;
 	}
 
+	//게시글의 총 좋아요 개수
 	public int countPostNo(int postNo) {
 		String sql = "select count(*) from map_post_like where map_post_no = ?";
 		Object[] params = {postNo};
@@ -46,6 +50,7 @@ public class PostLikeDao {
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 	
+	//회원이 누른 좋아요 게시글 목록 조회
 	public List<Integer> likeListByMember (String memberId) {
 		String sql = "select map_post_no from map_post_like where map_member_id = ?";
 		Object[] params = {memberId};

@@ -244,10 +244,13 @@ td span[style*="#16a085"] {
     color: #fff;
     border: none;
     transition: 0.2s;
+    
+    
 }
 
 .btn:hover, .btn-positive:hover, .btn-neutral:hover, .btn-navy:hover {
     background-color: #7f81c8; /* hover 색상도 통일 */
+	color: #fff;
 }
 
 /* ==========================================================
@@ -279,3 +282,71 @@ td span[style*="#16a085"] {
 .red {
 	color: red;
 }
+
+
+/* 댓글 입력 영역 디자인 */
+.comments-write-area {
+  margin-top: 15px;
+  background: #f9f9fb;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+/* 댓글 입력창 (textarea) */
+.comments-input {
+  width: 100%;
+  height: 120px; /* ← 여기로 크기 조절 가능 */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 15px;
+  line-height: 1.5;
+  resize: none;
+  font-family: 'SUIT', sans-serif;
+  background-color: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comments-input:focus {
+  outline: none;
+  border-color: #9396D5; /* 포커스 시 보라색 */
+  box-shadow: 0 0 4px rgba(147, 150, 213, 0.3);
+}
+
+/* 등록 버튼 정리 */
+.comments-btn-write {
+  margin-top: 10px;
+  width: 100%;
+  background-color: #9396D5;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.comments-btn-write:hover {
+  background-color: #7f83c7;
+}
+
+.like-area, .comment-area {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.like-area {
+    margin-right: 10px; /* 적당한 간격 */
+    color: red;
+    border-right: 1px solid #ccc;
+    padding-right: 10px;
+}
+
+.comment-area {
+    margin-left: 10px; /* 간격 유지 */
+}
+
+
