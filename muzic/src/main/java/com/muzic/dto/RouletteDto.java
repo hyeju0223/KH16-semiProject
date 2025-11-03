@@ -1,15 +1,21 @@
-// src/main/java/com/muzic/dto/RouletteDto.java
+
 package com.muzic.dto;
 
-import java.sql.Date; // Oracle DATE <-> java.sql.Date
-import lombok.*;
+import java.sql.Date;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Builder @AllArgsConstructor @NoArgsConstructor @Data
 public class RouletteDto {
-    private int  rouletteNo;          // PK
-    private String rouletteName;      // NOT NULL
-    private int  rouletteDailyCount;  // NOT NULL
-    private int  rouletteMaxPoint;    // NOT NULL
-    private int  rouletteMinPoint;    // NOT NULL
-    private Date rouletteDate;        // NOT NULL (yyyy-mm-dd)
+	
+	private int rouletteNo;
+	private String rouletteName;
+	private int rouletteDailyCount;
+	private int  rouletteMaxPoint;
+	private int  rouletteMinPoint;
+	private Date rouletteDate;
+
 }

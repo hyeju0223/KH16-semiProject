@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="/css/music/music-commons.css">
 <link rel="stylesheet" href="/css/music/music-form.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="container w-800 mt-40">
 
     <h2 class="mz-page-title"><i class="fa-solid fa-pen-nib"></i> 음원 수정</h2>
@@ -95,5 +95,5 @@
 
     </form>
 </div>
-
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
 <script src="/js/music/music-form.js"></script>

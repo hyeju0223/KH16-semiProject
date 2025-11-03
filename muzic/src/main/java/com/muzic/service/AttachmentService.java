@@ -27,11 +27,13 @@ public class AttachmentService {
 	private static final String UPLOAD_PATH =  "muzic_uploads/"; // 하드코딩 방지 및 업로드경로바꾸고 싶을때 상수필드만 바꾸게
 	
 	// member(profile)에서 이미지 저장할 때
+	@Transactional
 	public void save(MultipartFile attach, String category, String memberId) throws IOException {
-	    saveInternal(attach, category, memberId);
+		saveInternal(attach, category, memberId);
 	}
 	
 	//그 외 나머지에서 이미지 저장할 때(parentNo에 pk 넣어주시면 됩니다)
+	@Transactional
 	public void save(MultipartFile attach, String category, int parentNo) throws IOException {
 		saveInternal(attach, category, String.valueOf(parentNo));
 	}
@@ -40,6 +42,58 @@ public class AttachmentService {
 	//	try-catch 사용 이유는 파일 삭제 및 생성은 DB작업이 아니기에 따로 예외로 처리가 필요
 	@Transactional
 	private void saveInternal(MultipartFile attach, String category, String attachmentParent) throws IllegalStateException, IOException {
+		System.out.println("실행입니다!");
+	    int attachmentNo = attachmentDao.sequence(); // 등록될 pk 조회
+	    
+	    File categoryDir = new File(home, UPLOAD_PATH + category); // 홈디렉토리/muzic_uploads/music 등
+	    if (!categoryDir.exists()) { // 업로드할 폴더가 존재하지 않는다면(경로가 존재하지 않는다면)
+	    	categoryDir.mkdirs(); // 폴더가 없으면 생성
+	    }
+	    
+	    String relativePath = UPLOAD_PATH + category; // 상대경로
+	   
+	    String originalName = attach.getOriginalFilename();
+	    // 저장할 파일 이름(중복 방지)
+	    String storedName = category + "_" + attachmentNo + "_" + FileUtil.getCleanFileName(originalName); // 카테고리_attachmentNo_원본이름
+
+	    File target = new File(categoryDir, storedName);
+	    
+	    try {
+	        // 1. 실제 파일 저장 시도
+	    	attach.transferTo(target);
+	    	 System.out.println("에러실행직전000");
+	        // 2. AttachmentDto 생성 후 DB 저장
+	        AttachmentDto attachmentDto = 
+	        		AttachmentDto.builder()
+		            .attachmentNo(attachmentNo)
+		            .attachmentType(attach.getContentType())
+		            .attachmentPath(relativePath)
+		            .attachmentCategory(category)
+		            .attachmentParent(attachmentParent)
+		            .attachmentOriginalName(originalName)
+		            .attachmentStoredName(storedName)
+		            .attachmentSize(attach.getSize())
+		            .build();
+
+	        attachmentDao.insert(attachmentDto);
+	        System.out.println("에러실행직전1");
+	    } catch (Exception e) {
+	        //DB 오류 (런타임 예외) 또는 transferTo 오류 발생 시
+	 
+	        // 디스크에 저장된 파일만 수동으로 삭제하여 고아 파일을 방지
+	        if (target.exists()) {
+	            target.delete(); // 디스크에 남아있는 파일 삭제
+	        }
+	        // 발생한 예외를 다시 던져 트랜잭션 롤백
+	        System.out.println("에러실행직전2");
+	        throw new DataPersistenceException("파일 저장 또는 DB 처리에 실패했습니다. [파일 롤백됨]");
+	    }
+	    System.out.println("에러실행직전3");
+	}
+	
+	//마이페이지를 위한 메소드 추가 !!!!!! (미안합니다)
+	@Transactional
+	private int saveInternalNumber(MultipartFile attach, String category, String attachmentParent) throws IllegalStateException, IOException {
 		
 	    int attachmentNo = attachmentDao.sequence(); // 등록될 pk 조회
 	    
@@ -74,6 +128,7 @@ public class AttachmentService {
 		            .build();
 
 	        attachmentDao.insert(attachmentDto);
+	        return attachmentNo;
 	        
 	    } catch (Exception e) {
 	        //DB 오류 (런타임 예외) 또는 transferTo 오류 발생 시
@@ -83,8 +138,11 @@ public class AttachmentService {
 	            target.delete(); // 디스크에 남아있는 파일 삭제
 	        }
 	        // 발생한 예외를 다시 던져 트랜잭션 롤백
+	        System.out.println("에러실행직전");
 	        throw new DataPersistenceException("파일 저장 또는 DB 처리에 실패했습니다. [파일 롤백됨]");
 	    }
+	    
+
 	}
 	
 	public ByteArrayResource load(int attachmentNo) throws IOException {

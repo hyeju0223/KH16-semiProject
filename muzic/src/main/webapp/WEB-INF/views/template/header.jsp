@@ -429,9 +429,6 @@
       <div class="cell w-120 profile-text">
         <a href="/store/cart/list" class="teg"><i class="fa-solid fa-cart-shopping"></i>장바구니</a>
       </div>
-       <div class="cell w-120 profile-text">
-        <a href="/music/add" class="teg"><i class="fa-solid fa-music"></i>음원등록</a>
-      </div>
       <!-- 회원상태 -->
       <div class="cell w-150 profile-area-1 flex-box flex-center">
         <div class="cell profile-img-area-1">
@@ -459,9 +456,10 @@
     <div class="cell center menu-bar flex-box flex-center mt-30">
       <div class="menu-text"><a href="/post/free/list" class="teg">커뮤니티</a></div>
       <div class="menu-text" style="font-weight: 500; font-size: 37px;"><a href="/post/mbti/list" class="teg">MBTI</a></div>
-      <div class="menu-text"><a href="music/list" class="teg">음원 목록</a></div>
+      <div class="menu-text"><a href="/music/list" class="teg">음원 목록</a></div>
       <div class="menu-text"><a href="/store/list"" class="teg">스토어</a></div>
       <div class="menu-block w-300"></div>
       <div class="menu-text"><a href="/event/roulette" class="teg">이벤트</a></div>
     </div>
     <hr class="line">
+

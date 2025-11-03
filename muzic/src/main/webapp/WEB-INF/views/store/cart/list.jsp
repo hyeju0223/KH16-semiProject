@@ -149,7 +149,7 @@
 		<a href="../list"><button type="button" class="btn btn-neutral">계속 쇼핑하기</button></a>
 	</div>
 </div>
-<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
 
 <!-- jQuery-->
 <script

@@ -66,7 +66,7 @@ public class GoodsController {
 		AttachmentCategory category = AttachmentCategory.GOODS;
 		String categoryValue = category.getCategoryName();
 		int attachmentNo = attachmentService.getAttachmentNoByParent(goodsNo, categoryValue);
-		if (attachmentNo != -1) {
+		if (attachmentNo > 0 ) {
 			return "redirect:/attachment/download?attachmentNo=" + attachmentNo;
 		} else {
 			return "redirect:/images/error/no-image.png";

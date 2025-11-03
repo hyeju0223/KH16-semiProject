@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+     <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+    
 
 <head>
     <meta charset="UTF-8">
@@ -306,7 +309,7 @@
 
             function render() {
                 $.ajax({
-                    url: "/mypage/calendar/home",
+                    url: "/rest/mypage/calendar/home",
                     method: "post",
                     data: { memberId },
                     success: function (response) { //calendarDay, title, content, attendane 가지고 오기
@@ -373,7 +376,7 @@
                     }
 
                     $.ajax({
-                        url: "/mypage/calendar/check",
+                        url: "/rest/mypage/calendar/check",
                         method: "post",
                         data: {
                             calendarMember: memberId,
@@ -402,7 +405,7 @@
             $(".gift-btn").on("click", function(){
             	//var checkDay = $(".schedule.addCalendar").not(".prevSchedule").length;
                 $.ajax({
-                    url : "/mypage/calendar/gift",
+                    url : "/rest/mypage/calendar/gift",
                     method : "post",
                     //data : {checkDay},
                     success : function(response){
@@ -661,3 +664,5 @@
 </body>
 
 </html>
+
+ <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

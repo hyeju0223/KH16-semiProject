@@ -48,7 +48,7 @@
 	    }
 	}
 </script>
-
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="music-detail-page">
 
 	<jsp:include page="/WEB-INF/views/music/template/search-bar.jsp"></jsp:include>
@@ -121,7 +121,7 @@
 		</c:if>
 	</div>
 </div>
-
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
 <script src="/js/music/like.js"></script>
 <script src="/js/music/detail.js"></script>
 

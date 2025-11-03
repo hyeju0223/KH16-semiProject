@@ -1,14 +1,24 @@
-// src/main/java/com/muzic/dto/RouletteLogDto.java
+
+
+
 package com.muzic.dto;
 
+import java.sql.Date;
 import java.sql.Timestamp;
-import lombok.*;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+ 
+@Builder @AllArgsConstructor @NoArgsConstructor @Data
 public class RouletteLogDto {
-    private int rouletteLogNo;        // PK
-    private int rouletteLogRoulette;  // FK -> roulette.roulette_no
-    private String rouletteLogMember; // FK -> member.member_id
-    private int rouletteLogPoint;     // >= 0
-    private Timestamp rouletteLogTime;// default systimestamp
+
+	private int rouletteLogNo;
+	private int rouletteLogRoulette;
+	private String rouletteLogMember;
+	private int  rouletteLogPoint;
+	private Timestamp rouletteLogTime;
+
+
 }

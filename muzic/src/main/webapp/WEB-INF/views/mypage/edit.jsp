@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+ <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -275,12 +279,12 @@
             	
             
 //             이미지의 최초 주소 ==> 미리보기 사진이 바뀌는거고 수정 눌렀을때 진짜 사진이 바뀌는거 
-            var origin = $(".image-profile").attr("src");
-            var memberId = $(".")
-            $("#profile-input").on("click", function () {
+            var origin = $(".profile-img").attr("src");
+            var memberId = "${sessionScope.loginMemberId}"
+            $("#profile-input").on("change", function () {
             	var list = $(this).prop("files"); //선택된 파일 구하기
                 if(list.length == 0) return;
-            	
+
             	//파일 전송
             	var form = new FormData(); //<form>역할
             	form.append("attach", list[0]);
@@ -288,13 +292,14 @@
             	$.ajax({
             		processData : false,
             		contentType : false,
-                    url: "/mypage/profile",
+                    url: "/rest/mypage/profile",
                     method: "post",
-                    data:  form ,
+                    data:  form,
                     success: function (response) {
                     	var newOrigin = origin + "&t=" + new Date().getTime();
-                    	$(".image-profile").attr("src", newOrigin);
-                    }
+                    	$(".profile-img").attr("src", newOrigin);
+                    	console.log("실행1")
+                    	}
                 })
             });
 
@@ -313,12 +318,12 @@
                 <div class="cell  profile-area">
                     <!-- 프로필 이미지 영역-->
                     <div class="cell  profile-img-area mt-30">
-                        <img src="/image/home/profile-img.jpg" class="profile-img" >
+                        <img src="/mypage/image?memberId=${memberDto.memberId}" class="profile-img" >
                         <span class="change-text">변경하기</span>
                         <div class="cell profile-change flex-box flex-center"><i class="fa-solid fa-camera-rotate"
                                 style="color: aliceblue;"></i></div>
                     </div>
-                        <input type="file" id="profile-input" style="display: none;">
+                        <input type="file" id="profile-input" accept="image/*" style="display: none;">
                     <!-- 닉네임/메일주소-->
                     <div class="center mt-30">
                         <div class="text">${memberDto.memberNickname}</div>
@@ -326,7 +331,7 @@
                     </div>
                     <!-- 배너 영역-->
                     <div class="banner-area mt-50">
-                        <img src="/image/home/banner-img1.png" class="banner-img">
+                        <a href="/mypage/calendar/"><img src="/image/home/banner-img1.png" class="banner-img"></a>
                     </div>
                 </div>
                 <div>
@@ -352,12 +357,6 @@
                         </div>
                         <div class="cell">
                             <!-- MBTI 영역-->
-                             
-
-
-
-                             
-                            
                             <div class="cell">
                                 <div class="title">MBTI<i class="fa-solid fa-star-of-life red"></i></div>
                                 <select name="memberMbti" class="box">
@@ -420,3 +419,4 @@
     </form>
 </body>
 </html>
+ <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <style>
     .swiper {
       width: 100%;
@@ -31,11 +32,9 @@
         </div>
         <div class="flex-fill"></div>
         <div>
-          이미지넣을까
-        </div>
-      </div>
-    </div>
-    </div>
-</body>
+
+</head>
+<body>
+
 
 </html>

@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.muzic.condition.SearchCondition;
+import com.muzic.dto.MusicDto;
 import com.muzic.error.InvalidContentException;
 import com.muzic.mapper.MusicUploaderVOMapper;
 import com.muzic.mapper.MusicUserVOMapper;
@@ -107,6 +108,12 @@ public class MusicViewDao {
 	public int countAllUserVO() {
 		String sql = "select count(*) from music_user_view";
 	    return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	
+	//전체 조회 구문 추가
+	public List<MusicUserVO> selectListByRank() {
+		String sql = "select * from music_user_view order by music_like desc, music_play desc";
+		return jdbcTemplate.query(sql, musicUserVOMapper);
 	}
 	
 }

@@ -29,7 +29,29 @@
     .logo {
       height: 50px;
     }
+    .profile-area-1 {
+      gap: 10px;
+    }
 
+
+    .profile-img-area-1 {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .profile-img-1 {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .profile-img:hover {
+      filter: brightness(85%);
+      transition: filter 0.3s ease-out;
+    }
   </style>
   <link rel="icon" href="/favicon.ico">
   <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
@@ -110,7 +132,7 @@
     <div class="cell center menu-bar flex-box flex-center mt-30">
       <div class="menu-text"><a href="/post/free/list" class="teg">커뮤니티</a></div>
       <div class="menu-text" style="font-weight: 500; font-size: 37px;"><a href="/post/mbti/list" class="teg">MBTI</a></div>
-      <div class="menu-text"><a href="music/list" class="teg">음원 목록</a></div>
+      <div class="menu-text"><a href="/music/list" class="teg">음원 목록</a></div>
       <div class="menu-text"><a href="/store/list"" class="teg">스토어</a></div>
       <div class="menu-block w-300"></div>
       <div class="menu-text"><a href="/event/roulette" class="teg">이벤트</a></div>

@@ -15,7 +15,7 @@
 <script>
 	var isLogin = "${sessionScope.loginMemberId != null ? 'true' : 'false'}";
 </script>
-
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="container w-1100 mt-40">
 
 	<jsp:include page="/WEB-INF/views/music/template/search-bar.jsp"></jsp:include>
@@ -111,7 +111,7 @@
 		</div>
 	</c:if>
 </div>
-
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/music/template/pagination.jsp"></jsp:include>
 
 <script src="/js/music/like.js"></script>

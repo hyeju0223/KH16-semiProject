@@ -35,7 +35,7 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 		        //미로그인 차단 인터셉터
 				registry.addInterceptor(loginInterceptor)	
 							.addPathPatterns("/mypage/**", "/post/**","/post/free/**", "/post/mbti/**", "/store/cart/**", "/admin/**", "/music/**", "/event/**")
-							.excludePathPatterns("/post/free/list","/music/list","/music/detail")
+							.excludePathPatterns("/post/free/list","/music/list","/music/detail","/rest/music/**","/music/search/**")
 							.order(2);
 
 				//조회수 중복 방지
