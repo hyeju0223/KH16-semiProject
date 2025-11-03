@@ -2,20 +2,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<jsp:include page="/WEB-INF/views/template/header.jsp" />
+
+<title>MBTI게시판</title>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 <link rel="stylesheet" type="text/css" href="/css/post.css">
 
 <style>
 
 </style>
-    
+
 <div class="center w-1000">
 	<div class="cell center">
  		<h2>${memberDto.memberMbti} 게시판</h2>
 	</div>
 	
 	<div class="cell center">
-		<p>타인에 대한 우앵앵애</p>
+		<p>관리자가 늘 지켜보고 있습니다👀</p>
 	</div>
 	<div class="cell right">
 			<c:choose>
@@ -77,7 +80,7 @@
                             <c:choose>
                                 <%-- 1. postNotice가 'Y' (공지)인 경우: 무조건 "운영진"으로 표시 --%>
                                 <c:when test="${postVO.postNotice == 'Y'}">
-                                    <span style="font-weight: bold; color: #16a085;">운영진</span>
+                                    <span style="font-weight: bold; color: #block;">운영진</span>
                                 </c:when>
                                 
                                 <%-- 2. 일반 게시글이고 닉네임이 존재하는 경우 (정상 사용자) --%>
@@ -118,3 +121,5 @@
 		</form>
 	</div>
 </div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp" />

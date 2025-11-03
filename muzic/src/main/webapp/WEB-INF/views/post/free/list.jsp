@@ -2,9 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<jsp:include page="/WEB-INF/views/template/header.jsp" />
+
+<title>자유게시판</title>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 <link rel="stylesheet" type="text/css" href="/css/post.css">
-
 <style>
 
 </style>
@@ -15,13 +17,13 @@
 	</div>
 	
 	<div class="cell center">
-		<p>타인에 대한 우앵앵애</p>
+		<p>관리자가 늘 지켜보고 있습니다👀<p>
 	</div>
 	<div class="cell right">
 			<c:choose>
 				<c:when test="${sessionScope.loginMemberId != null}">
 				<h3>
-				<a href="/post/write" class="btn btn-neutral">글쓰기</a></h3>
+				<a href="/post/write" class="btn btn-navy">글쓰기</a></h3>
 			</c:when>
 			<c:otherwise>
 				<h3><a href="/member/login">로그인</a>을 해야 글을 작성할 수 있습니다</h3>
@@ -107,3 +109,5 @@
 	</div>
 	
 </div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp" />

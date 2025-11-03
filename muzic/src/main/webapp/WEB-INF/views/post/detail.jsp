@@ -5,7 +5,7 @@
 
 <!DOCTYPE html>
 <html lang="ko">
-
+<title>게시글</title>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
 <!-- jquery cdn -->
@@ -18,6 +18,9 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">  
 <script src="/summernote/custom-summernote.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/post.css">
+
+<jsp:include page="/WEB-INF/views/template/header.jsp" />
 
 <script type="text/javascript">
 	$(function(){
@@ -122,9 +125,9 @@
 
                             $(html).find(".comments-writer").text(comments.commentWriter)
 
-                            if(comments.writer == true) {
-                                $(html).find(".comments-writer").append("<span >${sessionScope.loginMemberNickname}</span>")
-                            }
+//                             if(comments.writer == true) {
+//                                 $(html).find(".comments-writer").append("<span >${sessionScope.loginMemberNickname}</span>")
+//                             }
 
                             $(html).find(".comments-content").text(comments.commentContent);
 
@@ -191,7 +194,7 @@
             	var choice = window.confirm("댓글을 삭제하시겠습니까?");
             	if(choice == false) return;
             	
-            	var commentNo = $(this).data("commentNo");
+            	var commentNo = $(this).data("pk");
             	
             	if (!commentNo) {
                     console.error("댓글 번호가 누락되었습니다.");
@@ -367,7 +370,6 @@
                     <i class="fa-regular fa-heart comment-like-icon"></i> 
                     <span class="comment-like-count">0</span>
                 </span>
-                <span class="comments-time">yyyy-MM-dd</span>
             </div>
 
 			<div class="comments-time">yyyy-MM-dd</div>
@@ -389,116 +391,126 @@
 	</div>
 </script>
 
-<div>
-    <c:choose>
-        <c:when test="${memberDto == null}">
-            탈퇴한사용자
-        </c:when>
-        <c:otherwise>
-            <a href="mypage/profile?memberId=${memberDto.memberId}">
-                ${memberDto.memberNickname}
-            </a>  
-            (${memberDto.memberRole})
-        </c:otherwise>
-    </c:choose>
-</div>
-
-<div>
-	<fmt:formatDate value="${postDto.postWtime}" pattern="yyyy-MM-dd HH:mm"/> 
-	조회수 ${postDto.postRead}
-</div>
-<hr>
-<div style="min-height: 200px">
-	${postDto.postContent}
-</div>
-<hr>
-
-<c:if test="${musicUserVO != null}">
-    <c:url var="detailLink" value="/music/detail">
-        <c:param name="musicNo" value="${musicUserVO.musicNo}" />
-    </c:url>
-
-    <div class="music-info-box">
-    	<h3>첨부된 음악</h3>
-    		<p>
-    		    <span style="font-weight: bold;">제목:</span> ${musicUserVO.musicTitle}  <span style="margin: 0 10px;">|</span>
-    		    <span style="font-weight: bold;">아티스트:</span> ${musicUserVO.musicArtist} <span style="margin: 0 10px;">|</span>
-    		    <span style="font-weight: bold;">앨범:</span> ${musicUserVO.musicAlbum} <span style="margin: 0 10px;">|</span>
-    		</p>
+<div class="w-1000">
+	
+	<div class="cell mt-30">
+	    <c:choose>
+	        <c:when test="${memberDto == null}">
+	            탈퇴한사용자
+	        </c:when>
+	        <c:otherwise>
+	            <a href="mypage/profile?memberId=${memberDto.memberId}">
+	                ${memberDto.memberNickname}
+	            </a>  
+	            (${memberDto.memberRole})
+	        </c:otherwise>
+	    </c:choose>
 	</div>
-    
-    <div style="text-align: right; margin-top: 10px; margin-bottom: 10px;">
-        <a href="${detailLink}" style="font-weight: bold; color: #2d3436; text-decoration: none;">
-            음악 들으러 가기 >>>>
-        </a>
-    </div>
-
-<hr>
-</c:if>
-
-<div class="cell">
-		<span style="color:red">
-			<i id="post-like" class="fa-regular fa-heart"></i> 
-			<span id="post-like-count">?</span>
-		</span>
-		
-		<span>
-			<i id="post-comment" class="fa-solid fa-comments comment-icon-inactive"></i>
-			<span>${commentsDto.postComments}</span>
-		</span>
-</div>
-
-<div id="comments-section" style="display: none;">
+	
 	<div class="cell">
-		<div class="comments-list-area">댓글</div>
+	    <h1>${postDto.postTitle}</h1>
 	</div>
-
-	<div class="cell">
-		<c:choose>
-			<c:when test="${sessionScope.loginMemberId != null}">
-				<div class="comments-write-area">
-					<div class="cell">
-						<textarea class="comments-input" rows="4" style="resize:none;" placeholder="댓글 내용" name="commentContent"></textarea>
-					</div>
-					<div class="cell">
-						<button type="button" class="comments-btn-write">등록하기</button>
-					</div>
-				</div>
-			</c:when>
-			<c:otherwise>
-				<div class="comments-write-area">
-					<div class="cell">
-						<textarea rows="4" style="resize:none;" placeholder="로그인 후 작성이 가능합니다" disabled name="commentContent"></textarea>
-					</div>
-				</div>
-			</c:otherwise>
-		</c:choose>
+	
+	<div class="cell right">
+	    <fmt:formatDate value="${postDto.postWtime}" pattern="yyyy-MM-dd HH:mm"/> 
+	    조회수 ${postDto.postRead}
 	</div>
-</div>
-
-<div>
-	<a href="write">글쓰기</a> 
-	<c:if test="${sessionScope.loginMemberId != null}">
-	<c:choose>
-		<c:when test="${sessionScope.loginMemberId == postDto.postWriter}">
-			<a href="edit?postNo=${postDto.postNo}">수정</a> 
-			<a href="delete?postNo=${postDto.postNo}">삭제</a>
-		</c:when>
-		<c:when test="${sessionScope.loginMemberRole == '관리자'}">
-			<a href="delete?postNo=${postDto.postNo}">삭제</a>
-		</c:when>
-	</c:choose>
+	
+	<hr>
+	
+	<!-- 게시글 내용 -->
+	<div class="table-border" style="padding: 20px; min-height: 200px;">
+	    ${postDto.postContent}
+	</div>
+	
+	<hr>
+	
+	<!-- 첨부 음악 -->
+	<c:if test="${musicUserVO != null}">
+	    <c:url var="detailLink" value="/music/detail">
+	        <c:param name="musicNo" value="${musicUserVO.musicNo}" />
+	    </c:url>
+	
+	    <div class="table-border" style="padding: 15px; margin-top: 10px;">
+	        <h3>첨부된 음악</h3>
+	        <p>
+	            <span style="font-weight: bold;">제목:</span> ${musicUserVO.musicTitle}  <span style="margin: 0 10px;">|</span>
+	            <span style="font-weight: bold;">아티스트:</span> ${musicUserVO.musicArtist} <span style="margin: 0 10px;">|</span>
+	            <span style="font-weight: bold;">앨범:</span> ${musicUserVO.musicAlbum} <span style="margin: 0 10px;">|</span>
+	        </p>
+	        <div class="cell right">
+	            <a href="${detailLink}" class="btn btn-positive">음악 들으러 가기 &gt;&gt;&gt;</a>
+	        </div>
+	    </div>
+	    <hr>
 	</c:if>
 	
-	<c:choose>
-    <c:when test="${not empty postDto.postMbti}">
-        <!-- MBTI 게시판 글이면 MBTI 목록으로 -->
-        <a href="${pageContext.request.contextPath}/post/mbti/list?mbti=${postDto.postMbti}" class="btn btn-neutral">목록으로</a>
-    </c:when>
-    <c:otherwise>
-        <!-- 자유게시판 글이면 자유게시판 목록으로 -->
-        <a href="${pageContext.request.contextPath}/post/free/list" class="btn btn-neutral">목록으로</a>
-    </c:otherwise>
-</c:choose>
-
+	<!-- 좋아요 / 댓글 -->
+	<div class="cell">
+	    <span class="like-area" style="color:red;">
+	        <i id="post-like" class="fa-regular fa-heart"></i> 
+	        <span id="post-like-count">?</span>
+	    </span>
+	    
+	    <span class="comment-area">
+	        <i id="post-comment" class="fa-solid fa-comments comment-icon-inactive"></i>
+	        <span>${commentsDto.postComments}</span>
+	    </span>
+	</div>
+	
+	<!-- 댓글 섹션 -->
+	<div id="comments-section" style="display: none;">
+	    <div class="cell">
+	        <div class="comments-list-area">댓글</div>
+	    </div>
+	
+	    <div class="cell">
+	        <c:choose>
+	            <c:when test="${sessionScope.loginMemberId != null}">
+	                <div class="comments-write-area">
+	                    <div class="cell">
+	                        <textarea class="comments-input" placeholder="댓글 내용" name="commentContent"></textarea>
+	                    </div>
+	                    <div class="cell">
+	                        <button type="button" class="btn btn-positive comments-btn-write">등록하기</button>
+	                    </div>
+	                </div>
+	            </c:when>
+	            <c:otherwise>
+	                <div class="comments-write-area">
+	                    <div class="cell">
+	                        <textarea rows="4" style="resize:none;" placeholder="로그인 후 작성이 가능합니다" disabled name="commentContent"></textarea>
+	                    </div>
+	                </div>
+	            </c:otherwise>
+	        </c:choose>
+	    </div>
+	</div>
+	
+	<!-- 하단 버튼 -->
+	<div class="cell" style="margin-top: 20px;">
+	    <a href="write" class="btn btn-positive">글쓰기</a>
+	    <c:if test="${sessionScope.loginMemberId != null}">
+	        <c:choose>
+	            <c:when test="${sessionScope.loginMemberId == postDto.postWriter}">
+	                <a href="edit?postNo=${postDto.postNo}" class="btn btn-neutral">수정</a>
+	                <a href="delete?postNo=${postDto.postNo}" class="btn btn-neutral">삭제</a>
+	            </c:when>
+	            <c:when test="${sessionScope.loginMemberRole == '관리자'}">
+	                <a href="delete?postNo=${postDto.postNo}" class="btn btn-neutral">삭제</a>
+	            </c:when>
+	        </c:choose>
+	    </c:if>
+	
+	    <c:choose>
+	        <c:when test="${not empty postDto.postMbti}">
+	            <a href="${pageContext.request.contextPath}/post/mbti/list?mbti=${postDto.postMbti}" class="btn btn-neutral">목록으로</a>
+	        </c:when>
+	        <c:otherwise>
+	            <a href="${pageContext.request.contextPath}/post/free/list" class="btn btn-neutral">목록으로</a>
+	        </c:otherwise>
+	    </c:choose>
+	</div>
 </div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp" />

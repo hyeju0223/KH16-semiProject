@@ -2,13 +2,20 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" type="text/css" href="/css/post.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
+
+<jsp:include page="/WEB-INF/views/template/header.jsp" />
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">  
 <script src="/summernote/custom-summernote.js"></script>
+
+<style>
+
+</style>
 
 <script>
 
@@ -22,12 +29,12 @@
     <input type="hidden" name="postMbti" value="${postDto.postMbti}">
 </c:if>
 
-<div class="container w-800">
+<div class="container w-1000">
     <div class="cell center">
         <h1>게시글 작성</h1>
     </div>            
     <div class="cell center">
-        <p>인격 어쩌구.... 말 이쁘게 쓰기🎅🎅<p>
+        <p>타인을 향한 욕설 및 비난 적발 시 사이트 이용에 제한이 생깁니다😎</p>
     </div>
     
     <c:if test="${sessionScope.loginMemberRole == '관리자'}">
@@ -73,3 +80,5 @@
     </div>
 </div>
 </form>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp" />

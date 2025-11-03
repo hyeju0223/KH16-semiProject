@@ -89,10 +89,10 @@ public class PostController {
 	    //빈 리스트 변수 하나 생성
 	    List<PostVO> postList;
 
-	    //만약 검색 키워드가 null이거나 값이 있다면
+	    //만약 검색 키워드가 존재하고 비어있지 않다면
 		if (searchCondition.getKeyword() != null && !searchCondition.getKeyword().isBlank()) {
 			//검색어 O: MBTI 필터링 + 검색 적용
-			postList = postDao.selectMbtiListSearch(memberMbti, searchCondition);
+			postList = postDao.selectMbtiList(memberMbti, searchCondition);
 		}
 		else {
 			//검색어 X: MBTI 필터링 + 검색 적용
@@ -111,14 +111,16 @@ public class PostController {
 		return "/WEB-INF/views/post/mbti/list.jsp";
 	}
 	
+	//사용자의 편의 / 경로 유연성을 위해 작성
 	@GetMapping("/write")
 	public String redirectToFreeWrite() {
-//		사용자가 /post/write로 접속했을 때, 기본적으로 자유 게시판과 글쓰기 폼으로 연결해 주기 위한 코드
+//		사용자가 /post/write로 접속했을 때, 자유 게시판의 글쓰기 폼으로 연결
 		return "redirect:free/write";
 	}
 	
 	// {postMbti} 부분을 postMbti 변수로 받아서 사용 (free/ mbti)
 	// ex: /post/free/write, /post/mbti/write
+	//{postMbti}는 Spring Framework에서 URL 경로의 일부 값을 변수로 추출할 때 사용(경로변수)
 	@GetMapping("/{postMbti}/write")
 	public String unifiedWrite(@PathVariable String postMbti, Model model, HttpSession session) {
 		
@@ -204,8 +206,9 @@ public class PostController {
 		int postNo = postDao.sequence();
 		postDto.setPostNo(postNo);
 		
-		//음악 번호 설정
+		//음악 번호 설정 (값이 null일수고 있기 때문에)
 		Integer musicNo = postDto.getPostMusic();
+		
 		// musicNo가 null일 수 있으므로, DAO insert에서 null 허용 확인
 		postDto.setPostMusic(musicNo);
 		
