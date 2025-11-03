@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
+     <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+    
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -237,14 +240,14 @@
                             <span class="large">탈퇴 후 회원정보 및 개인형 서비스 이용기록은 모두 삭제됩니다.</span>
                         </div>
                         <div class="title gray" style="font-size: 16px;">
-                            <pre>회원정보 및 메일, 블로그, 주소록 등 개인형 서비스 이용기록은 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다.
+                            <pre>회원정보를 포함한 개인형 서비스 이용기록은 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다.
 삭제되는 내용을 확인하시고 필요한 데이터는 미리 백업을 해주세요.</pre>
                         </div>
                         <div class="title" style="font-size: 20px;">
                            <span class="large"> 탈퇴 후에도 게시판 및 앨범형 서비스에 등록한 게시물 및 음원은 그대로 남아있습니다</span>
                         </div>
                         <div class="title gray" style="font-size: 16px;">
-                            <pre>뉴스, 카페, 지식iN 등에 올린 게시글 및 댓글은 탈퇴 시 자동 삭제되지 않고 그대로 남아 있습니다.
+                            <pre>자유, MBTI 등에 올린 게시글 및 댓글은 탈퇴 시 자동 삭제되지 않고 그대로 남아 있습니다.
 삭제를 원하는 게시글이 있다면 반드시 탈퇴 전 비공개 처리하거나 삭제하시기 바랍니다.
 탈퇴 후에는 회원정보가 삭제되어 본인 여부를 확인할 수 있는 방법이 없어, 게시글을 임의로 삭제해드릴 수 없습니다.</pre>
                         </div>
@@ -269,7 +272,7 @@
             <!-- 닉네임 영역-->
             <div class="cell">
                 <div class="title large mt-40">현재 비밀번호<i class="fa-solid fa-star-of-life red"></i></div>
-                <input type="text"  name="memberPw"  class="box box-long"  minlength="8">
+                <input type="password"  name="memberPw"  class="box box-long"  minlength="8">
                 <div class="ment" style="color:red;">비밀번호를 입력해주세요</div>
                 <c:if test="${not empty param.error}">
                 <div class="title ment2" style="color:red;">비밀번호를 다시 확인해주세요</div>
@@ -286,3 +289,5 @@
 </body>
 
 </html>
+
+     <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

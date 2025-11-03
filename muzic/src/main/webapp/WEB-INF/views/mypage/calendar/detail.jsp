@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
+     <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+    
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -24,14 +27,19 @@
             margin: 0;
         }
 
+		.area-all {
+				margin : 0% auto;
+				 
+		}
         .area {
             gap: 20px;
+            position: relative;
         }
 
         .container{
-            padding-left: 140px;
-            padding : 100px;
-            position: relative;
+
+           
+    
         }
 
 
@@ -48,21 +56,21 @@
 
         }
 
-        .img {
+  .img {
             position: absolute;
-            left: 21px;
-            top: 116px;
+            left: 420px;
+            top: 146px;
             z-index: 2;
-            width: 19%;
+            width: 12%;
         }
         
         .img1 {
             position: absolute;
-            left: 19px;
-            top: 112px;
+            left: 420px;
+            top: 157px;
             z-index: 1;
             background-color : #9396D5;
-            width: 106px;
+            width: 90px;
             height : 118px;
             border-radius : 8px 
 
@@ -157,15 +165,16 @@
 </head>
 
 <body>
-    <div class="container">
+     <div class="area-all">
+     <div class="container">
         <div>
             <img src="/image/calendar/calendar_img4.png" class="img">
             <div class="img1"></div>
         </div>
-        <div class="mt-50 ms-50 text" style="font-size: 30px;">일정 상세보기</div>
+        <div class="mt-50 center text" style="font-size: 30px;">일정 상세보기</div>
           <form action="add" method="post">
             <div class="area flex-box ">
-                <div class="w-500">
+                <div class="w-500 area-all">
                     <hr style=" border: 1px solid #9396D5;">
 				<div class="title mt-30" style="font-size: 24px">${calendarDto.calendarScheduleTitle}</div>
                 <div class="title">${calendarDto.calendarDay}</div>
@@ -202,6 +211,7 @@ ${calendarDto.calendarScheduleContent}
                     </div>
                 </div>
     </div>
+    </div>
 
 
 
@@ -210,3 +220,5 @@ ${calendarDto.calendarScheduleContent}
 </body>
 
 </html>
+
+ <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

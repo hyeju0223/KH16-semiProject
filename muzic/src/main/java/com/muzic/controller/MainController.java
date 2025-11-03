@@ -1,5 +1,8 @@
 package com.muzic.controller;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +50,13 @@ public class MainController {
 		//음원 목록(인기순) 가져오기
 		List<MusicDto> musicRankList = musicDao.selectListByRank();
 		model.addAttribute("musicRankList",musicRankList);
+		
+	    //jsp에 util.Date or calendar만 전송 가능
+		LocalDate now = LocalDate.now();
+		Date current = java.sql.Date.valueOf(now);
+	    
+	    model.addAttribute("now", current);
+
 		
 		return "/WEB-INF/views/home.jsp";
 	}

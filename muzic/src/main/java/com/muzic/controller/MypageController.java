@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.muzic.condition.SearchCondition;
 import com.muzic.dao.GoodsDao;
@@ -194,6 +195,20 @@ public class MypageController {
 		
 		return "redirect:profile";
 	}
+	
+	//이미지 보이게 하는 경로
+	@GetMapping("/image")
+	public String image(@RequestParam String memberId) {
+		AttachmentCategory category = AttachmentCategory.PROFILE;
+		String categoryValue = category.getCategoryName();
+		int attachmentNo = attachmentService.getAttachmentNoByParent(memberId, categoryValue);
+		if (attachmentNo > 0) {
+			return "redirect:/attachment/download?attachmentNo=" + attachmentNo;
+		} else {
+			return "redirect:/images/error/no-image.png";
+		}
+	}
+	
 	
 
 	

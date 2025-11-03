@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/mypage/calendar")
+@RequestMapping("/rest/mypage/calendar")
 public class CalendarRestController {
 	
 	@Autowired
@@ -110,6 +110,8 @@ public class CalendarRestController {
 		
 		
 	}
+	
+	
 	
 
 }

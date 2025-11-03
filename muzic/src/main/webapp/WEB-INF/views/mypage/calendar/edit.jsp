@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+     <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+    
 
  <!-- moment cdn-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
@@ -44,3 +47,5 @@
 </body>
 
 </html>
+
+ <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

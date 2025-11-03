@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+     <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+    
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -230,7 +233,7 @@
             $("[name=memberPw]").on("blur", function () {
             	var currentPw = $(this).val();
                 $.ajax({
-                    url: "/mypage/currentPwCheck",
+                    url: "/rest/mypage/currentPwCheck",
                     method: "post",
                     data: {
                         memberId: memberId,
@@ -289,17 +292,17 @@
                 <div class="cell  profile-area">
                     <!-- 프로필 이미지 영역-->
                     <div class="cell  profile-img-area mt-20">
-                        <img src="/image/home/profile-img.jpg" class="profile-img">
+                        <img src="/mypage/image?memberId=${sessionScope.loginMemberId}" class="profile-img">
 
                     </div>
                     <!-- 닉네임/메일주소-->
                     <div class="center mt-30">
-                        <div class="text">닉네임</div>
-                        <div class="text">메일주소</div>
+                        <div class="text" style="font-weight: bolder; font-size: 28px">${sessionScope.loginMemberId}</div>
+                        <div class="text">${sessionScope.loginMemberMbti}</div>
                     </div>
                     <!-- 배너 영역-->
                     <div class="banner-area mt-50">
-                        <img src="/image/home/banner-img1.png" class="banner-img">
+                        <a href="/mypage/calendar/"><img src="/image/home/banner-img1.png" class="banner-img"></a>
                     </div>
                 </div>
                 <!-- 오른쪽 영역 -->
@@ -316,7 +319,7 @@
                             <!-- 현재 비밀번호 영역-->
                             <div class="cell">
                                 <div class="title">현재 비밀번호<i class="fa-solid fa-star-of-life red"></i></div>
-                                <input type="text" name="memberPw" class="box box-long" placeholder="영문+숫자+특수문자 8~16자">
+                                <input type="password" name="memberPw" class="box box-long" placeholder="영문+숫자+특수문자 8~16자">
                                 <div class="fail1-feedback">현재 비밀번호와 일치하지 않습니다</div>
                                 <div class="fail4-feedback">비밀번호를 입력해주세요</div>
                                 
@@ -325,7 +328,7 @@
                             <!-- 새 비밀번호 영역-->
                             <div class="cell">
                                 <div class="title">새 비밀번호<i class="fa-solid fa-star-of-life red"></i></div>
-                                <input type="text" name="memberChangePw1" class="box box-long" placeholder="영문+숫자+특수문자 8~16자">
+                                <input type="password" name="memberChangePw1" class="box box-long" placeholder="영문+숫자+특수문자 8~16자">
                                 <div class="fail2-feedback">현재 비밀번호와 동일합니다</div>
                                 <div class="fail4-feedback">비밀번호를 입력해주세요</div>
 
@@ -333,7 +336,7 @@
                             <!-- 새 비밀번호 확인 영역-->
                             <div class="cell">
                                 <div class="title">새 비밀번호 확인<i class="fa-solid fa-star-of-life red"></i></div>
-                                <input type="text" name="memberChangePw2" class="box box-long" placeholder="영문+숫자+특수문자 8~16자">
+                                <input type="password" name="memberChangePw2" class="box box-long" placeholder="영문+숫자+특수문자 8~16자">
                                 <div class="fail3-feedback">새 비밀번호와 일치하지 않습니다</div>
                                 <div class="fail4-feedback">비밀번호를 입력해주세요</div>
                             </div>
@@ -356,3 +359,5 @@
 </body>
 
 </html>
+
+ <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
