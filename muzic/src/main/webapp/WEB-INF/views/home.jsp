@@ -11,7 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MuZic</title>
-  <link rel="stylesheet" type="text/css" href="/css/commons.css">
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
   <link rel="stylesheet" type="text/css"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
@@ -381,7 +381,7 @@
 
 
   </style>
-  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" href="${pageContext.request.contextPath}/favicon.ico">
   <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
   <script type="text/javascript">
 
@@ -555,7 +555,7 @@
     <!-- 로고 -->
     <div class="top-bar cell center flex-box flex-center mt-40">
       <div class="cell">
-        <a href="/"><img src="/image/home/logo.png" class="logo"></a>
+        <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/image/home/logo.png" class="logo"></a>
       </div>
       <!-- 검색창 -->
       <!-- <div class="cell w-100 shearch-area">
@@ -579,20 +579,20 @@
         <a href="#"  class="teg"><i class="fa-solid fa-headset"></i>고객센터</a>
       </div>
       <div class="cell w-120 profile-text">
-        <a href="/mypage/profile"><i class="fa-solid fa-user"></i>마이페이지</a>
+        <a href="${pageContext.request.contextPath}/mypage/profile"><i class="fa-solid fa-user"></i>마이페이지</a>
       </div>
       <div class="cell w-120 profile-text">
-        <a href="/store/cart/list" class="teg"><i class="fa-solid fa-cart-shopping"></i>장바구니</a>
+        <a href="${pageContext.request.contextPath}/store/cart/list" class="teg"><i class="fa-solid fa-cart-shopping"></i>장바구니</a>
       </div>
        <div class="cell w-120 profile-text">
-        <a href="/music/add" class="teg"><i class="fa-solid fa-music"></i>음원등록</a>
+        <a href="${pageContext.request.contextPath}/music/add" class="teg"><i class="fa-solid fa-music"></i>음원등록</a>
       </div>
       <!-- 회원상태 -->
       <div class="cell w-150 profile-area-1 flex-box flex-center">
         <div class="cell profile-img-area-1">
-          <img src="/mypage/image?memberId=${sessionScope.loginMemberId}" class="profile-img-1">
+          <img src="${pageContext.request.contextPath}/mypage/image?memberId=${sessionScope.loginMemberId}" class="profile-img-1">
         </div>
-        <a href="/member/logout" class="profile-state teg">로그아웃</a>
+        <a href="${pageContext.request.contextPath}/member/logout" class="profile-state teg">로그아웃</a>
         </span>
       </div>
        </c:when>
@@ -603,7 +603,7 @@
       </div>
       <!-- 회원상태 -->
       <div class="cell w-150 profile-area-1 flex-box flex-center">
-        <a href="/member/login" class="profile-state teg">로그인</a>
+        <a href="${pageContext.request.contextPath}/member/login" class="profile-state teg">로그인</a>
       </div>
        </c:otherwise>
       </c:choose>
@@ -614,49 +614,49 @@
       <div class="swiper-wrapper">
         <div class="cell swiper-slide">
           <div class="album-box">
-            <img class="cell album-img" src="/image/home/album-img1.jpg">
+            <img class="cell album-img" src="${pageContext.request.contextPath}/image/home/album-img1.jpg">
             <div>노래명 - 가수명</div>
           </div>
         </div>
         <div class="cell swiper-slide">
           <div class="album-box">
-            <img class="cell album-img" src="/image/home/album-img3.jpg">
+            <img class="cell album-img" src="${pageContext.request.contextPath}/image/home/album-img3.jpg">
             <div>노래명 - 가수명</div>
           </div>
         </div>
         <div class="cell swiper-slide">
           <div class="album-box">
-            <img class="cell album-img" src="/image/home/album-img1.jpg">
+            <img class="cell album-img" src="${pageContext.request.contextPath}/image/home/album-img1.jpg">
             <div>노래명 - 가수명</div>
           </div>
         </div>
         <div class="cell swiper-slide">
           <div class="album-box">
-            <img class="cell album-img" src="/image/home/album-img2.jpg">
+            <img class="cell album-img" src="${pageContext.request.contextPath}/image/home/album-img2.jpg">
             <div>노래명 - 가수명</div>
           </div>
         </div>
         <div class="cell swiper-slide">
           <div class="album-box">
-            <img class="cell album-img" src="/image/home/album-img1.jpg">
+            <img class="cell album-img" src="${pageContext.request.contextPath}/image/home/album-img1.jpg">
             <div>노래명 - 가수명</div>
           </div>
         </div>
         <div class="cell swiper-slide">
           <div class="album-box">
-            <img class="cell album-img" src="/image/home/album-img1.jpg">
+            <img class="cell album-img" src="${pageContext.request.contextPath}/image/home/album-img1.jpg">
             <div>노래명 - 가수명</div>
           </div>
         </div>
         <div class="cell swiper-slide">
           <div class="album-box">
-            <img class="cell album-img" src="/image/home/album-img1.jpg">
+            <img class="cell album-img" src="${pageContext.request.contextPath}/image/home/album-img1.jpg">
             <div>노래명 - 가수명</div>
           </div>
         </div>
         <div class="cell swiper-slide">
           <div class="album-box">
-            <img class="cell album-img" src="/image/home/album-img1.jpg">
+            <img class="cell album-img" src="${pageContext.request.contextPath}/image/home/album-img1.jpg">
             <div>노래명 - 가수명</div>
           </div>
         </div>
@@ -668,15 +668,15 @@
 
     <!-- 메뉴 영역-->
     <div class="cell center menu-bar flex-box flex-center mt-30">
-      <div class="menu-text"><a href="/post/free/list" class="teg">커뮤니티</a></div>
-      <div class="menu-text" style="font-weight: 500; font-size: 37px;"><a href="/post/mbti/list" class="teg">MBTI</a></div>
+      <div class="menu-text"><a href="${pageContext.request.contextPath}/post/free/list" class="teg">커뮤니티</a></div>
+      <div class="menu-text" style="font-weight: 500; font-size: 37px;"><a href="${pageContext.request.contextPath}/post/mbti/list" class="teg">MBTI</a></div>
 
-      <div class="menu-text"><a href="/music/list" class="teg">음원목록</a></div>
-      <div class="menu-text"><a href="/music/add" class="teg">음원등록</a></div>
+      <div class="menu-text"><a href="${pageContext.request.contextPath}/music/list" class="teg">음원목록</a></div>
+      <div class="menu-text"><a href="${pageContext.request.contextPath}/music/add" class="teg">음원등록</a></div>
 
-      <div class="menu-text"><a href="/store/list"" class="teg">스토어</a></div>
+      <div class="menu-text"><a href="${pageContext.request.contextPath}/store/list"" class="teg">스토어</a></div>
       <div class="menu-block w-300"></div>
-      <div class="menu-text"><a href="/event/roulette" class="teg">이벤트</a></div>
+      <div class="menu-text"><a href="${pageContext.request.contextPath}/event/roulette" class="teg">이벤트</a></div>
     </div>
     <hr class="line">
     <div class="advertising-text">
@@ -694,19 +694,19 @@
           <label class="post-title">등록된 음원</label>
           <div class="cell record-area flex-box flex-center center">
             <div class="record w-100">
-              <img src="/image/home/record-img.png" class="record-img">
+              <img src="${pageContext.request.contextPath}/image/home/record-img.png" class="record-img">
               <span class="text">앨범명</span>
             </div>
             <div class="record w-100">
-              <img src="/image/home/record-img.png" class="record-img">
+              <img src="${pageContext.request.contextPath}/image/home/record-img.png" class="record-img">
               <span class="text">앨범명</span>
             </div>
             <div class="record w-100">
-              <img src="/image/home/record-img.png" class="record-img">
+              <img src="${pageContext.request.contextPath}/image/home/record-img.png" class="record-img">
               <span class="text">앨범명</span>
             </div>
             <div class="record w-100">
-              <img src="/image/home/record-img.png" class="record-img">
+              <img src="${pageContext.request.contextPath}/image/home/record-img.png" class="record-img">
               <span class="text">앨범명</span>
             </div>
           </div>
@@ -716,10 +716,10 @@
             <div class="banner swiper" id="banner-swiper">
               <div class="swiper-wrapper">
               <div class="swiper-slide">
-                <a href="music/add" class="teg" ><img src="/image/home/banner-1-1100x200.png" class="banner-img" ></a>
+                <a href="music/add" class="teg" ><img src="${pageContext.request.contextPath}/image/home/banner-1-1100x200.png" class="banner-img" ></a>
               </div>
               <div class="swiper-slide">
-                <a href="store/list" class="teg"><img src="/image/home/banner-2-1100x200.png" class="banner-img" ></a>
+                <a href="store/list" class="teg"><img src="${pageContext.request.contextPath}/image/home/banner-2-1100x200.png" class="banner-img" ></a>
               </div>
               </div>
               <div class="swiper-pagination"></div>
@@ -778,7 +778,7 @@
              <div class="cell login-area">
             <div class="cell login-box center">
             <span>환영합니다, ${memberDto.memberNickname}님!</span>
-              <a href="/member/logout" class="teg">
+              <a href="${pageContext.request.contextPath}/member/logout" class="teg">
               <div class="cell login-bar">
                 <span> 로그아웃 </span>
               </div>
@@ -792,7 +792,7 @@
           <div class="cell login-area">
             <div class="cell login-box center">
             
-              <a href="/member/login" class="teg">
+              <a href="${pageContext.request.contextPath}/member/login" class="teg">
               <div class="cell login-bar">
                 <span> 로그인 </span>
               </div>
@@ -814,10 +814,10 @@
             <div class="ad-banner swiper" id="ad-banner-swiper">
               <div class="swiper-wrapper">
               <div class="swiper-slide ">
-                <a href="/mypage/calendar/" class="teg" ><img  src="/image/home/banner-img1.png" class="ad-banner-img" style="padding:70px"></a>
+                <a href="${pageContext.request.contextPath}/mypage/calendar/" class="teg" ><img  src="${pageContext.request.contextPath}/image/home/banner-img1.png" class="ad-banner-img" style="padding:70px"></a>
               </div>
               <div class="swiper-slide ">
-                <a href="store/list" class="teg"><img src="/image/home/banner-img2.png" class="ad-banner-img" ></a>
+                <a href="store/list" class="teg"><img src="${pageContext.request.contextPath}/image/home/banner-img2.png" class="ad-banner-img" ></a>
               </div>
               </div>
               <div class="swiper-pagination"></div>
@@ -841,7 +841,7 @@
               <a href="music/detail?musicNo=${musicDto.musicNo}"  ><div class="flex-box flex-center music-rank">
                 <span class="ranking-text">${i.count}</span>
 <!--                 <span class="ranking-update">- 0</span> -->
-                <img class="album-img" src="/music/file?attachmentNo=${musicDto.coverAttachmentNo}">
+                <img class="album-img" src="${pageContext.request.contextPath}/music/file?attachmentNo=${musicDto.coverAttachmentNo}">
                 <div class="flex-fill">
                   <div><span class="album-title elipsis">${musicDto.musicTitle}</span></div>
                   <div><span class="album-artist elipsis">${musicDto.musicArtist}</span></div>
@@ -861,7 +861,7 @@
     <div class="footer">
       <div class="flex-box flex-center">
         <div>
-          <img src="/image/home/logo.png" class="logo">
+          <img src="${pageContext.request.contextPath}/image/home/logo.png" class="logo">
           <pre>  (주)무직 대표이사 : 이민수 사업자등록번호 : 107-81-20541
   서울특별시 강남구 테헤란로14길 6 남도빌딩 4층, 무직 강남 KH정보교육원 강남지점 1관(역삼동) 사업자정보확인 >
   통신판매업 신고 : 제 2025-서울강남-1004호

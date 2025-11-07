@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="/css/commons.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <style>
@@ -172,15 +172,15 @@
 <body>
     <div>
         <div class="center top ">
-            <img src="/image/roulette/roulette-img.png" class="img" style="width:70%;">
+            <img src="${pageContext.request.contextPath}/image/roulette/roulette-img.png" class="img" style="width:70%;">
         </div>
         <div class="white-area"></div>
     
     <div>
         <div class="roulette-area center">
             <div class="roulete">
-                <img src="/image/roulette/roulette.png" id="roulette" class="roulette">
-                <img src="/image/roulette/roulette-point.png" class="pointer">
+                <img src="${pageContext.request.contextPath}/image/roulette/roulette.png" id="roulette" class="roulette">
+                <img src="${pageContext.request.contextPath}/image/roulette/roulette-point.png" class="pointer">
                 <button class="btn start-btn">START</button>
             </div>
         </div>

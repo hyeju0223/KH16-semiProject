@@ -1,10 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<link rel="stylesheet" href="/css/commons.css">
-<link rel="stylesheet" href="/css/music/music-commons.css">
-<link rel="stylesheet" href="/css/music/detail.css">
-<link rel="stylesheet" href="/css/music/like.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/commons.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/music-commons.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/detail.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/like.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
@@ -55,7 +55,7 @@
 
 	<div class="music-detail-card" data-music-no="${musicUserVO.musicNo}">
 		<div class="music-cover-wrap">
-			<img src="/music/file?attachmentNo=${musicUserVO.coverAttachmentNo}"
+			<img src="${pageContext.request.contextPath}/music/file?attachmentNo=${musicUserVO.coverAttachmentNo}"
 			onerror="this.onerror=null; this.src='/images/error/music-no-image.png';"
 				class="music-cover-img">
 
@@ -95,7 +95,7 @@
 
 		<audio id="music-player" preload="metadata">
 			<source
-				src="/music/file?attachmentNo=${musicUserVO.musicFileAttachmentNo}">
+				src="${pageContext.request.contextPath}/music/file?attachmentNo=${musicUserVO.musicFileAttachmentNo}">
 		</audio>
 
 		<div class="player-ui">
@@ -115,13 +115,13 @@
 					onclick="requestDelete()">🚫 삭제요청</button>
 			</div>
 			 <!-- POST 요청 폼 -->
-	        <form id="deleteForm" action="/music/delete-request" method="post" style="display:none;">
+	        <form id="deleteForm" action="${pageContext.request.contextPath}/music/delete-request" method="post" style="display:none;">
 	            <input type="hidden" name="musicNo" value="${musicUserVO.musicNo}">
 	        </form>
 		</c:if>
 	</div>
 </div>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
-<script src="/js/music/like.js"></script>
-<script src="/js/music/detail.js"></script>
+<script src="${pageContext.request.contextPath}/js/music/like.js"></script>
+<script src="${pageContext.request.contextPath}/js/music/detail.js"></script>
 

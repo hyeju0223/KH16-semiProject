@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/commons.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
      <style>
@@ -329,7 +329,7 @@
                     if (calendar.calendarAttendance == 'Y') {
                         //출석 체크 대상이 되는 날짜 선택하기
                         var targetDay = $(".schedule[data-date=" + calendarDay + "]"); //여러 데이터 읽기
-                        targetDay.addClass("addCalendar").append('<img src="/image/calendar/calendar-check.png" class="check-img">');
+                        targetDay.addClass("addCalendar").append('<img src="${pageContext.request.contextPath}/image/calendar/calendar-check.png" class="check-img">');
                     }
 
                     var maxSchedule = 3;
@@ -437,7 +437,7 @@
                 <div style="padding-top: 100px; color: #413008; font-size: 28px;">
                     매일매일 할수록 혜택이 쌓이는
                 </div>
-                <img src="/image/calendar/calendar-img2.png" style="width: 50%; font-weight:bold;">
+                <img src="${pageContext.request.contextPath}/image/calendar/calendar-img2.png" style="width: 50%; font-weight:bold;">
             </div>
             <div class="center area-center">
                 <div class="cell flex-box flex-center">
@@ -573,7 +573,7 @@
         <div class="calendar-bottom">
             <div class="cell area-center">
                 <div class="center" style="font-size: 50px;">
-                    <img src="/image/calendar/calendar-img3.png" style="width: 50%; margin-top: 40px;">
+                    <img src="${pageContext.request.contextPath}/image/calendar/calendar-img3.png" style="width: 50%; margin-top: 40px;">
                 </div>
                 <div class="cell center">
                     <span style="font-size: 24px;">게이지바</span>

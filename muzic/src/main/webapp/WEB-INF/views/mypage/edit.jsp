@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/commons.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <style>
@@ -190,7 +190,7 @@
     <!-- jquery cdn-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!--카카오맵 cdn-->
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="${pageContext.request.contextPath}//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <!-- momentjs CDN-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/locale/ko.min.js"></script> -->
@@ -318,7 +318,7 @@
                 <div class="cell  profile-area">
                     <!-- 프로필 이미지 영역-->
                     <div class="cell  profile-img-area mt-30">
-                        <img src="/mypage/image?memberId=${memberDto.memberId}" class="profile-img" >
+                        <img src="${pageContext.request.contextPath}/mypage/image?memberId=${memberDto.memberId}" class="profile-img" >
                         <span class="change-text">변경하기</span>
                         <div class="cell profile-change flex-box flex-center"><i class="fa-solid fa-camera-rotate"
                                 style="color: aliceblue;"></i></div>
@@ -331,7 +331,7 @@
                     </div>
                     <!-- 배너 영역-->
                     <div class="banner-area mt-50">
-                        <a href="/mypage/calendar/"><img src="/image/home/banner-img1.png" class="banner-img"></a>
+                        <a href="${pageContext.request.contextPath}/mypage/calendar/"><img src="${pageContext.request.contextPath}/image/home/banner-img1.png" class="banner-img"></a>
                     </div>
                 </div>
                 <div>

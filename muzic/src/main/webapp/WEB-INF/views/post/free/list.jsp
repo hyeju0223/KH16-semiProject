@@ -6,7 +6,7 @@
 
 <title>자유게시판</title>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-<link rel="stylesheet" type="text/css" href="/css/post.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/post.css">
 <style>
 
 </style>
@@ -23,15 +23,15 @@
 			<c:choose>
 				<c:when test="${sessionScope.loginMemberId != null}">
 				<h3>
-				<a href="/post/write" class="btn btn-navy">글쓰기</a></h3>
+				<a href="${pageContext.request.contextPath}/post/write" class="btn btn-navy">글쓰기</a></h3>
 			</c:when>
 			<c:otherwise>
-				<h3><a href="/member/login">로그인</a>을 해야 글을 작성할 수 있습니다</h3>
+				<h3><a href="${pageContext.request.contextPath}/member/login">로그인</a>을 해야 글을 작성할 수 있습니다</h3>
 			</c:otherwise>
 			</c:choose>
 	</div>
 	<div class="cell right">	
-		<a href="/">메인으로</a>
+		<a href="${pageContext.request.contextPath}/">메인으로</a>
 	</div>
 	
 	<div class="cell">

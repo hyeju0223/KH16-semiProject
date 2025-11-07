@@ -76,7 +76,7 @@ body {
 }
 
 /* 🟢 추가 필요: 메인으로 버튼 */
-.cell.right a[href="/"] {
+.cell.right a[href="${pageContext.request.contextPath}/"] {
     display: inline-block;
     background-color: #9396D5;
     color: #fff;
@@ -87,7 +87,7 @@ body {
     font-weight: 500;
     transition: 0.2s;
 }
-.cell.right a[href="/"]:hover {
+.cell.right a[href="${pageContext.request.contextPath}/"]:hover {
     background-color: #7f81c8;
 }
 

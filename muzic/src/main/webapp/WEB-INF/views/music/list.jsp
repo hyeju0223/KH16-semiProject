@@ -2,10 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<link rel="stylesheet" href="/css/commons.css">
-<link rel="stylesheet" href="/css/music/music-commons.css">
-<link rel="stylesheet" href="/css/music/list.css">
-<link rel="stylesheet" href="/css/music/like.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/commons.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/music-commons.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/list.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/like.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script
@@ -25,13 +25,13 @@
 
 	<!-- Sort bar -->
 	<div class="music-sort-bar mb-20">
-		<a href="/music/list?sortType=latest"
+		<a href="${pageContext.request.contextPath}/music/list?sortType=latest"
 			class="${param.sortType=='latest' ? 'on' : ''}">최신순</a> <a
-			href="/music/list?sortType=like"
+			href="${pageContext.request.contextPath}/music/list?sortType=like"
 			class="${param.sortType=='like' ? 'on' : ''}">좋아요순</a> <a
-			href="/music/list?sortType=play"
+			href="${pageContext.request.contextPath}/music/list?sortType=play"
 			class="${param.sortType=='play' ? 'on' : ''}">재생순</a> <a
-			href="/music/list?sortType=title"
+			href="${pageContext.request.contextPath}/music/list?sortType=title"
 			class="${param.sortType=='title' ? 'on' : ''}">가나다순</a>
 	</div>
 
@@ -43,7 +43,7 @@
 
 				<div class="cover-wrap">
 					<img class="cover-img"
-						src="/music/file?attachmentNo=${m.coverAttachmentNo}"
+						src="${pageContext.request.contextPath}/music/file?attachmentNo=${m.coverAttachmentNo}"
 						onerror="this.src='/images/error/music-no-image.png'">
 
 					<button class="play-btn"
@@ -84,4 +84,4 @@
 	<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
 </div>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
-<script src="/js/music/like.js"></script>
+<script src="${pageContext.request.contextPath}/js/music/like.js"></script>

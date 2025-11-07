@@ -3,15 +3,15 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<link rel="stylesheet" type="text/css" href="/css/post.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/post.css">
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
 
 <jsp:include page="/WEB-INF/views/template/header-1.jsp" />
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">  
-<script src="/summernote/custom-summernote.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/summernote/custom-summernote.css">  
+<script src="${pageContext.request.contextPath}/summernote/custom-summernote.js"></script>
 
 <style>
 

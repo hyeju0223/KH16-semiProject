@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<link rel="stylesheet" type="text/css" href="/css/commons.css">
-<link rel="stylesheet" type="text/css" href="/css/cart.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/cart.css">
 
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
@@ -56,7 +56,7 @@
 
 		<div style="flex-shrink: 0; width: 35%;">
 			<div class="category-tag">${goodsDto.goodsCategory}</div>
-			<img src="/store/image?goodsNo=${goodsDto.goodsNo}"
+			<img src="${pageContext.request.contextPath}/store/image?goodsNo=${goodsDto.goodsNo}"
 				style="width: 100%; height: auto; object-fit: cover;">
 		</div>
 

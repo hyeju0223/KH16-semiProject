@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="/css/commons.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <style>
@@ -168,7 +168,7 @@
      <div class="area-all">
      <div class="container">
         <div>
-            <img src="/image/calendar/calendar_img4.png" class="img">
+            <img src="${pageContext.request.contextPath}/image/calendar/calendar_img4.png" class="img">
             <div class="img1"></div>
         </div>
         <div class="mt-50 center text" style="font-size: 30px;">일정 상세보기</div>
@@ -201,7 +201,7 @@ ${calendarDto.calendarScheduleContent}
                 <div class="flex-box right">
 
                     <div class="right mt-20">
-                        <a href="/mypage/calendar/" class="btn btn-neutral">취소</a>
+                        <a href="${pageContext.request.contextPath}/mypage/calendar/" class="btn btn-neutral">취소</a>
                     </div>
                       <div class="right mt-20">
                         <a href="edit?calendarNo=${calendarDto.calendarNo}" class="btn btn-positive">수정</a>

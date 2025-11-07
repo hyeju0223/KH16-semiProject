@@ -6,7 +6,7 @@
 
 <title>MBTI게시판</title>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-<link rel="stylesheet" type="text/css" href="/css/post.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/post.css">
 
 <style>
 
@@ -29,12 +29,12 @@
 				</h3>
 			</c:when>
 			<c:otherwise>
-				<h3><a href="/member/login">로그인</a>을 해야 글을 작성할 수 있습니다</h3>
+				<h3><a href="${pageContext.request.contextPath}/member/login">로그인</a>을 해야 글을 작성할 수 있습니다</h3>
 			</c:otherwise>
 			</c:choose>
 	</div>
 	<div class="right" style="color: #2d4575">
-		<a href="/" class="btn btn-navy">메인으로</a>
+		<a href="${pageContext.request.contextPath}/" class="btn btn-navy">메인으로</a>
 	</div>
 	<div class="cell">
 		<table class="table table-border w-100">

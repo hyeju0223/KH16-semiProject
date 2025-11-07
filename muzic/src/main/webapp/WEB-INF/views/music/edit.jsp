@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<link rel="stylesheet" href="/css/commons.css">
-<link rel="stylesheet" href="/css/music/music-commons.css">
-<link rel="stylesheet" href="/css/music/music-form.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/commons.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/music-commons.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/music-form.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="container w-800 mt-40">
@@ -14,7 +14,7 @@
    음원 수정을 신청하면 관리자의 승인 이후에 전체 목록에 표기됩니다. 🙏
 </p>
 
-    <form action="/music/edit" method="post" enctype="multipart/form-data" id="musicEditForm">
+    <form action="${pageContext.request.contextPath}/music/edit" method="post" enctype="multipart/form-data" id="musicEditForm">
 
         <input type="hidden" name="musicNo" value="${param.musicNo}">
 
@@ -40,7 +40,7 @@
 			    <c:choose>
 			        <c:when test="${coverImageNo > 0}">
 			            <!-- 기존 커버 표시 -->
-			            <img src="/music/file?attachmentNo=${coverImageNo}"
+			            <img src="${pageContext.request.contextPath}/music/file?attachmentNo=${coverImageNo}"
 			                 id="coverPreview" class="cover-preview">
 			            <div id="coverPlaceholder" class="cover-placeholder" style="display:none;">
 			                <i class="fa-solid fa-plus"></i>
@@ -96,4 +96,4 @@
     </form>
 </div>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
-<script src="/js/music/music-form.js"></script>
+<script src="${pageContext.request.contextPath}/js/music/music-form.js"></script>

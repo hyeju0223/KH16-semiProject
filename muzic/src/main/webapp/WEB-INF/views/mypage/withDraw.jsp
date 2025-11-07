@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="/css/commons.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <style>
@@ -222,7 +222,7 @@
 <body>
     <div class="container ">
         <div class="mt-50 text" style="font-size: 30px;">비밀번호 변경</div>
-        <form action="/mypage/withDraw" method="post">
+        <form action="${pageContext.request.contextPath}/mypage/withDraw" method="post">
             <div class="area flex-box ">
 
                 <div class="w-800">

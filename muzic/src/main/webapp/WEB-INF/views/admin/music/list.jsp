@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-    <link rel="stylesheet" href="/css/commons.css">
-    <link rel="stylesheet" href="/css/admin-music.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/commons.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin-music.css">
 
 <div class="admin-container">
     <div class="admin-title">🎧 음원 관리</div>
@@ -50,7 +50,7 @@
                     <td>${music.musicArtist}</td>
                     <td>${music.musicUploader}</td>
                     <td><span class="status-badge status-${music.musicStatus}">${music.musicStatus}</span></td>
-                    <td><a class="admin-btn btn-detail" href="/admin/music/detail?musicNo=${music.musicNo}">관리</a></td>
+                    <td><a class="admin-btn btn-detail" href="${pageContext.request.contextPath}/admin/music/detail?musicNo=${music.musicNo}">관리</a></td>
                 </tr>
             </c:forEach>
             <c:if test="${empty list}">

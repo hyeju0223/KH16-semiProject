@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<link rel="stylesheet" type="text/css" href="/css/commons.css">
-<link rel="stylesheet" type="text/css" href="/css/cart.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/cart.css">
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     
@@ -131,7 +131,7 @@
 				<c:forEach var="goodsDto" items="${goodsList}">
 					<tr>
 						<td style="text-align: center;"> 
-                            <img src="/store/image?goodsNo=${goodsDto.goodsNo}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 4px;">
+                            <img src="${pageContext.request.contextPath}/store/image?goodsNo=${goodsDto.goodsNo}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 4px;">
                         </td>
 						<td class="left-align">
                             <a href="detail?goodsNo=${goodsDto.goodsNo}" style="font-size: 1.2em; font-weight: bold; color: #333;">${goodsDto.goodsName}</a>

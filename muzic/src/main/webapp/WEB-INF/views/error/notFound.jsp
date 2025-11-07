@@ -1,20 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<link rel="stylesheet" type="text/css" href="/css/commons.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="container w-1000">
 	<div class="cell center">
-		<img src="/images/error/404.png" width="300">
+		<img src="${pageContext.request.contextPath}/images/error/404.png" width="300">
 	</div>
 	<div class="cell center">
 		<h1>${title}</h1>
 	</div>
 	<div class="center mt-40" style="display: flex; gap: 10px; justify-content: center;">
 
-		<a href="/" class="btn btn-positive" style="flex-grow: 1; max-width: 200px; text-align: center;">홈으로</a> 
+		<a href="${pageContext.request.contextPath}/" class="btn btn-positive" style="flex-grow: 1; max-width: 200px; text-align: center;">홈으로</a> 
 		<a href="#" class="btn btn-neutral" onclick="goBack()" style="flex-grow: 1; max-width: 200px; text-align: center;">이전 페이지</a>
 	</div>
 </div>

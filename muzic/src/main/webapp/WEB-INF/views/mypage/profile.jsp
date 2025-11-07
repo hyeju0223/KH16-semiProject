@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="/css/commons.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <style>
@@ -527,7 +527,7 @@
                 if (calendar.calendarAttendance == 'Y') {
                     //출석 체크 대상이 되는 날짜 선택하기
                     var targetDay = $(".schedule[data-date=" + calendarDay + "]"); //여러 데이터 읽기
-                    targetDay.addClass("addCalendar").append('<img src="/image/calendar/calendar-check.png" class="check-img">');
+                    targetDay.addClass("addCalendar").append('<img src="${pageContext.request.contextPath}/image/calendar/calendar-check.png" class="check-img">');
                 }
 
                 var maxSchedule = 3;
@@ -570,7 +570,7 @@
                 <div class="cell  profile-area">
                     <!-- 프로필 이미지 영역-->
                     <div class="cell  profile-img-area ms-20">
-                        <img src="/mypage/image?memberId=${memberDto.memberId}" class="profile-img">
+                        <img src="${pageContext.request.contextPath}/mypage/image?memberId=${memberDto.memberId}" class="profile-img">
                     </div>
                 </div>
                 <!-- 오른쪽 회원정보 -->
@@ -654,7 +654,7 @@
                             <div class="left" id="calendar-date" style="font-size: 22px; font-weight: 600;">2025년 10월
                             </div>
                             <div class="flex-fill"></div>
-                            <div class="left btn btn-positive"><a href="/mypage/calendar/add">일정 등록하기</a></div>
+                            <div class="left btn btn-positive"><a href="${pageContext.request.contextPath}/mypage/calendar/add">일정 등록하기</a></div>
                             <!-- <button class="btn btn-neutral" id="prevMonth-btn">이전</button>
                             <button class="btn btn-neutral" id="nextMonth-btn">다음</button> -->
                         </div>
@@ -791,8 +791,8 @@
 	<tbody>
 	<c:forEach var="goodsOrderDto" items="${orderList}">
 	<tr>
-		<td><img src="/store/image?goodsNo=${goodsOrderDto.orderGoods}" style="width: 100px; height: 100px; object-fit: cover;"></td>
-		<td><a href="/store/detail?goodsNo=${goodsOrderDto.orderGoods }">${goodsOrderDto.goodsName}</a></td>
+		<td><img src="${pageContext.request.contextPath}/store/image?goodsNo=${goodsOrderDto.orderGoods}" style="width: 100px; height: 100px; object-fit: cover;"></td>
+		<td><a href="${pageContext.request.contextPath}/store/detail?goodsNo=${goodsOrderDto.orderGoods }">${goodsOrderDto.goodsName}</a></td>
 		<td>${goodsOrderDto.orderQuantity}</td>
 		<td>${goodsOrderDto.orderPoint}</td>
 		<td>${goodsOrderDto.orderTime}</td>

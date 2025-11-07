@@ -3,10 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<link rel="stylesheet" href="/css/commons.css">
-<link rel="stylesheet" href="/css/music/music-commons.css">
-<link rel="stylesheet" href="/css/music/list.css">
-<link rel="stylesheet" href="/css/music/like.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/commons.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/music-commons.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/list.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/music/like.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script
@@ -25,21 +25,21 @@
 
 	<div class="mz-search-tabs mb-20">
 		<a
-			href="/music/search/list?keyword=${param.keyword}&column=music_title"
+			href="${pageContext.request.contextPath}/music/search/list?keyword=${param.keyword}&column=music_title"
 			class="${param.column=='music_title' ? 'on' : ''}">곡</a> <a
-			href="/music/search/list?keyword=${param.keyword}&column=music_artist"
+			href="${pageContext.request.contextPath}/music/search/list?keyword=${param.keyword}&column=music_artist"
 			class="${param.column=='music_artist' ? 'on' : ''}">아티스트</a> <a
-			href="/music/search/list?keyword=${param.keyword}&column=music_album"
+			href="${pageContext.request.contextPath}/music/search/list?keyword=${param.keyword}&column=music_album"
 			class="${param.column=='music_album' ? 'on' : ''}">앨범</a>
 	</div>
 	<!-- Sort bar -->
 	<div class="music-sort-bar mb-20">
 		<a
-			href="/music/search/list?sortType=accuracy&keyword=${param.keyword}${param.column != null ? '&column='.concat(param.column) : ''}"
+			href="${pageContext.request.contextPath}/music/search/list?sortType=accuracy&keyword=${param.keyword}${param.column != null ? '&column='.concat(param.column) : ''}"
 			class="${param.sortType=='accuracy' ? 'on' : ''}">관련도순</a> <a
-			href="/music/search/list?sortType=like&keyword=${param.keyword}${param.column != null ? '&column='.concat(param.column) : ''}"
+			href="${pageContext.request.contextPath}/music/search/list?sortType=like&keyword=${param.keyword}${param.column != null ? '&column='.concat(param.column) : ''}"
 			class="${param.sortType=='like' ? 'on' : ''}">좋아요순</a> <a
-			href="/music/search/list?sortType=play&keyword=${param.keyword}${param.column != null ? '&column='.concat(param.column) : ''}"
+			href="${pageContext.request.contextPath}/music/search/list?sortType=play&keyword=${param.keyword}${param.column != null ? '&column='.concat(param.column) : ''}"
 			class="${param.sortType=='play' ? 'on' : ''}">재생순</a>
 	</div>
 	<c:if test="${empty musicUserVO}">
@@ -76,7 +76,7 @@
 
 				<div class="cover-wrap">
 					<img class="cover-img"
-						src="/music/file?attachmentNo=${m.coverAttachmentNo}"
+						src="${pageContext.request.contextPath}/music/file?attachmentNo=${m.coverAttachmentNo}"
 						onerror="this.src='/images/error/music-no-image.png'">
 
 					<button class="play-btn"
@@ -114,4 +114,4 @@
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/music/template/pagination.jsp"></jsp:include>
 
-<script src="/js/music/like.js"></script>
+<script src="${pageContext.request.contextPath}/js/music/like.js"></script>

@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="/css/commons.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <style>
@@ -286,13 +286,13 @@
 <body>
     <div class="container ">
         <div class="mt-50 ms-30 text" style="font-size: 30px;">비밀번호 변경</div>
-        <form method="post" action="/mypage/password" autocomplete="off">
+        <form method="post" action="${pageContext.request.contextPath}/mypage/password" autocomplete="off">
             <div class="cell area flex-box ">
                 <!-- 왼쪽 프로필 영역-->
                 <div class="cell  profile-area">
                     <!-- 프로필 이미지 영역-->
                     <div class="cell  profile-img-area mt-20">
-                        <img src="/mypage/image?memberId=${sessionScope.loginMemberId}" class="profile-img">
+                        <img src="${pageContext.request.contextPath}/mypage/image?memberId=${sessionScope.loginMemberId}" class="profile-img">
 
                     </div>
                     <!-- 닉네임/메일주소-->
@@ -302,7 +302,7 @@
                     </div>
                     <!-- 배너 영역-->
                     <div class="banner-area mt-50">
-                        <a href="/mypage/calendar/"><img src="/image/home/banner-img1.png" class="banner-img"></a>
+                        <a href="${pageContext.request.contextPath}/mypage/calendar/"><img src="${pageContext.request.contextPath}/image/home/banner-img1.png" class="banner-img"></a>
                     </div>
                 </div>
                 <!-- 오른쪽 영역 -->

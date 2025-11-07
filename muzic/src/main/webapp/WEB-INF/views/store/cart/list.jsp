@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<link rel="stylesheet" type="text/css" href="/css/commons.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
@@ -59,7 +59,7 @@
 	<c:choose>
 		<c:when test="${cartList == null || cartList.size() == 0}">
 		<div class="cell center">
-		<img src="/image/cart/emptyCart.png"; width="300px">
+		<img src="${pageContext.request.contextPath}/image/cart/emptyCart.png"; width="300px">
 		</div>
 			<div class="cell center">
 			<h2>장바구니에 담긴 상품이 없습니다.</h2>
@@ -100,7 +100,7 @@
 									<td><img src="image?goodsNo=${goodsCart.cartGoods}"
 										style="width: 100px; height: 100px; object-fit: cover;"></td>
 									<td class="left" width="40%"><a
-										href="/store/detail?goodsNo=${goodsCart.cartGoods}">${goodsCart.goodsName}</a></td>
+										href="${pageContext.request.contextPath}/store/detail?goodsNo=${goodsCart.cartGoods}">${goodsCart.goodsName}</a></td>
 									<%-- <td>${goodsCart.goodsPoint} point</td> --%>
 									<td><input type="number" class="input-quantity"
 										value="${goodsCart.cartQuantity}" min="1"

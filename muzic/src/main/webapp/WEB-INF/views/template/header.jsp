@@ -7,10 +7,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" type="text/css" href="/css/commons.css">
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commons.css">
   <link rel="stylesheet" type="text/css"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
@@ -380,7 +379,25 @@
 
 
   </style>
-  <link rel="icon" href="/favicon.ico">
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+ 
+  <!-- 모든 jquery ajax의 전송 시 주소 앞에 절대경로를 추가 -->
+  <script>
+  	var contextPath = "${pageContext.request.contextPath}"; //어쩔 수 없는 코드
+  	$.ajaxSetup({
+  		beforeSend : function(xhr, settings){
+  			//xhr이 요청객체, settings가 요청옵션
+  			//if(주소가 절대경로라면)
+  			if(settins.url.startsWith("/")) {
+  			settings.url = contextPath + settings.url;  				
+  			}
+  		}
+  	});
+  </script>
+  
+  <link rel="icon" href="${pageContext.request.contextPath}/favicon.ico">
   <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
   <script type="text/javascript">
 
@@ -398,7 +415,7 @@
     <!-- 로고 -->
     <div class="top-bar cell center flex-box flex-center">
       <div class="cell">
-        <a href="/"><img src="/image/home/logo.png" class="logo"></a>
+        <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/image/home/logo.png" class="logo"></a>
       </div>
       <!-- 검색창 -->
       <!-- <div class="cell w-100 shearch-area">
@@ -424,17 +441,17 @@
         <a href="#"  class="teg"><i class="fa-solid fa-headset"></i>고객센터</a>
       </div>
       <div class="cell w-120 profile-text">
-        <a href="/mypage/profile"><i class="fa-solid fa-user"></i>마이페이지</a>
+        <a href="${pageContext.request.contextPath}/mypage/profile"><i class="fa-solid fa-user"></i>마이페이지</a>
       </div>
       <div class="cell w-120 profile-text">
-        <a href="/store/cart/list" class="teg"><i class="fa-solid fa-cart-shopping"></i>장바구니</a>
+        <a href="${pageContext.request.contextPath}/store/cart/list" class="teg"><i class="fa-solid fa-cart-shopping"></i>장바구니</a>
       </div>
       <!-- 회원상태 -->
       <div class="cell w-150 profile-area-1 flex-box flex-center">
         <div class="cell profile-img-area-1">
-          <img src="/mypage/image?memberId=${sessionScope.loginMemberId}" class="profile-img-1">
+          <img src="${pageContext.request.contextPath}/mypage/image?memberId=${sessionScope.loginMemberId}" class="profile-img-1">
         </div>
-        <a href="/member/logout" class="profile-state teg">로그아웃</a>
+        <a href="${pageContext.request.contextPath}/member/logout" class="profile-state teg">로그아웃</a>
       </div>
        </c:when>
        
@@ -444,7 +461,7 @@
       </div>
       <!-- 회원상태 -->
       <div class="cell w-150 profile-area-1 flex-box flex-center">
-        <a href="/member/login" class="profile-state teg">로그인</a>
+        <a href="${pageContext.request.contextPath}/member/login" class="profile-state teg">로그인</a>
       </div>
        </c:otherwise>
       </c:choose>
@@ -454,12 +471,12 @@
 
     <!-- 메뉴 영역-->
     <div class="cell center menu-bar flex-box flex-center mt-30">
-      <div class="menu-text"><a href="/post/free/list" class="teg">커뮤니티</a></div>
-      <div class="menu-text" style="font-weight: 500; font-size: 37px;"><a href="/post/mbti/list" class="teg">MBTI</a></div>
-      <div class="menu-text"><a href="/music/list" class="teg">음원 목록</a></div>
-      <div class="menu-text"><a href="/store/list"" class="teg">스토어</a></div>
+      <div class="menu-text"><a href="${pageContext.request.contextPath}/post/free/list" class="teg">커뮤니티</a></div>
+      <div class="menu-text" style="font-weight: 500; font-size: 37px;"><a href="${pageContext.request.contextPath}/post/mbti/list" class="teg">MBTI</a></div>
+      <div class="menu-text"><a href="${pageContext.request.contextPath}/music/list" class="teg">음원 목록</a></div>
+      <div class="menu-text"><a href="${pageContext.request.contextPath}/store/list"" class="teg">스토어</a></div>
       <div class="menu-block w-300"></div>
-      <div class="menu-text"><a href="/event/roulette" class="teg">이벤트</a></div>
+      <div class="menu-text"><a href="${pageContext.request.contextPath}/event/roulette" class="teg">이벤트</a></div>
     </div>
     <hr class="line">
 
