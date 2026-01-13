@@ -35,7 +35,7 @@ public class RouletteRestController {
         this.preventAdminInterceptor = preventAdminInterceptor;
     }
 	
-    @RequestMapping("/insert")
+    @PostMapping("/insert")
 	public String insert(@RequestParam String memberId,@RequestParam Integer point) {
     	
     	//세션과 회원이 맞지 않으면 진행 X
@@ -77,7 +77,7 @@ public class RouletteRestController {
 	}
     
     //룰렛 돌리기 전 1일 참여여부 체크
-    @RequestMapping("/check")
+    @PostMapping("/check")
   	public String check(@RequestParam String memberId) {
       	
       	//세션과 회원이 맞지 않으면 진행 X

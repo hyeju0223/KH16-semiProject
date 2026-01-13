@@ -110,6 +110,14 @@
 		  <artifactId>korean-utils</artifactId>
 		  <version>0.0.1</version>
 		</dependency>
+		
+		<!-- REST API 문서 제작 도구-->
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.8.14</version>
+    <scope>compile</scope>
+</dependency>
 
 	</dependencies>
 	

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +34,7 @@ public class MypageRestController {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 //	//프로필 사진 등록하기
-	@RequestMapping("/profile")
+	@PostMapping("/profile")
 	public void profile(HttpSession Session,
 									String memberId, MultipartFile attach) throws IOException {
 		
@@ -57,7 +58,7 @@ public class MypageRestController {
 
 	
 	//회원 탈퇴를 위한 비밀번호 확인
-	@RequestMapping("/withDraw")
+	@PostMapping("/withDraw")
 	public String withDraw(HttpSession session,String memberId, String memberPw) {
 		//정보를 받으면 아이디, 비밀번호 확인
 		//세션으로 아이디 가지고 오기
@@ -86,7 +87,7 @@ public class MypageRestController {
 	}
 	
 	//비밀번호 변경
-	@RequestMapping("/currentPwCheck")
+	@PostMapping("/currentPwCheck")
 	public String password(HttpSession session,
 			String memberId, String currentPw) {
 		//정보를 받으면 아이디, 비밀번호 확인

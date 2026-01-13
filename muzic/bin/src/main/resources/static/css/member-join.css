@@ -1,0 +1,170 @@
+/* ============================================================
+   MUZIC 회원가입 전용 CSS (member-join.css)
+   - 기존 member.css와 충돌하지 않도록 별도 설계
+   - multipage.css와 함께 사용
+   ============================================================ */
+
+/* 기본 설정 */
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #f7f8fa;
+  margin: 0;
+  padding: 0;
+}
+
+/* 컨테이너 */
+.container {
+  width: 550px;
+  margin: 60px auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* 제목 */
+h1 {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #111;
+}
+h2 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* 라벨 */
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 입력창 */
+.field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  transition: border-color 0.2s ease;
+}
+.field:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 1px rgba(74,144,226,0.3);
+  outline: none;
+}
+.field.success {
+  border-color: #1abc9c !important;
+}
+.field.fail,
+.field.fail2 {
+  border-color: #e74c3c !important;
+}
+
+/* ===================== 피드백 ===================== */
+/* 기본적으로 숨김 처리 */
+.success-feedback,
+.fail-feedback,
+.fail2-feedback {
+  display: none;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+/* ✅ 성공일 때만 success-feedback 표시 */
+.field.success ~ .success-feedback {
+  display: block;
+  color: #1abc9c;
+}
+
+/* ✅ 실패(형식 오류)일 때 fail-feedback 표시 */
+.field.fail ~ .fail-feedback {
+  display: block;
+  color: #e74c3c;
+}
+
+/* ✅ 중복일 때 fail2-feedback 표시 */
+.field.fail2 ~ .fail2-feedback {
+  display: block;
+  color: #e74c3c;
+}
+
+/* 버튼 */
+button,
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-size: 15px;
+  width: 100%;
+  margin-top: 10px;
+}
+button:hover,
+.btn:hover {
+  background: #333;
+}
+.btn-positive {
+  background: #4a90e2;
+}
+.btn-neutral {
+  background: #888;
+}
+.btn-prev {
+  background: #888;
+}
+.btn-next {
+  background: #111;
+}
+
+/* flex 박스 (이전/다음 버튼 정렬) */
+.flex-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 이미지 미리보기 */
+.img-preview {
+  display: block;
+  margin: 10px auto;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* 진행바 */
+.progressbar {
+  width: 100%;
+  height: 6px;
+  background: #eee;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+.progressbar .guage {
+  height: 100%;
+  width: 0%;
+  background: #4a90e2;
+  transition: width 0.3s ease;
+}
+
+/* 반응형 (태블릿 이하) */
+@media (max-width: 600px) {
+  .container {
+    width: 90%;
+    padding: 25px;
+  }
+  h1 { font-size: 22px; }
+  h2 { font-size: 18px; }
+}

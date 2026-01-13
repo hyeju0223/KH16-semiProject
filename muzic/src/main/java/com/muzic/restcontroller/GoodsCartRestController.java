@@ -19,7 +19,12 @@ import com.muzic.error.NeedPermissionException;
 import com.muzic.error.OperationFailedException;
 import com.muzic.service.GoodsCartService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
+
+@Tag(name = "상품 관리 컨트롤러")
 
 @CrossOrigin
 @RestController
@@ -27,6 +32,18 @@ import jakarta.servlet.http.HttpSession;
 public class GoodsCartRestController {
 	@Autowired
 	private GoodsCartService goodsCartService;
+	
+	//-SpringDoc 설정을 추가하여 문서에 정보를 정확하게 기재한다
+	
+	@Operation(
+			deprecated = false //비추천 여부(향후 사용 중지 예정이라면 true를 작성)
+			, description = "상품 관리를 위한 등록 기능" //기능에 대한 설명
+			, responses = {//예상되는 응답 코드
+					@ApiResponse(responseCode = "200"),
+					@ApiResponse(responseCode = "400"),
+					@ApiResponse(responseCode = "500")
+			}
+			)
 
 	// 체크된 상품 삭제
 	@PostMapping("/deleteMultiple")
